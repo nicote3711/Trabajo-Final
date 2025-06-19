@@ -1,0 +1,95 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Data;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Helper
+{
+    public static class HelperD
+    {
+        public static int ObtenerProximoID(DataTable tabla, string nombreColumnaID)
+        {
+            if (tabla == null || tabla.Rows.Count == 0)
+                return 1;
+
+            var valores = tabla.AsEnumerable()
+                               .Where(row => row[nombreColumnaID] != DBNull.Value)
+                               .Select(row => Convert.ToInt32(row[nombreColumnaID]));
+
+            return valores.Any() ? valores.Max() + 1 : 1;
+        }
+        public static string ObtenerConexionXMl()
+        {
+            return "GestionEscuelaVuelo_FINAL.xml";
+        }
+        public static string ObtenerConexionBitacora()
+        {
+            return "Bitacora.xml";
+        }
+        public static bool ExisteRelacion(DataTable tabla, Dictionary<string, object> condiciones)
+        {
+            if (tabla == null || condiciones == null || condiciones.Count == 0) return false;
+            var query = tabla.AsEnumerable().Where(row => condiciones.All(cond => row.Field<object>(cond.Key)?.Equals(cond.Value) ?? false));
+            return query.Any();
+        }
+
+        public static void RealizarBackUp(DateTime fechaRegistro)
+        {
+           
+            string backupDir = @"BackUp";
+            try
+            {
+                //    File.Copy(Path.Combine(sourceDir, fName), Path.Combine(backupDir, fName), true);
+                if (!Path.Exists(backupDir))
+                {
+                    Directory.CreateDirectory(backupDir);
+                }
+                File.Copy(ObtenerConexionXMl(), Path.Combine(backupDir, fechaRegistro.ToString("dd-MM-yyyy HH.mm") + "_Backup.xml"), true);
+
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
+        public static void RealizarRestore(DateTime fechaRegistro)
+        {
+            {
+                string backupDir = @"BackUp";
+                string nombreArchivo = fechaRegistro.ToString("dd-MM-yyyy HH.mm") + "_BackUp.xml";
+                string origen = Path.Combine(backupDir, nombreArchivo);
+                string destino = ObtenerConexionXMl(); // Ruta del archivo principal de datos XML
+
+                try
+                {
+                    // Verificar que el archivo de respaldo existe
+                    if (!File.Exists(origen))throw new FileNotFoundException($"No se encontró el archivo de backup: {nombreArchivo}");
+                    
+
+                    // Restaurar: reemplazar el archivo actual por el backup
+                    File.Copy(origen, destino, true);
+                }
+                catch (Exception ex)
+                {
+                    throw new Exception("Error al realizar el restore: " + ex.Message, ex);
+                }
+            }
+        }
+
+        public static bool ExisteBackUp(DateTime fechaRegistro)
+        {
+            string backupDir = @"BackUp";
+            string nombreArchivo = fechaRegistro.ToString("dd-MM-yyyy HH.mm") + "_BackUp.xml";
+            string rutaCompleta = Path.Combine(backupDir, nombreArchivo);
+
+            return File.Exists(rutaCompleta);
+        }
+
+
+    }
+
+}
