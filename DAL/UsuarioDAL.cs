@@ -59,7 +59,7 @@ namespace DAL
             }
         }
 
-        public Usuario BuscarPorNombre(string nombre)
+        public Usuario BuscarPorNombreUsuario(string nombre)
         {
             try
             {
@@ -171,10 +171,9 @@ namespace DAL
 
                 ds.WriteXml(rutaXml, XmlWriteMode.WriteSchema);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-
-                throw;
+                throw new Exception("DAL error en Baja usuario:" + ex.Message,ex);
             }
 
         }
@@ -218,5 +217,56 @@ namespace DAL
             }
         }
 
+        public Usuario BuscarPorDNI(long dNI)
+        {
+            try
+            {
+                if (!File.Exists(rutaXml)) throw new FileNotFoundException("No se encontró el archivo XML.");
+
+                DataSet ds = new DataSet();
+                ds.ReadXml(rutaXml, XmlReadMode.ReadSchema);
+
+                DataTable tabla = ds.Tables["Usuario"];
+                if (tabla == null) throw new Exception("No se encontró la tabla Usuario.");
+
+                DataRow row = tabla.AsEnumerable().FirstOrDefault(u => u.Field<long>("DNI") == dNI);
+
+                if (row == null) return null;
+
+                Usuario usuario = new Usuario();
+                UsuarioMAP.MapearDesdeDB(usuario, row);
+                return usuario;
+
+            }
+            catch (Exception ex)
+            {
+
+                throw new Exception ("DAL Error al buscar usuario por dni" + ex.Message, ex);
+            }
+        }
+
+        public void ModificarUsuario(Usuario usuario)
+        {
+            try
+            {
+                if (!File.Exists(rutaXml)) throw new FileNotFoundException("Archivo XML no encontrado.");
+
+                DataSet ds = new DataSet();
+                ds.ReadXml(rutaXml, XmlReadMode.ReadSchema);
+
+                DataTable tabla = ds.Tables["Usuario"];
+                DataRow row = tabla.AsEnumerable().FirstOrDefault(r => Convert.ToInt32(r["Id_Usuario"]) == usuario.IdUsuario);
+
+                if (row == null) throw new Exception("Usuario no encontrado.");
+
+                UsuarioMAP.MapearHaciaDB(usuario, row);
+
+                ds.WriteXml(rutaXml, XmlWriteMode.WriteSchema);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("DAL - Error al modificar el usuario: " + ex.Message, ex);
+            }
+        }
     }
 }

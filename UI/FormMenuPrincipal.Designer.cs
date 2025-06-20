@@ -111,14 +111,14 @@
             // registrarVueloToolStripMenuItem
             // 
             registrarVueloToolStripMenuItem.Name = "registrarVueloToolStripMenuItem";
-            registrarVueloToolStripMenuItem.Size = new Size(180, 22);
+            registrarVueloToolStripMenuItem.Size = new Size(177, 22);
             registrarVueloToolStripMenuItem.Text = "Registrar Vuelo";
             registrarVueloToolStripMenuItem.Click += registrarVueloToolStripMenuItem_Click;
             // 
             // registrarSimuladToolStripMenuItem
             // 
             registrarSimuladToolStripMenuItem.Name = "registrarSimuladToolStripMenuItem";
-            registrarSimuladToolStripMenuItem.Size = new Size(180, 22);
+            registrarSimuladToolStripMenuItem.Size = new Size(177, 22);
             registrarSimuladToolStripMenuItem.Text = "Registrar Simulador";
             // 
             // moduloDeHorasToolStripMenuItem
@@ -322,13 +322,14 @@
             // registrarUsuariosToolStripMenuItem
             // 
             registrarUsuariosToolStripMenuItem.Name = "registrarUsuariosToolStripMenuItem";
-            registrarUsuariosToolStripMenuItem.Size = new Size(162, 22);
+            registrarUsuariosToolStripMenuItem.Size = new Size(180, 22);
             registrarUsuariosToolStripMenuItem.Text = "Usuarios ABM";
+            registrarUsuariosToolStripMenuItem.Click += registrarUsuariosToolStripMenuItem_Click;
             // 
             // rolesYPermisosToolStripMenuItem
             // 
             rolesYPermisosToolStripMenuItem.Name = "rolesYPermisosToolStripMenuItem";
-            rolesYPermisosToolStripMenuItem.Size = new Size(162, 22);
+            rolesYPermisosToolStripMenuItem.Size = new Size(180, 22);
             rolesYPermisosToolStripMenuItem.Text = "Roles y Permisos";
             rolesYPermisosToolStripMenuItem.Click += RolesYPermisos_ToolStripMenuItem_Click;
             // 

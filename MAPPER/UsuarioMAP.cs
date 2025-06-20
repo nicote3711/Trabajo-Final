@@ -15,6 +15,9 @@ namespace MAPPER
             usuario.IdUsuario = Convert.ToInt32(row["Id_Usuario"]);
             usuario.NombreUsuario = row["Nombre_Usuario"].ToString();
             usuario.Contrasena = row["Password"].ToString(); // Encriptada
+            usuario.DNI = Convert.ToInt64(row["DNI"]);
+            usuario.Nombre = row["Nombre"].ToString();
+            usuario.Apellido = row["Apellido"].ToString();
             usuario.Activo = Convert.ToBoolean(row["Activo"]);
 
             // No se mapean roles acá; se delega a UsuarioDAL si es necesario
@@ -24,6 +27,9 @@ namespace MAPPER
         {
             row["Id_Usuario"] = usuario.IdUsuario;
             row["Nombre_Usuario"] = usuario.NombreUsuario;
+            row["DNI"] = usuario.DNI;
+            row["Nombre"] = usuario.Nombre;
+            row["Apellido"] = usuario.Apellido;
             row["Password"] = usuario.Contrasena; // Ya encriptada
             row["Activo"] = usuario.Activo;
         }

@@ -198,5 +198,19 @@ namespace UI
 
 
 
+        private void registrarUsuariosToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                FormUsuarioABM formUsuarioABM = new FormUsuarioABM();
+                formUsuarioABM.MdiParent = this;
+                formUsuarioABM.Show();
+            }
+            catch (Exception ex)
+            {
+
+                MessageBox.Show(ex.Message);
+            }
+        }
     }
 }

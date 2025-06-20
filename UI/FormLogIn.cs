@@ -24,7 +24,7 @@ namespace UI
 
         private void FormLogIn_Load(object sender, EventArgs e)
         {
-            txt_Usuario.Text = "admin"; // Usuario por defecto para pruebas
+            txt_Usuario.Text = "nicobotbol3711"; // Usuario por defecto para pruebas
             txt_Contrasena.Text = "1234"; // Contraseña por defecto para pruebas
         }
 

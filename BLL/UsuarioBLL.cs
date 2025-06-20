@@ -33,16 +33,18 @@ namespace BLL
                 if (usuario == null) throw new ArgumentNullException(nameof(usuario));
                 if (string.IsNullOrWhiteSpace(usuario.NombreUsuario)) throw new ArgumentException("El nombre de usuario es obligatorio.");
                 if (string.IsNullOrWhiteSpace(usuario.Contrasena)) throw new ArgumentException("La contraseña es obligatoria.");
-                if (UsuarioDAO.BuscarPorNombre(usuario.NombreUsuario) != null)throw new Exception("Ya existe un usuario con ese nombre de usuario.");
+                if (UsuarioDAO.BuscarPorNombreUsuario(usuario.NombreUsuario) != null)throw new Exception("Ya existe un usuario con ese nombre de usuario.");
+                if (UsuarioDAO.BuscarPorDNI(usuario.DNI) != null) throw new Exception("Ya existe un usuario con ese DNI.");
+               
                 // Encriptamos antes de guardar
                 usuario.Contrasena = Encriptador.Encriptar(usuario.Contrasena);
                 usuario.Activo = true;
 
                 UsuarioDAO.AltaUsuario(usuario);
             }
-            catch
+            catch (Exception ex)
             {
-                throw;
+                throw new Exception ("BLL error en alta de usuario: " + ex.Message,ex );
             }
         }
 
@@ -50,12 +52,14 @@ namespace BLL
         {
             try
             {
+                
+                if (UsuarioDAO.BuscarPorId(idUsuario) == null) throw new Exception("No se encontro el usuario a dar de baja.");
                 UsuarioDAO.BajaUsuario(idUsuario);
             }
-            catch
+            catch (Exception ex)
             {
-                throw;
-            }
+                throw new Exception("BLL error en baja de usuario: " + ex.Message, ex);
+            }          
         }
 
    
@@ -64,7 +68,7 @@ namespace BLL
         {
             try
             {
-                Usuario usuario = UsuarioDAO.BuscarPorNombre(nombreUsuario);
+                Usuario usuario = UsuarioDAO.BuscarPorNombreUsuario(nombreUsuario);
                 if (usuario == null || !usuario.Activo) return null;
 
                 string passDesencriptada = Encriptador.Desencriptar(usuario.Contrasena);
@@ -104,6 +108,53 @@ namespace BLL
             {
 
                 throw;
+            }
+        }
+
+        public void ModificarUsuario(Usuario usuario)
+        {
+            try
+            {
+                Usuario usuarioAux;
+                if (usuario == null) throw new ArgumentNullException(nameof(usuario));
+                if (string.IsNullOrWhiteSpace(usuario.NombreUsuario)) throw new ArgumentException("El nombre de usuario es obligatorio.");
+                if (string.IsNullOrWhiteSpace(usuario.Contrasena)) throw new ArgumentException("La contraseña es obligatoria.");
+                
+                
+                usuarioAux = UsuarioDAO.BuscarPorNombreUsuario(usuario.NombreUsuario);
+                if(usuarioAux != null)
+                {
+                    if (usuarioAux.IdUsuario != usuario.IdUsuario) throw new Exception("Ya existe otro usuario con ese NombreUsuario");
+                }
+                
+          
+                usuarioAux = UsuarioDAO.BuscarPorDNI(usuario.DNI);
+                if(usuarioAux!=null)
+                {
+                    if (usuarioAux.IdUsuario != usuario.IdUsuario) throw new Exception("Ya existe otro usuario con ese DNI.");
+                }
+                
+                usuario.Contrasena = Encriptador.Encriptar(usuario.Contrasena); // Encriptamos la contraseña antes de guardar
+
+                UsuarioDAO.ModificarUsuario(usuario);
+            }
+            catch (Exception ex)
+            {
+
+                throw new Exception ("BLL error al modificar Usuario: " + ex.Message,ex);
+            }
+        }
+
+        public Usuario BuscarUsuarioPorId(int id_Usuario)
+        {
+            try
+            {
+              return  UsuarioDAO.BuscarPorId(id_Usuario);
+            }
+            catch (Exception ex)
+            {
+
+                throw new Exception("BLL error al modificar Usuario: " + ex.Message, ex);
             }
         }
     }

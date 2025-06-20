@@ -12,6 +12,9 @@ namespace ENTITY
         public int IdUsuario { get; set; }
         public string NombreUsuario { get; set; }
         public string Contrasena { get; set; }
+        public long DNI { get; set; }
+        public string Nombre { get; set; }
+        public string Apellido { get; set; }
 
         public List<Rol> Roles { get; set; } = new List<Rol>();
 
