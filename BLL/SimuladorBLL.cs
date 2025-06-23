@@ -72,7 +72,7 @@ namespace BLL
             try
             {
                 if (simulador == null) throw new ArgumentNullException(nameof(simulador), "El simulador no puede ser nulo.");
-                if (simulador.Liquidacion != null) throw new Exception("No se puede eliminar un simulador que ya tiene una liquidación asociada.");
+                if (simulador.Liquidacion != null || simulador.IdLiquidacion>=0) throw new Exception("No se puede eliminar un simulador que ya tiene una liquidación asociada.");
 				SimuladorDAO.EliminarSimulador(simulador.IdSimulador);
 				ClienteBLO.AcreditarSaldoSimulador(simulador.Cliente.IDCliente, simulador.TS); // Acreditar las horas de simulador al cliente al eliminar el simulador
             }

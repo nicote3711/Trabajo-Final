@@ -48,6 +48,7 @@
             txtLicencia = new TextBox();
             Licencia = new Label();
             dtp_FechaNacimiento = new DateTimePicker();
+            checkBox_VerInactivos = new CheckBox();
             ((System.ComponentModel.ISupportInitialize)dgvClientesAMB).BeginInit();
             SuspendLayout();
             // 
@@ -218,11 +219,23 @@
             dtp_FechaNacimiento.Size = new Size(125, 23);
             dtp_FechaNacimiento.TabIndex = 20;
             // 
+            // checkBox_VerInactivos
+            // 
+            checkBox_VerInactivos.AutoSize = true;
+            checkBox_VerInactivos.Location = new Point(684, 251);
+            checkBox_VerInactivos.Name = "checkBox_VerInactivos";
+            checkBox_VerInactivos.Size = new Size(92, 19);
+            checkBox_VerInactivos.TabIndex = 63;
+            checkBox_VerInactivos.Text = "Ver Inactivos";
+            checkBox_VerInactivos.UseVisualStyleBackColor = true;
+            checkBox_VerInactivos.CheckedChanged += checkBox_VerInactivos_CheckedChanged;
+            // 
             // FormClienteABM
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(800, 450);
+            Controls.Add(checkBox_VerInactivos);
             Controls.Add(dtp_FechaNacimiento);
             Controls.Add(txtLicencia);
             Controls.Add(Licencia);
@@ -273,5 +286,6 @@
         private TextBox txtLicencia;
         private Label Licencia;
         private DateTimePicker dtp_FechaNacimiento;
+        private CheckBox checkBox_VerInactivos;
     }
 }

@@ -20,17 +20,17 @@ namespace MAPPER
             simulador.Instructor = new Instructor { IdInstructor = Convert.ToInt32(row["Id_Instructor"]) };
             simulador.Cliente = new Cliente { IDCliente = Convert.ToInt32(row["Id_Cliente"]) };
             simulador.Finalidad = new Finalidad { IdFinalidad = Convert.ToInt32(row["Id_Finalidad"]) };
-            simulador.Finalidad= string.IsNullOrEmpty(row["Id_Finalidad"].ToString()) ? null : new Finalidad { IdFinalidad = Convert.ToInt32(row["Id_Finalidad"]) };    
-            
-            // Version larga del if
-            /*if (!string.IsNullOrEmpty(row["Id_Liquidacion"].ToString()))
+            simulador.Finalidad= string.IsNullOrEmpty(row["Id_Finalidad"].ToString()) ? null : new Finalidad { IdFinalidad = Convert.ToInt32(row["Id_Finalidad"]) };
+            simulador.IdLiquidacion = string.IsNullOrEmpty(row["Id_Liquidacion"].ToString()) ? null : Convert.ToInt32(row["Id_Liquidacion"]);
+            simulador.Liquidacion = string.IsNullOrEmpty(row["Id_Liquidacion"].ToString()) ? null : new LiquidacionInstructor { IdLiquidacionServicio = Convert.ToInt32(row["Id_Liquidacion"]) };// Version larga del if
+            if (!string.IsNullOrEmpty(row["Id_Liquidacion"].ToString()))
             {
                 simulador.Liquidacion = new LiquidacionInstructor { IdLiquidacionServicio = Convert.ToInt32(row["Id_Liquidacion"]) };
             }
             else
             {
                 simulador.Liquidacion = null;
-            }*/
+            }
         }
 
         public static void MapearHaciaDB(Simulador simulador, DataRow row)

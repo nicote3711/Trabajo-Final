@@ -29,9 +29,11 @@ namespace UI
         {
             try
             {
-                List<Cliente> LClientes = ClienteBLO.ObtenerClientes().Where(c => c.Activo).ToList();
+                List<Cliente> LClientes = ClienteBLO.ObtenerClientes();
                 if (LClientes.Count >= 0)
                 {
+                    if (!checkBox_VerInactivos.Checked){ LClientes = LClientes.Where(c => c.Activo).ToList();}
+                   
                     dgvClientesAMB.DataSource = null;
                     dgvClientesAMB.DataSource = LClientes;
                 }
@@ -45,8 +47,8 @@ namespace UI
             {
 
                 MessageBox.Show(ex.Message);
-            }        
-           
+            }
+
         }
 
         private void LimpiarCampos()
@@ -64,11 +66,11 @@ namespace UI
         {
             try
             {
-                if(long.TryParse(txtDni.Text, out long dni) == false || dni <= 0) throw new Exception("El DNI debe ser un número válido y mayor a 0.");
-                if(string.IsNullOrWhiteSpace(txtNombre.Text)) throw new Exception("El nombre no puede estar vacío.");
-                if(string.IsNullOrWhiteSpace(txtApellido.Text)) throw new Exception("El apellido no puede estar vacío.");   
-                if(string.IsNullOrWhiteSpace(txtCuil.Text)) throw new Exception("El CUIL no puede estar vacío.");
-                
+                if (long.TryParse(txtDni.Text, out long dni) == false || dni <= 0) throw new Exception("El DNI debe ser un número válido y mayor a 0.");
+                if (string.IsNullOrWhiteSpace(txtNombre.Text)) throw new Exception("El nombre no puede estar vacío.");
+                if (string.IsNullOrWhiteSpace(txtApellido.Text)) throw new Exception("El apellido no puede estar vacío.");
+                if (string.IsNullOrWhiteSpace(txtCuil.Text)) throw new Exception("El CUIL no puede estar vacío.");
+
 
                 Cliente Cliente = new Cliente();
                 Cliente.DNI = dni;
@@ -96,7 +98,7 @@ namespace UI
                     else
                     {
                         LimpiarCampos();
-                        
+
                         MessageBox.Show("Operación cancelada. No se realizaron cambios.");
                         return;
                     }
@@ -108,7 +110,7 @@ namespace UI
                     LimpiarCampos();
                     MessageBox.Show("Cliente creado correctamente.");
                 }
-            
+
             }
             catch (Exception ex)
             {
@@ -124,7 +126,7 @@ namespace UI
                 if (dgvClientesAMB.Rows.Count <= 0) throw new Exception("No hay clientes para eliminar.");
                 if (dgvClientesAMB.SelectedRows.Count <= 0) throw new Exception("Debe seleccionar un cliente para eliminar.");
                 int idClienteBaja = Convert.ToInt32(dgvClientesAMB.SelectedRows[0].Cells["IDCliente"].Value);
-                ClienteBLO.BajaCliente(idClienteBaja);
+                ClienteBLO.BajaCliente(idClienteBaja);                // solo inactiva al cliente(la persona sigue disponible
                 MessageBox.Show("Cliente eliminado correctamente.");
                 CargarClientes();
             }
@@ -141,13 +143,14 @@ namespace UI
             {
                 if (dgvClientesAMB.Rows.Count <= 0) throw new Exception("No hay clientes para modificar");
                 if (dgvClientesAMB.SelectedRows.Count <= 0) throw new Exception("Debe seleccionar un cliente para modificar.");
-                Cliente clienteMod = dgvClientesAMB.SelectedRows[0].DataBoundItem as Cliente;
-                if (clienteMod == null) throw new Exception("El cliente seleccionado es nulo."); 
+                Cliente clienteMod = new Cliente();
+                clienteMod = dgvClientesAMB.SelectedRows[0].DataBoundItem as Cliente;
+                if (clienteMod == null) throw new Exception("El cliente seleccionado es nulo.");
 
                 FormClienteMod formModCliente = new FormClienteMod(clienteMod, this);
                 if (formModCliente.ShowDialog() == DialogResult.OK)
                 {
-                    ClienteBLO.ModificarCliente(clienteMod);                    
+                    ClienteBLO.ModificarCliente(clienteMod);
                     MessageBox.Show("Cliente modificado correctamente.");
                 }
             }
@@ -158,7 +161,20 @@ namespace UI
             }
             finally
             {
-               CargarClientes();               
+                CargarClientes();
+            }
+        }
+
+        private void checkBox_VerInactivos_CheckedChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                CargarClientes();
+            }
+            catch (Exception ex)
+            {
+
+                MessageBox.Show(ex.Message);
             }
         }
     }

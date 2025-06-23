@@ -215,15 +215,14 @@ namespace UI
                         ReadOnly = true
                     });
 
-                    // Liquidado
-                    dgv_Simus.Columns.Add(new DataGridViewCheckBoxColumn
+                    // Id Liquidado
+                    dgv_Simus.Columns.Add(new DataGridViewTextBoxColumn
                     {
-                        HeaderText = "Liquidado",
-                        DataPropertyName = "Liquidado", // Debes crear esta propiedad bool en la clase Simulador
+                        HeaderText = "Id Liquidacion",
+                        DataPropertyName = "IdLiquidacion", // Debes crear esta propiedad bool en la clase Simulador
                         Name = "colLiquidado",
                         ReadOnly = true
                     });
-
                     dgv_Simus.DataSource = LSimu;
                 }
                 else

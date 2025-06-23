@@ -82,7 +82,7 @@ namespace BLL
             {
                 if (clienteMod == null) throw new ArgumentNullException(nameof(clienteMod), "El cliente no puede ser nulo.");
                 Cliente cliente = clienteDAO.BuscarPersonaPorDNI(clienteMod.DNI);
-                if (cliente != null && clienteMod.IDPersona != cliente.IDPersona) throw new Exception("Ya existe una persona  con ese DNI ya existe.");
+                if (cliente != null && clienteMod.IDPersona != cliente.IDPersona) throw new Exception("Ya existe una persona  con ese DNI ya existe."); // muy importante
                 if (string.IsNullOrWhiteSpace(clienteMod.Nombre)) throw new ArgumentException("El nombre del cliente no puede estar vacío.", nameof(clienteMod.Nombre));
                 if (string.IsNullOrWhiteSpace(clienteMod.Apellido)) throw new ArgumentException("El apellido del cliente no puede estar vacío.", nameof(clienteMod.Apellido));
                 if (clienteMod.DNI <= 0) throw new ArgumentException("El DNI del cliente debe ser un número positivo.", nameof(clienteMod.DNI));
