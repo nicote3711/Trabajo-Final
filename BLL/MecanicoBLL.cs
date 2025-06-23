@@ -91,6 +91,8 @@ namespace BLL
                 if (string.IsNullOrWhiteSpace(mecanicoMod.Apellido)) throw new ArgumentException("El apellido es obligatorio.");
                 if (string.IsNullOrWhiteSpace(mecanicoMod.CuitCuil)) throw new ArgumentException("El CUIT/CUIL es obligatorio.");
                 if (mecanicoMod.TiposDeMantenimiento == null || !mecanicoMod.TiposDeMantenimiento.Any()) throw new ArgumentException("Debe seleccionar al menos un tipo de mantenimiento.");
+                Mecanico mecanico = MecanicoDAO.BuscarPersonaPorDNI(mecanicoMod.DNI);
+                if (mecanico != null && mecanico.IDPersona != mecanicoMod.IDPersona) throw new Exception("Ya existe otra persona registrada con este DNI");
                 MecanicoDAO.ModificarMecanico(mecanicoMod);
             }
             catch (Exception)

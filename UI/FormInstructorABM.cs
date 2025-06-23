@@ -88,17 +88,8 @@ namespace UI
                 if (dgv_InstructorAMB.Rows.Count <= 0) throw new Exception("No hay instructores para modificar");
                 if (dgv_InstructorAMB.SelectedRows.Count <= 0) throw new Exception("Debe seleccionar un instructor para modificar.");
                 Instructor instructorMod = new Instructor();
-                instructorMod.IdInstructor = Convert.ToInt32(dgv_InstructorAMB.SelectedRows[0].Cells["IdInstructor"].Value);
-                instructorMod.IDPersona = Convert.ToInt32(dgv_InstructorAMB.SelectedRows[0].Cells["IdPersona"].Value);
-                instructorMod.DNI = Convert.ToInt64(dgv_InstructorAMB.SelectedRows[0].Cells["DNI"].Value);
-                instructorMod.Nombre = dgv_InstructorAMB.SelectedRows[0].Cells["Nombre"].Value.ToString();
-                instructorMod.Apellido = dgv_InstructorAMB.SelectedRows[0].Cells["Apellido"].Value.ToString();
-                instructorMod.CuitCuil = dgv_InstructorAMB.SelectedRows[0].Cells["CuitCuil"].Value.ToString();
-                instructorMod.FechaNacimiento = DateTime.Parse(dgv_InstructorAMB.SelectedRows[0].Cells["FechaNacimiento"].Value.ToString());
-                instructorMod.Telefono = dgv_InstructorAMB.SelectedRows[0].Cells["Telefono"].Value.ToString();
-                instructorMod.Email = dgv_InstructorAMB.SelectedRows[0].Cells["Email"].Value.ToString();
-                instructorMod.Licencia = dgv_InstructorAMB.SelectedRows[0].Cells["Licencia"].Value.ToString();
-                instructorMod.Activo = Convert.ToBoolean(dgv_InstructorAMB.SelectedRows[0].Cells["Activo"].Value);
+                instructorMod = dgv_InstructorAMB.SelectedRows[0].DataBoundItem as Instructor;
+                if (instructorMod == null) throw new Exception("Error al seleccionar el instructor de la grilla");
 
                 FormInstructorMod formModInstructor = new FormInstructorMod(instructorMod, this);
 
@@ -108,12 +99,14 @@ namespace UI
                     CargarInstructores();
                     MessageBox.Show("Instructor modificado correctamente.");
                 }
-
             }
             catch (Exception ex)
             {
-
                 MessageBox.Show(ex.Message);
+            }
+            finally
+            {
+                CargarInstructores();
             }
         }
 

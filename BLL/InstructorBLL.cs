@@ -1,5 +1,6 @@
 ﻿using DAL;
 using ENTITY;
+using MAPPER;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -63,11 +64,20 @@ namespace BLL
             }
         }
 
-        public void ModificarInstructor(Instructor instructorAlta)
+        public void ModificarInstructor(Instructor instructorMod)
         {
             try
             {
-                InstructorDAO.ModificarInstructor(instructorAlta);
+                Instructor instructor = new Instructor();
+                if (string.IsNullOrEmpty(instructorMod.Licencia)) throw new ArgumentException("La licencia es obligatoria para el instructor.");
+                if (instructorMod == null) throw new ArgumentNullException(nameof(instructorMod), "El instructor no puede ser nulo.");
+                if (InstructorDAO.BuscarInstructorPorDNI(instructorMod.DNI) != null) throw new Exception("El instructor con ese DNI ya existe.");
+                if (string.IsNullOrWhiteSpace(instructorMod.Nombre)) throw new ArgumentException("El nombre del instructor no puede estar vacío.", nameof(instructorMod.Nombre));
+                if (string.IsNullOrWhiteSpace(instructorMod.Apellido)) throw new ArgumentException("El apellido del instructor no puede estar vacío.", nameof(instructorMod.Apellido));
+                if (string.IsNullOrWhiteSpace(instructorMod.CuitCuil)) throw new ArgumentException("El CUIT/CUIL del instructor no puede estar vacío.", nameof(instructorMod.CuitCuil));
+                instructor = InstructorDAO.BuscarPersonaPorDNI(instructorMod.DNI);
+                if (instructor != null && instructor.IDPersona != instructorMod.IDPersona) throw new Exception("Ya existe otra persona registrada con este DNI");
+                InstructorDAO.ModificarInstructor(instructorMod);
             }
             catch (Exception)
             {
