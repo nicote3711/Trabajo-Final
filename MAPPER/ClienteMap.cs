@@ -35,8 +35,7 @@ namespace MAPPER
         {
             try
             {
-                if (row == null || cliente == null)
-                    throw new ArgumentNullException("Los parámetros no pueden ser nulos.");
+                if (row == null || cliente == null) throw new ArgumentNullException("Los parámetros no pueden ser nulos.");
 
                 cliente.IDCliente = Convert.ToInt32(row["Id_Cliente"]);
                 cliente.IDPersona = Convert.ToInt32(row["Id_Persona"]);

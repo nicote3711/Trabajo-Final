@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Helper;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,6 +9,13 @@ namespace ENTITY
 {
     public class LiquidacionInstructor : LiquidacionServicio
     {
+        public LiquidacionInstructor()
+        {
+            Servicio = new Servicio();
+            Servicio.IdServicio = (int)EnumServicios.Instructor;
+            Vuelos = new List<Vuelo>();
+            Simuladores = new List<Simulador>();
+        }
 
         public List<Vuelo> Vuelos { get; set; } = new();
         public List<Simulador> Simuladores { get; set; } = new();    

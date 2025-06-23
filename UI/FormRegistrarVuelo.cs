@@ -202,7 +202,10 @@ namespace UI
                     // Cargar datos
                     dgv_Vuelos.DataSource = LVuelo;
                 }
-
+                else
+                {
+                      dgv_Vuelos.DataSource = null; // Si no hay vuelos, limpiar el DataGridView
+                }
             }
             catch (Exception ex)
             {
@@ -355,21 +358,17 @@ namespace UI
                 MessageBox.Show(ex.Message);
             }
         }
-
-
-        #endregion Fin Botones Formulario
-
         private void btn_EliminarVuelo_Click(object sender, EventArgs e)
         {
             try
             {
                 if (dgv_Vuelos.Rows.Count <= 0) throw new Exception("No hay  vuelos para eliminar");
-                if(dgv_Vuelos.SelectedRows.Count <= 0) throw new Exception("Debe seleccionar un vuelo para eliminar.");
+                if (dgv_Vuelos.SelectedRows.Count <= 0) throw new Exception("Debe seleccionar un vuelo para eliminar.");
 
                 Vuelo vuelo = dgv_Vuelos.SelectedRows[0].DataBoundItem as Vuelo;
-                if(vuelo == null) throw new Exception("No se pudo obtener el vuelo seleccionado.");
+                if (vuelo == null) throw new Exception("No se pudo obtener el vuelo seleccionado.");
 
-                DialogResult confirmacion = MessageBox.Show($"¿Está seguro que desea eliminar el vuelo del {vuelo.Fecha.ToShortDateString()} con aeronave {vuelo.Aeronave}?","Confirmar eliminación",MessageBoxButtons.YesNo,MessageBoxIcon.Question);
+                DialogResult confirmacion = MessageBox.Show($"¿Está seguro que desea eliminar el vuelo del {vuelo.Fecha.ToShortDateString()} con aeronave {vuelo.Aeronave}?", "Confirmar eliminación", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
 
                 if (confirmacion != DialogResult.Yes) return;
 
@@ -386,5 +385,9 @@ namespace UI
                 MessageBox.Show(ex.Message);
             }
         }
+
+        #endregion Fin Botones Formulario
+
+
     }
 }

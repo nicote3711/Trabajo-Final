@@ -40,6 +40,7 @@ namespace UI
         {
             try
             {
+                ClienteModificado.Nombre = txtNombre.Text;
                 ClienteModificado.Apellido = txtApellido.Text;
                 ClienteModificado.CuitCuil = txtCuil.Text;
                 ClienteModificado.DNI = long.Parse(txtDni.Text);

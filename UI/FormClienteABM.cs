@@ -27,23 +27,55 @@ namespace UI
 
         private void CargarClientes()
         {
-            List<Cliente> Clientes;
-            Clientes = ClienteBLO.ObtenerClientes();
-            var activos = Clientes.Where(c => c.Activo).ToList();
-            dgvClientesAMB.DataSource = null;
-            dgvClientesAMB.DataSource = activos;
+            try
+            {
+                List<Cliente> LClientes = ClienteBLO.ObtenerClientes().Where(c => c.Activo).ToList();
+                if (LClientes.Count >= 0)
+                {
+                    dgvClientesAMB.DataSource = null;
+                    dgvClientesAMB.DataSource = LClientes;
+                }
+                else
+                {
+                    dgvClientesAMB.DataSource = null;
+
+                }
+            }
+            catch (Exception ex)
+            {
+
+                MessageBox.Show(ex.Message);
+            }        
+           
         }
 
+        private void LimpiarCampos()
+        {
+            txtDni.Text = string.Empty;
+            txtNombre.Text = string.Empty;
+            txtApellido.Text = string.Empty;
+            txtCuil.Text = string.Empty;
+            dtp_FechaNacimiento.Value = DateTime.Now;
+            txtTelefono.Text = string.Empty;
+            txtEmail.Text = string.Empty;
+            txtLicencia.Text = string.Empty;
+        }
         private void btn_AltaCliente_Click(object sender, EventArgs e)
         {
             try
             {
+                if(long.TryParse(txtDni.Text, out long dni) == false || dni <= 0) throw new Exception("El DNI debe ser un número válido y mayor a 0.");
+                if(string.IsNullOrWhiteSpace(txtNombre.Text)) throw new Exception("El nombre no puede estar vacío.");
+                if(string.IsNullOrWhiteSpace(txtApellido.Text)) throw new Exception("El apellido no puede estar vacío.");   
+                if(string.IsNullOrWhiteSpace(txtCuil.Text)) throw new Exception("El CUIL no puede estar vacío.");
+                
+
                 Cliente Cliente = new Cliente();
-                Cliente.DNI = long.Parse(txtDni.Text);
+                Cliente.DNI = dni;
                 Cliente.Nombre = txtNombre.Text;
                 Cliente.Apellido = txtApellido.Text;
                 Cliente.CuitCuil = txtCuil.Text;
-                Cliente.FechaNacimiento = DateTime.Parse(txtFechaNac.Text);
+                Cliente.FechaNacimiento = dtp_FechaNacimiento.Value;
                 Cliente.Telefono = txtTelefono.Text;
                 Cliente.Email = txtEmail.Text;
                 Cliente.Licencia = txtLicencia.Text;
@@ -57,11 +89,14 @@ namespace UI
                         ClienteBLO.AltaCliente(Cliente); // Actualizar los datos del cliente
                         ClienteBLO.ModifcarPersonaExistente(Cliente);
                         CargarClientes();
+                        LimpiarCampos();
                         MessageBox.Show("Cliente creado y actualizado datos correctamente.");
                         return;
                     }
                     else
                     {
+                        LimpiarCampos();
+                        
                         MessageBox.Show("Operación cancelada. No se realizaron cambios.");
                         return;
                     }
@@ -70,6 +105,7 @@ namespace UI
                 {
                     ClienteBLO.AltaCliente(Cliente);
                     CargarClientes();
+                    LimpiarCampos();
                     MessageBox.Show("Cliente creado correctamente.");
                 }
             
@@ -105,26 +141,13 @@ namespace UI
             {
                 if (dgvClientesAMB.Rows.Count <= 0) throw new Exception("No hay clientes para modificar");
                 if (dgvClientesAMB.SelectedRows.Count <= 0) throw new Exception("Debe seleccionar un cliente para modificar.");
-                Cliente clienteMod = new Cliente();
-                clienteMod.IDCliente = Convert.ToInt32(dgvClientesAMB.SelectedRows[0].Cells["IDCliente"].Value);
-                clienteMod.DNI = Convert.ToInt64(dgvClientesAMB.SelectedRows[0].Cells["DNI"].Value);
-                clienteMod.Nombre = dgvClientesAMB.SelectedRows[0].Cells["Nombre"].Value.ToString();
-                clienteMod.Apellido = dgvClientesAMB.SelectedRows[0].Cells["Apellido"].Value.ToString();
-                clienteMod.CuitCuil = dgvClientesAMB.SelectedRows[0].Cells["CuitCuil"].Value.ToString();
-                clienteMod.FechaNacimiento = DateTime.Parse(dgvClientesAMB.SelectedRows[0].Cells["FechaNacimiento"].Value.ToString());
-                clienteMod.Telefono = dgvClientesAMB.SelectedRows[0].Cells["Telefono"].Value.ToString();
-                clienteMod.Email = dgvClientesAMB.SelectedRows[0].Cells["Email"].Value.ToString();
-                clienteMod.Licencia = dgvClientesAMB.SelectedRows[0].Cells["Licencia"].Value.ToString();
-                clienteMod.Activo = Convert.ToBoolean(dgvClientesAMB.SelectedRows[0].Cells["Activo"].Value);
-                clienteMod.SaldoHorasSimulador = Convert.ToDecimal(dgvClientesAMB.SelectedRows[0].Cells["SaldoHorasSimulador"].Value);
-                clienteMod.SaldoHorasVuelo = Convert.ToDecimal(dgvClientesAMB.SelectedRows[0].Cells["SaldoHorasVuelo"].Value);
-                clienteMod.IDPersona = Convert.ToInt32(dgvClientesAMB.SelectedRows[0].Cells["IDPersona"].Value);
+                Cliente clienteMod = dgvClientesAMB.SelectedRows[0].DataBoundItem as Cliente;
+                if (clienteMod == null) throw new Exception("El cliente seleccionado es nulo."); 
 
                 FormClienteMod formModCliente = new FormClienteMod(clienteMod, this);
                 if (formModCliente.ShowDialog() == DialogResult.OK)
                 {
-                    ClienteBLO.ModificarCliente(clienteMod);
-                    CargarClientes();
+                    ClienteBLO.ModificarCliente(clienteMod);                    
                     MessageBox.Show("Cliente modificado correctamente.");
                 }
             }
@@ -132,6 +155,10 @@ namespace UI
             {
 
                 MessageBox.Show(ex.Message);
+            }
+            finally
+            {
+               CargarClientes();               
             }
         }
     }

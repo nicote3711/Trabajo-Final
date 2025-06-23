@@ -37,7 +37,7 @@ namespace DAL
                 }
                 else
                 {
-                    int proximoIDPersona = HelperD.ObtenerProximoID(personas, "IDPersona");
+                    int proximoIDPersona = HelperD.ObtenerProximoID(personas, "Id_Persona");
                     cliente.IDPersona = proximoIDPersona;
                     DataRow rowAltaPersona = personas.NewRow();
                     PersonaMap.MapearPersonaHaciaDB(cliente, rowAltaPersona);
@@ -45,7 +45,7 @@ namespace DAL
                 }
 
                     
-                int proximoIDCliente = HelperD.ObtenerProximoID(clientes, "IDCliente");
+                int proximoIDCliente = HelperD.ObtenerProximoID(clientes, "Id_Cliente");
                 cliente.IDCliente = proximoIDCliente;
                 DataRow rowAlataCLiente =  clientes.NewRow();
                 ClienteMap.MapearClienteHaciaDB(cliente, rowAlataCLiente);

@@ -40,7 +40,6 @@ namespace UI
         {
             List<Componente> permisos = usuarioLogueado.ObtenerPermisos();
 
-
             foreach (Componente permiso in permisos)
             {
                 HabilitarMenuItemPorNombre(permiso.NombreComponente, menuStrip1.Items);
@@ -110,7 +109,7 @@ namespace UI
         #endregion Termina Funciones Form   
 
 
-        #region Funciones de los items del menu
+        #region Botones de los items del menu
 
         private void RolesYPermisos_ToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -189,14 +188,20 @@ namespace UI
         }
 
 
+        private void clienteToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                FormClienteABM formClienteABM = new FormClienteABM();
+                formClienteABM.MdiParent = this;
+                formClienteABM.Show();
+            }
+            catch (Exception ex)
+            {
 
-
-
-
-
-        #endregion Termina Funciones de los items del menu
-
-
+                MessageBox.Show(ex.Message);
+            }
+        }
 
         private void registrarUsuariosToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -205,6 +210,80 @@ namespace UI
                 FormUsuarioABM formUsuarioABM = new FormUsuarioABM();
                 formUsuarioABM.MdiParent = this;
                 formUsuarioABM.Show();
+            }
+            catch (Exception ex)
+            {
+
+                MessageBox.Show(ex.Message);
+            }
+        }
+
+        private void registrarSimuladToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                FormRegistrarSimulador formRegistrarSimulador = new FormRegistrarSimulador();
+                formRegistrarSimulador.MdiParent = this;
+                formRegistrarSimulador.Show();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+
+        }
+
+
+
+        #endregion Termina Botones de los items del menu
+
+
+
+
+
+
+        private void dueñoToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void solicitarHorasToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                FormSolicitudHoras formSolicitarHoras = new FormSolicitudHoras();
+                formSolicitarHoras.MdiParent = this;
+                formSolicitarHoras.Show();
+            }
+            catch (Exception ex)
+            {
+
+                MessageBox.Show(ex.Message);
+            }
+        }
+
+        private void instuctorToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                FormInstructorABM formInstructorABM = new FormInstructorABM();
+                formInstructorABM.MdiParent = this;
+                formInstructorABM.Show();
+            }
+            catch (Exception ex)
+            {
+
+                MessageBox.Show(ex.Message);
+            }
+        }
+
+        private void liquidarDueñoToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                FormLiquidacionesDueño formLiquidacionesDueño = new FormLiquidacionesDueño();
+                formLiquidacionesDueño.MdiParent = this;
+                formLiquidacionesDueño.Show();  
             }
             catch (Exception ex)
             {

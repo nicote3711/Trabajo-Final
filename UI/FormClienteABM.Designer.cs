@@ -44,10 +44,10 @@
             label5 = new Label();
             txtEmail = new TextBox();
             label6 = new Label();
-            txtFechaNac = new TextBox();
             label7 = new Label();
             txtLicencia = new TextBox();
             Licencia = new Label();
+            dtp_FechaNacimiento = new DateTimePicker();
             ((System.ComponentModel.ISupportInitialize)dgvClientesAMB).BeginInit();
             SuspendLayout();
             // 
@@ -185,13 +185,6 @@
             label6.TabIndex = 14;
             label6.Text = "Email";
             // 
-            // txtFechaNac
-            // 
-            txtFechaNac.Location = new Point(131, 197);
-            txtFechaNac.Name = "txtFechaNac";
-            txtFechaNac.Size = new Size(125, 23);
-            txtFechaNac.TabIndex = 17;
-            // 
             // label7
             // 
             label7.AutoSize = true;
@@ -217,14 +210,22 @@
             Licencia.TabIndex = 18;
             Licencia.Text = "Licencia";
             // 
-            // FormAMBCliente
+            // dtp_FechaNacimiento
+            // 
+            dtp_FechaNacimiento.Format = DateTimePickerFormat.Short;
+            dtp_FechaNacimiento.Location = new Point(131, 199);
+            dtp_FechaNacimiento.Name = "dtp_FechaNacimiento";
+            dtp_FechaNacimiento.Size = new Size(125, 23);
+            dtp_FechaNacimiento.TabIndex = 20;
+            // 
+            // FormClienteABM
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(800, 450);
+            Controls.Add(dtp_FechaNacimiento);
             Controls.Add(txtLicencia);
             Controls.Add(Licencia);
-            Controls.Add(txtFechaNac);
             Controls.Add(label7);
             Controls.Add(txtEmail);
             Controls.Add(label6);
@@ -242,7 +243,7 @@
             Controls.Add(btn_ModCliente);
             Controls.Add(btn_AltaCliente);
             Controls.Add(dgvClientesAMB);
-            Name = "FormAMBCliente";
+            Name = "FormClienteABM";
             Text = "FormAMBCliente";
             Load += FormAMBCliente_Load;
             ((System.ComponentModel.ISupportInitialize)dgvClientesAMB).EndInit();
@@ -268,9 +269,9 @@
         private Label label5;
         private TextBox txtEmail;
         private Label label6;
-        private TextBox txtFechaNac;
         private Label label7;
         private TextBox txtLicencia;
         private Label Licencia;
+        private DateTimePicker dtp_FechaNacimiento;
     }
 }

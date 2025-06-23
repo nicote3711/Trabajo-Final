@@ -37,7 +37,7 @@ namespace BLL
                     vuelo.Aeronave = AeronaveBLO.ObtenerAeronavePorId(vuelo.Aeronave.IdAeronave);
                     vuelo.Finalidad = FinalidadBLO.ObtenerPorId(vuelo.Finalidad.IdFinalidad);
 
-                 /*   if (vuelo == null) throw new ArgumentNullException(nameof(vuelo), "El vuelo no puede ser nulo.");
+                 /*  if (vuelo == null) throw new ArgumentNullException(nameof(vuelo), "El vuelo no puede ser nulo.");
                     if (vuelo.Cliente == null) throw new ArgumentNullException(nameof(vuelo.Cliente), "El cliente del vuelo no puede ser nulo.");
                     if (vuelo.Aeronave == null) throw new ArgumentNullException(nameof(vuelo.Aeronave), "La aeronave del vuelo no puede ser nula.");
                     if (vuelo.Finalidad == null) throw new ArgumentNullException(nameof(vuelo.Finalidad), "La finalidad del vuelo no puede ser nula.");
@@ -70,7 +70,15 @@ namespace BLL
                 if (vuelo.Cliente.SaldoHorasVuelo<=-10 || vuelo.Cliente.SaldoHorasSimulador<=-10 ) throw new Exception("El cliente debe mas de 10 horas y debe cancelar la deuda primero.");
                 if(vuelo.HubInicial >= vuelo.HubFinal) throw new Exception("El Hub inicial debe ser menor que el Hub final.");
 
-                vuelo.Liquidado= false; // Por defecto, un vuelo recién registrado no está liquidado                
+              
+                if(vuelo.Instructor==null && vuelo.Aeronave.Dueno==null)
+                {
+                    vuelo.Liquidado = true; // Si no hay instructor ni dueño, se marca como liquidado
+                }
+                else
+                {
+                    vuelo.Liquidado = false; // Si hay instructor o dueño, no se marca como liquidado
+                }
                 if (vuelo == null) throw new ArgumentNullException(nameof(vuelo));
                 VueloDAO.RegistrarVuelo(vuelo);
                 ClienteBLO.DescontarSaldoVuelo(vuelo.Cliente.IDCliente, vuelo.TV);
@@ -130,6 +138,25 @@ namespace BLL
             {
                 helperTransaccion.RollbackDfParaTransaccion(dsTransaccion);
                 throw new Exception("BLL Error al eliminar vuelo."+ ex.Message,ex);
+            }
+        }
+
+        //TODO: Implementar BuscarVueloPorId en BLL vuelo para devolverlo full mappear si es necesario.
+
+        public void LiquidarVuelo(Vuelo vuelo)
+        {
+            try
+            {
+                if (vuelo.IdVuelo== null || vuelo.IdVuelo <= 0) throw new ArgumentNullException(nameof(vuelo.IdVuelo), "El ID del vuelo no puede ser nulo o menor o igual a cero.");
+                Vuelo vueloAux = VueloDAO.BuscarVueloPorId(vuelo.IdVuelo);
+                if(vueloAux == null) throw new Exception("El vuelo no existe o no se encuentra en la base de datos.");
+                
+                VueloDAO.LiquidarVuelo(vuelo.IdVuelo); // Actualiza el vuelo en la base de datos como liquidado
+            }
+            catch (Exception ex)
+            {
+
+                throw new Exception("BLL Vuelo error al liquidar vuelo: "+ex.Message,ex);
             }
         }
     }

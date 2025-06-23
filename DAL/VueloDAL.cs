@@ -158,7 +158,7 @@ namespace DAL
                 if (tabla == null) throw new Exception("No se encontró la tabla Vuelo en el archivo XML."); 
 
                 DataRow row = tabla.AsEnumerable().FirstOrDefault(r => Convert.ToInt32(r["Id_Vuelo"]) == vuelo.IdVuelo);
-               if (row == null) throw new Exception("Vuelo no encontrado.");
+                if (row == null) throw new Exception("Vuelo no encontrado.");
 
                 tabla.Rows.Remove(row);
                 ds.WriteXml(archivoXml, XmlWriteMode.WriteSchema);
@@ -167,6 +167,58 @@ namespace DAL
             {
 
                 throw new Exception("DAL Error al eliminarVuelo" + ex.Message, ex);
+            }
+        }
+
+        public Vuelo BuscarVueloPorId(int idVuelo)
+        {
+            try
+            {
+                if (!File.Exists(archivoXml)) throw new FileNotFoundException("No se encontró el archivo XML.");
+                DataSet ds = new DataSet();
+                ds.ReadXml(archivoXml, XmlReadMode.ReadSchema);
+
+                DataTable tabla = ds.Tables["Vuelo"];
+                if (tabla == null) throw new Exception("No se encontró la tabla Vuelo en el archivo XML.");
+
+                DataRow row = tabla.AsEnumerable().FirstOrDefault(r => Convert.ToInt32(r["Id_Vuelo"]) == idVuelo);
+                if (row == null) throw new Exception("Vuelo no encontrado.");
+
+                Vuelo vuelo = new Vuelo();
+                VueloMAP.MapearDesdeDB(vuelo, row); 
+                return vuelo;
+
+            }
+            catch (Exception ex)
+            {
+
+                throw new Exception("DAL Vuelo error al buscar vuelo por id: "+ex.Message,ex);
+            }
+        }
+
+        public void LiquidarVuelo(int idVuelo)
+        {
+            try
+            {
+                if (!File.Exists(archivoXml)) throw new FileNotFoundException("No se encontró el archivo XML.");
+                DataSet ds = new DataSet();
+                ds.ReadXml(archivoXml, XmlReadMode.ReadSchema);
+
+                DataTable tabla = ds.Tables["Vuelo"];
+                if (tabla == null) throw new Exception("No se encontró la tabla Vuelo en el archivo XML.");
+
+                DataRow row = tabla.AsEnumerable().FirstOrDefault(r => Convert.ToInt32(r["Id_Vuelo"]) == idVuelo);
+                if (row == null) throw new Exception("Vuelo no encontrado.");
+
+                row["Liquidado"]= true; // Marcar el vuelo como liquidado
+
+                ds.WriteXml(archivoXml, XmlWriteMode.WriteSchema);
+
+            }
+            catch (Exception ex)
+            {
+
+                throw new Exception("DAL Vuelo error al liquidar vuelo: " + ex.Message,ex);
             }
         }
     }

@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace ENTITY
 {
-    public class TipoFactura
+    public  class TipoFactura
     {
-        public int IdTipoFactura { get; set; }
-        public string Descripcion { get; set; } // Ej: "Factura Instructor, Factura Dueño, Factura Mantenimiento, Factura Solicitud Horas, Factura Recarga Combustible"
+        public  int IdTipoFactura { get; set; }
+        public  string Descripcion { get; set; } // Ej: "Factura Instructor, Factura Dueño, Factura Mantenimiento, Factura Solicitud Horas, Factura Recarga Combustible"
     }
 }

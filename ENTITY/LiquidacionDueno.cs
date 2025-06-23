@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Helper;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,8 +10,13 @@ namespace ENTITY
     public class LiquidacionDueno : LiquidacionServicio
     {
 
+        public LiquidacionDueno()
+        {
+            Servicio = new Servicio();
+            Servicio.IdServicio = (int)EnumServicios.Dueño;
+            Vuelos = new List<Vuelo>(); 
+        }
         public List<Vuelo> Vuelos { get; set; }
-
 
         public override List<string> ObtenerDetalle()
         {

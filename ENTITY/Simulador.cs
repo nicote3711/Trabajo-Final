@@ -15,6 +15,9 @@ namespace ENTITY
         public decimal TS => CalculateTs();
         public Instructor Instructor { get; set; } // no puede ser null
         public Cliente Cliente { get; set; }
+        public Finalidad Finalidad { get; set; }
+
+        public int? IdLiquidacion { get; set; } // FK opcional, se completa al liquidar el simulador, puede ser null si no está liquidado
         public LiquidacionServicio? Liquidacion { get; set; } // FK a la Liquidación que lo contiene
 
 
@@ -22,8 +25,8 @@ namespace ENTITY
         private decimal CalculateTs()
         {
             // Calcular la diferencia de tiempo considerando la posibilidad de cambio de día
-            var horaCorteTimeSpan = HoraInicio.ToTimeSpan();
-            var horaPmTimeSpan = HoraFin.ToTimeSpan();
+            var horaCorteTimeSpan = HoraFin.ToTimeSpan();
+            var horaPmTimeSpan = HoraInicio.ToTimeSpan();
             var diferenciaMinutos = (horaCorteTimeSpan - horaPmTimeSpan).TotalMinutes;
 
             if (diferenciaMinutos < 0) // Si la hora de corte es el día siguiente

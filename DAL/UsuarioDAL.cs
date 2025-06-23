@@ -91,10 +91,10 @@ namespace DAL
                
                 return usuario;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
 
-                throw;
+                throw new Exception("DAL USuario error al buscar usuario por nombre: "+ ex.Message,ex);
             }
 
         }

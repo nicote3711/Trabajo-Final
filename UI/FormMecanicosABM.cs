@@ -108,6 +108,10 @@ namespace UI
                         MostrarTiposMantenimiento(mecanicoSeleccionado);
                     }
                 }
+                else
+                {
+                    dgv_MecanicosABM.DataSource = null; // Limpia el DataGridView si no hay selección
+                }
             }
             catch (Exception ex)
             {

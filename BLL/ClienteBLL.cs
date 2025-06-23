@@ -26,10 +26,10 @@ namespace BLL
                 cliente.Activo = true;
                 clienteDAO.AltaCliente(cliente);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
 
-                throw;
+                throw new Exception("BLL Cliente error al dar alta cliente: "+ex.Message,ex);
             }
         }
 
@@ -43,10 +43,10 @@ namespace BLL
 
 
             }
-            catch (Exception)
+            catch (Exception ex)
             {
 
-                throw;
+                throw new Exception("BLL Cliente error al dar baja de cliente: " +ex.Message,ex);
             }
         }
 
@@ -56,28 +56,43 @@ namespace BLL
             {
                 return clienteDAO.BuscarPersonaPorDNI(dNI);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
 
-                throw;
+                throw new Exception("BLL cliente error al Buscar Persona por Dni: " +ex.Message,ex);
             }
         }
 
         public void ModifcarPersonaExistente(Cliente cliente)
         {
-            throw new NotImplementedException();
+            try
+            {
+                clienteDAO.ModificarPersonaExistente(cliente);
+            }
+            catch (Exception ex)
+            {
+
+                throw new Exception("BLL cliente error al Modificar Persona existente: " + ex.Message,ex);
+            }
         }
 
         public void ModificarCliente(Cliente clienteMod)
         {
             try
             {
+                if (clienteMod == null) throw new ArgumentNullException(nameof(clienteMod), "El cliente no puede ser nulo.");
+                Cliente cliente = clienteDAO.BuscarPersonaPorDNI(clienteMod.DNI);
+                if (cliente != null && clienteMod.IDPersona != cliente.IDPersona) throw new Exception("Ya existe una persona  con ese DNI ya existe.");
+                if (string.IsNullOrWhiteSpace(clienteMod.Nombre)) throw new ArgumentException("El nombre del cliente no puede estar vacío.", nameof(clienteMod.Nombre));
+                if (string.IsNullOrWhiteSpace(clienteMod.Apellido)) throw new ArgumentException("El apellido del cliente no puede estar vacío.", nameof(clienteMod.Apellido));
+                if (clienteMod.DNI <= 0) throw new ArgumentException("El DNI del cliente debe ser un número positivo.", nameof(clienteMod.DNI));
+                if (string.IsNullOrWhiteSpace(clienteMod.CuitCuil)) throw new ArgumentException("El CUIT/CUIL del cliente no puede estar vacío.", nameof(clienteMod.CuitCuil));
                 clienteDAO.ModificarCliente(clienteMod);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
 
-                throw;
+                throw new Exception("BLL cliente error al modificar cliente: "+ ex.Message,ex);
             }
         }
 
@@ -123,7 +138,9 @@ namespace BLL
         {
             try
             {
-               return clienteDAO.BuscarClientePorID(iDCliente);
+                if(iDCliente <= 0|| iDCliente ==null) throw new ArgumentException("El ID del cliente debe ser un número positivo o no nulo.", nameof(iDCliente));
+
+                return clienteDAO.BuscarClientePorID(iDCliente);
              
             }
             catch (Exception ex)
@@ -131,6 +148,38 @@ namespace BLL
                 throw new Exception("BLL Cliente Error al buscar cliente por ID" + ex.Message, ex);
             }
                        
+        }
+
+        internal void DescontarHorasSimulador(int iDCliente, decimal tS)
+        {
+            try
+            {
+                Cliente cliente = clienteDAO.BuscarClientePorID(iDCliente);
+                if (cliente == null) throw new Exception("El cliente no existe.");
+                cliente.SaldoHorasSimulador -= tS;
+                clienteDAO.ModificarCliente(cliente);
+            }
+            catch (Exception ex)
+            {
+
+                throw new Exception("BLL Cliente error al descontar horas simulador: " + ex.Message,ex);
+            }
+        }
+
+        internal void AcreditarSaldoSimulador(int iDCliente, decimal tS)
+        {
+            try
+            {
+                Cliente cliente = clienteDAO.BuscarClientePorID(iDCliente);
+                if (cliente == null) throw new Exception("El cliente no existe.");
+                cliente.SaldoHorasSimulador += tS;
+                clienteDAO.ModificarCliente(cliente);
+            }
+            catch (Exception ex)
+            {
+
+                throw new Exception ("BLL Cliente error al acreditar horas simulador"+ex.Message,ex);
+            }
         }
     }
 }
