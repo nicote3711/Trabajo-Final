@@ -27,7 +27,6 @@ namespace UI
         {
             CargarTiposMantenimiento();
             CargarMecanicos();
-
         }
 
 
@@ -35,18 +34,17 @@ namespace UI
         {
             try
             {
+                List<Mecanico> LMecanicos = MecanicoBLO.ObtenerMecanicos();
                 dgv_MecanicosABM.DataSource = null;
-                List<Mecanico> mecanicos = MecanicoBLO.ObtenerMecanicos();
+                
                 if (checkBox_VerInactivos.Checked)
                 {
-                    // Si se selecciona la casilla, mostramos todos los mecánicos, activos e inactivos
-                    dgv_MecanicosABM.DataSource = mecanicos;
+                    LMecanicos = LMecanicos.Where(m => m.Activo).ToList();
                 }
-                else
+                if(LMecanicos!=null && LMecanicos.Count > 0)
                 {
-                    // Si no se selecciona, filtramos solo los activos
-                    List<Mecanico> mecanicosActivos = mecanicos.Where(m => m.Activo).ToList();
-                    dgv_MecanicosABM.DataSource = mecanicosActivos;
+                      
+                    dgv_MecanicosABM.DataSource = LMecanicos;
                 }
             }
             catch (Exception ex)

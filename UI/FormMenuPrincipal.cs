@@ -8,6 +8,7 @@ using System.Data;
 using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
+using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -283,7 +284,54 @@ namespace UI
             {
                 FormLiquidacionesDueño formLiquidacionesDueño = new FormLiquidacionesDueño();
                 formLiquidacionesDueño.MdiParent = this;
-                formLiquidacionesDueño.Show();  
+                formLiquidacionesDueño.Show();
+            }
+            catch (Exception ex)
+            {
+
+                MessageBox.Show(ex.Message);
+            }
+        }
+
+        private void dueñoToolStripMenuItem_Click_1(object sender, EventArgs e)
+        {
+            try
+            {
+                FormDuenoABM formDuenoABM = new FormDuenoABM();
+                formDuenoABM.MdiParent = this;
+                formDuenoABM.Show();
+
+            }
+            catch (Exception ex)
+            {
+
+                MessageBox.Show(ex.Message);
+            }
+        }
+
+        private void mecanicoToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            try
+            {
+               FormMecanicosABM formMecanicosABM = new FormMecanicosABM();
+                formMecanicosABM.MdiParent = this; 
+                formMecanicosABM.Show();
+            }
+            catch (Exception ex)
+            {
+
+                MessageBox.Show(ex.Message);
+            }
+        }
+
+        private void aeronaveToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                FormAeronaveABM formAeronaveABM = new FormAeronaveABM();
+                formAeronaveABM.MdiParent = this;   
+                formAeronaveABM.Show(); 
+
             }
             catch (Exception ex)
             {

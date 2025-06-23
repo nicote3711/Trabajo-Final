@@ -29,7 +29,6 @@
         private void InitializeComponent()
         {
             label6 = new Label();
-            txt_FechaNac = new TextBox();
             txt_Dni = new TextBox();
             label2 = new Label();
             txt_Cuil = new TextBox();
@@ -46,6 +45,8 @@
             btn_BajaDueno = new Button();
             btn_ModDueno = new Button();
             dgv_DuenoAMB = new DataGridView();
+            checkBox_VerInactivos = new CheckBox();
+            dtp_FechaNacimiento = new DateTimePicker();
             ((System.ComponentModel.ISupportInitialize)dgv_DuenoAMB).BeginInit();
             SuspendLayout();
             // 
@@ -57,13 +58,6 @@
             label6.Size = new Size(36, 15);
             label6.TabIndex = 48;
             label6.Text = "Email";
-            // 
-            // txt_FechaNac
-            // 
-            txt_FechaNac.Location = new Point(138, 184);
-            txt_FechaNac.Name = "txt_FechaNac";
-            txt_FechaNac.Size = new Size(125, 23);
-            txt_FechaNac.TabIndex = 51;
             // 
             // txt_Dni
             // 
@@ -199,16 +193,36 @@
             dgv_DuenoAMB.Size = new Size(755, 157);
             dgv_DuenoAMB.TabIndex = 53;
             // 
+            // checkBox_VerInactivos
+            // 
+            checkBox_VerInactivos.AutoSize = true;
+            checkBox_VerInactivos.Location = new Point(1003, 230);
+            checkBox_VerInactivos.Name = "checkBox_VerInactivos";
+            checkBox_VerInactivos.Size = new Size(92, 19);
+            checkBox_VerInactivos.TabIndex = 64;
+            checkBox_VerInactivos.Text = "Ver Inactivos";
+            checkBox_VerInactivos.UseVisualStyleBackColor = true;
+            checkBox_VerInactivos.CheckedChanged += checkBox_VerInactivos_CheckedChanged;
+            // 
+            // dtp_FechaNacimiento
+            // 
+            dtp_FechaNacimiento.Format = DateTimePickerFormat.Short;
+            dtp_FechaNacimiento.Location = new Point(140, 186);
+            dtp_FechaNacimiento.Name = "dtp_FechaNacimiento";
+            dtp_FechaNacimiento.Size = new Size(123, 23);
+            dtp_FechaNacimiento.TabIndex = 65;
+            // 
             // FormDuenoABM
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1254, 371);
+            Controls.Add(dtp_FechaNacimiento);
+            Controls.Add(checkBox_VerInactivos);
             Controls.Add(btn_BajaDueno);
             Controls.Add(btn_ModDueno);
             Controls.Add(dgv_DuenoAMB);
             Controls.Add(btn_AltaDueno);
-            Controls.Add(txt_FechaNac);
             Controls.Add(label7);
             Controls.Add(txt_Email);
             Controls.Add(label6);
@@ -232,7 +246,6 @@
         #endregion
 
         private Label label6;
-        private TextBox txt_FechaNac;
         private TextBox txt_Dni;
         private Label label2;
         private TextBox txt_Cuil;
@@ -249,5 +262,7 @@
         private Button btn_BajaDueno;
         private Button btn_ModDueno;
         private DataGridView dgv_DuenoAMB;
+        private CheckBox checkBox_VerInactivos;
+        private DateTimePicker dtp_FechaNacimiento;
     }
 }

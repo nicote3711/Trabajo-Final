@@ -14,20 +14,30 @@ namespace UI
 {
     public partial class FormDuenoABM : Form
     {
-       public DuenoBLL DuenoBLO = new DuenoBLL();
+        public DuenoBLL DuenoBLO = new DuenoBLL();
         public FormDuenoABM()
         {
             InitializeComponent();
-            CargarDuenos();
+            CargarDgvDuenos();
         }
 
-        private void CargarDuenos()
+        private void CargarDgvDuenos()
         {
-            List<Dueno> Duenos;
-            Duenos = DuenoBLO.ObtenerDuenos();
-            var activos = Duenos.Where(d => d.Activo).ToList();
-            dgv_DuenoAMB.DataSource = null; 
-            dgv_DuenoAMB.DataSource = activos;
+
+            List<Dueno> LDuenos = DuenoBLO.ObtenerDuenos();
+            if(checkBox_VerInactivos.Checked )
+            {
+                LDuenos = LDuenos.Where(d => d.Activo).ToList();
+            }
+            if(LDuenos != null && LDuenos.Count > 0)
+            {
+                dgv_DuenoAMB.DataSource = null;
+                dgv_DuenoAMB.DataSource = LDuenos;
+
+            }
+           
+            dgv_DuenoAMB.DataSource = null;
+           
         }
 
         private void btn_AltaDueno_Click(object sender, EventArgs e)
@@ -39,7 +49,7 @@ namespace UI
                 duenoAlta.Nombre = txt_Nombre.Text;
                 duenoAlta.Apellido = txt_Apellido.Text;
                 duenoAlta.CuitCuil = txt_Cuil.Text;
-                duenoAlta.FechaNacimiento = DateTime.Parse(txt_FechaNac.Text);
+                duenoAlta.FechaNacimiento =dtp_FechaNacimiento.Value;
                 duenoAlta.Telefono = txt_Telefono.Text;
                 duenoAlta.Email = txt_Email.Text;
                 duenoAlta.Activo = true; // Por defecto, al dar de alta, el dueño está activo
@@ -52,14 +62,14 @@ namespace UI
                     {
                         DuenoBLO.AltaDueno(duenoAlta); // Actualizar los datos del dueño
                         DuenoBLO.ModificarPersonaExistente(duenoAlta);
-                        CargarDuenos();
+                        CargarDgvDuenos();
                         MessageBox.Show("Dueño creado y actualizado datos correctamente.");
                         return;
                     }
                     else
                     {
                         DuenoBLO.AltaDueno(duenoAlta);
-                        CargarDuenos();
+                        CargarDgvDuenos();
                         MessageBox.Show("Dueño creado correctamente.");
                         return;
                     }
@@ -67,7 +77,7 @@ namespace UI
                 else
                 {
                     DuenoBLO.AltaDueno(duenoAlta);
-                    CargarDuenos();
+                    CargarDgvDuenos();
                     MessageBox.Show("Dueño creado correctamente.");
                 }
             }
@@ -82,25 +92,17 @@ namespace UI
         {
             try
             {
-                if(dgv_DuenoAMB.SelectedRows.Count == 0) throw new Exception("Debe seleccionar un dueño para modificar.");
-                if(dgv_DuenoAMB.Rows.Count <= 0) throw new Exception("No hay dueños para modificar.");
+                if (dgv_DuenoAMB.SelectedRows.Count == 0) throw new Exception("Debe seleccionar un dueño para modificar.");
+                if (dgv_DuenoAMB.Rows.Count <= 0) throw new Exception("No hay dueños para modificar.");
                 Dueno duenoMod = new Dueno();
-                duenoMod.IdDueno = int.Parse(dgv_DuenoAMB.SelectedRows[0].Cells["IdDueno"].Value.ToString());
-                duenoMod.IDPersona = int.Parse(dgv_DuenoAMB.SelectedRows[0].Cells["IdPersona"].Value.ToString());
-                duenoMod.DNI = long.Parse(dgv_DuenoAMB.SelectedRows[0].Cells["DNI"].Value.ToString());
-                duenoMod.Nombre = dgv_DuenoAMB.SelectedRows[0].Cells["Nombre"].Value.ToString();
-                duenoMod.Apellido = dgv_DuenoAMB.SelectedRows[0].Cells["Apellido"].Value.ToString();
-                duenoMod.CuitCuil = dgv_DuenoAMB.SelectedRows[0].Cells["CuitCuil"].Value.ToString();
-                duenoMod.FechaNacimiento = DateTime.Parse(dgv_DuenoAMB.SelectedRows[0].Cells["FechaNacimiento"].Value.ToString());
-                duenoMod.Telefono = dgv_DuenoAMB.SelectedRows[0].Cells["Telefono"].Value.ToString();
-                duenoMod.Email = dgv_DuenoAMB.SelectedRows[0].Cells["Email"].Value.ToString();
-                duenoMod.Activo = Convert.ToBoolean(dgv_DuenoAMB.SelectedRows[0].Cells["Activo"].Value);
-
+                duenoMod = dgv_DuenoAMB.SelectedRows[0].DataBoundItem as Dueno;
+                if (dgv_DuenoAMB == null) throw new Exception("Error al obtener Dueño de grilla");
+           
                 FormDuenoMod formModDueno = new FormDuenoMod(duenoMod, this);
-                if(formModDueno.ShowDialog()== DialogResult.OK)
+                if (formModDueno.ShowDialog() == DialogResult.OK)
                 {
                     DuenoBLO.ModificarDueno(duenoMod);
-                    CargarDuenos();
+                    CargarDgvDuenos();
                     MessageBox.Show("Dueño modificado correctamente.");
                 }
             }
@@ -115,12 +117,25 @@ namespace UI
         {
             try
             {
-                if(dgv_DuenoAMB.Rows.Count <= 0) throw new Exception("No hay dueños para dar de baja.");    
+                if (dgv_DuenoAMB.Rows.Count <= 0) throw new Exception("No hay dueños para dar de baja.");
                 if (dgv_DuenoAMB.SelectedRows.Count == 0) throw new Exception("Debe seleccionar un dueño para dar de baja.");
-                int idDuenoBaja = int.Parse(dgv_DuenoAMB.SelectedRows[0].Cells["IdDueno"].Value.ToString());   
+                int idDuenoBaja = int.Parse(dgv_DuenoAMB.SelectedRows[0].Cells["IdDueno"].Value.ToString());
                 DuenoBLO.BajaDueno(idDuenoBaja);
-                CargarDuenos();
+                CargarDgvDuenos();
                 MessageBox.Show("Dueño dado de baja correctamente.");
+            }
+            catch (Exception ex)
+            {
+
+                MessageBox.Show(ex.Message);
+            }
+        }
+
+        private void checkBox_VerInactivos_CheckedChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                CargarDgvDuenos();
             }
             catch (Exception ex)
             {
