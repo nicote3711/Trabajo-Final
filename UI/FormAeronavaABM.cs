@@ -1,4 +1,6 @@
 ﻿using ENTITY;
+using ENTITY.Enum;
+using Helper;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -40,7 +42,7 @@ namespace UI
                 }
                 else
                 {
-                    List<Aeronave> aeronavesActivas = Laeronaves.Where(a => a.Estado.Descripcion == "Activo").ToList();
+                    List<Aeronave> aeronavesActivas = Laeronaves.Where(a => a.Estado.IdEstadoAeronave.Equals((int)EnumEstadoEaronave.Activo)).ToList();
                     dgv_Aeronave.DataSource = aeronavesActivas;
                 }
             }

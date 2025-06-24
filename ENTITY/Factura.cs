@@ -21,7 +21,10 @@ namespace ENTITY
         public TransaccionFinanciera? Transaccion { get; set; } // null hasta que se registre
        
         
+        public abstract Persona DatosCliente();
+        public abstract Persona DatosEmisor();
 
-       
+        public abstract FacturaDetalle FacturaDetalles();
+
     }
 }

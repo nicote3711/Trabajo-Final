@@ -1,5 +1,6 @@
 ﻿using DAL;
 using ENTITY;
+using ENTITY.Enum;
 using Helper;
 using System;
 using System.Collections.Generic;
@@ -45,6 +46,8 @@ namespace BLL
         {
             HelperTransaccion helperTransaccion = new HelperTransaccion();
             DataSet ds = helperTransaccion.DfParaTransaccion();
+
+            
             try
             {
                 if (factura == null) throw new ArgumentNullException(nameof(factura), "La factura no puede ser nula.");
@@ -62,6 +65,11 @@ namespace BLL
                 factura.Solicitud.Factura = new FacturaSolicitudHoras() { IdFactura = factura.IdFactura }; // Crear una nueva instancia de FacturaSolicitudHoras para la solicitud
                 factura.Solicitud.Factura.IdFactura = factura.IdFactura; // Asignar el ID de la factura a la solicitud; este paso cao sea necesario si la solicitud ya tiene el ID de la factura asignado.
                 SolicitudHorasBLO.AltaSolicitudHoras(factura.Solicitud); // Registrar la solicitud de horas asociada a la factura
+
+                
+                Result result = HelperFacturas.GenerarFacturaPDF(factura);
+                if (!result.Success)
+                throw new Exception(result.Message);
 
             }
             catch (Exception ex)

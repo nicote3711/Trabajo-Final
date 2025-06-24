@@ -4,12 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Helper
+namespace ENTITY
 {
-    public enum EnumEstadoMantenimiento
+    public class Empresa:Persona
     {
-        Pendiente =1,
-        EnMantenimiento =2,
-        Finalizado =3,
+        
     }
 }

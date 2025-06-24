@@ -6,13 +6,9 @@ using System.Threading.Tasks;
 
 namespace Helper
 {
-    public enum EnumEstadoEaronave
+    public class Result
     {
-        Activo =1,
-        PendienteMantenimiento =2,
-        Mantenimiento =3,
-        Inactivo =4,
-
-
+        public bool Success { get; set; }
+        public string Message { get; set; }
     }
 }

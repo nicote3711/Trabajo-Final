@@ -120,6 +120,7 @@ namespace UI
         {
             try
             {
+
                 SolicitudHoras solicitudHoras = new SolicitudHoras();
 
                 if (!decimal.TryParse(txt_CantHoraVuelo.Text, out decimal cantidadHorasVuelo)) throw new ArgumentException("La cantidad de horas de vuelo debe ser un número válido.");

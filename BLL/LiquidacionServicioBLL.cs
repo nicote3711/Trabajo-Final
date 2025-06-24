@@ -1,4 +1,5 @@
 ﻿using ENTITY;
+using ENTITY.Enum;
 using Helper;
 using System;
 using System.Collections.Generic;

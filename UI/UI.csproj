@@ -9,6 +9,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Facturas\Factura Solicitud Horas\**" />
+    <EmbeddedResource Remove="Facturas\Factura Solicitud Horas\**" />
+    <None Remove="Facturas\Factura Solicitud Horas\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\BLL\BLL.csproj" />
     <ProjectReference Include="..\ENTITY\ENTITY.csproj" />
     <ProjectReference Include="..\SessionManager\Seguridad.csproj" />
@@ -39,6 +45,15 @@
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Facturas\FacturaSolicitudHoras\" />
+    <Folder Include="Facturas\FacturaDueño\" />
+    <Folder Include="Facturas\FacturaMantenimiento\" />
+    <Folder Include="Facturas\FacturaInstructor\" />
+    <Folder Include="Facturas\FacturaRecargaCombustible\" />
+    <Folder Include="Imagenes\" />
   </ItemGroup>
 
 </Project>

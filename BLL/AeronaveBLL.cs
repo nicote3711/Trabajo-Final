@@ -1,5 +1,7 @@
 ﻿using DAL;
 using ENTITY;
+using ENTITY.Enum;
+using Helper;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,6 +15,12 @@ namespace BLL
         private readonly AeronaveDAL AeronaveDAO = new AeronaveDAL();
         private readonly EstadoAeronaveBLL EstadoBLO = new EstadoAeronaveBLL();
         private readonly DuenoBLL DuenoBLL = new DuenoBLL();
+        private List<EstadoAeronave> EstadosAeronave;
+
+        public AeronaveBLL() 
+        {
+            if (EstadosAeronave == null) EstadosAeronave = EstadoBLO.ObtenerTodos();
+        }
 
         public void AltaAeronave(Aeronave aeronave)
         {
@@ -21,7 +29,8 @@ namespace BLL
             {
                 if (aeronave == null) throw new ArgumentNullException(nameof(aeronave));
                 if (string.IsNullOrWhiteSpace(aeronave.Matricula)) throw new ArgumentException("La matrícula es obligatoria.");
-                aeronave.Estado = EstadoBLO.BuscarPorDescripcion("Activo");
+                aeronave.Estado = EstadosAeronave.FirstOrDefault(n => n.IdEstadoAeronave.Equals((int)EnumEstadoEaronave.Activo));
+               
                 Aeronave aeexistente = AeronaveDAO.BuscarAeronavePorMatricula(aeronave.Matricula);
 
                 AeronaveDAO.AltaAeronave(aeronave);
