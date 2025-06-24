@@ -314,9 +314,9 @@ namespace UI
             try
             {
                FormMecanicosABM formMecanicosABM = new FormMecanicosABM();
-                formMecanicosABM.ShowDialog();
-              //  formMecanicosABM.MdiParent = this; 
-              //  formMecanicosABM.Show();
+               formMecanicosABM.ShowDialog();
+             //  formMecanicosABM.MdiParent = this; 
+             // formMecanicosABM.Show();
             }
             catch (Exception ex)
             {

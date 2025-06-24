@@ -27,6 +27,7 @@ namespace UI
 
         private void CargarGrillaLiquidacionesDueno()
         {
+            dgv_LiquidacionesDueño.DataSource = null;
             if (cmBox_Dueños.SelectedIndex != -1)
             {
                 Dueno dueno = cmBox_Dueños.SelectedItem as Dueno;
@@ -36,14 +37,16 @@ namespace UI
                     if (ListaLiquidacionesDuenos != null && ListaLiquidacionesDuenos.Count > 0)
                     {
                         dgv_LiquidacionesDueño.DataSource = ListaLiquidacionesDuenos;
-                       // dgv_LiquidacionesDueño.Columns["IdLiquidacionServicio"].Visible = false; // Ocultar columna de ID si no es necesaria
-                       // dgv_LiquidacionesDueño.Columns["IdPersona"].Visible = false; // Ocultar columna de ID de persona si no es necesaria
+                        // dgv_LiquidacionesDueño.Columns["IdLiquidacionServicio"].Visible = false; // Ocultar columna de ID si no es necesaria
+                        // dgv_LiquidacionesDueño.Columns["IdPersona"].Visible = false; // Ocultar columna de ID de persona si no es necesaria
                     }
+                    else
+                    {
+                        dgv_LiquidacionesDueño.DataSource = null; // Limpiar grilla si no hay datos
+                    }
+
                 }
-                else
-                {
-                    dgv_LiquidacionesDueño.DataSource = null; // Limpiar grilla si no hay datos
-                }
+                
             }
         }
 
@@ -58,9 +61,9 @@ namespace UI
                     cmBox_Dueños.DataSource = Lduenos;
                     cmBox_Dueños.DisplayMember = "Identificar";
                     cmBox_Dueños.ValueMember = "IdDueno";
-                    //  cmBox_Dueños.SelectedIndex = -1;
-                    //  cmBox_Dueños.Text = "Seleccione un dueño";
-                    // no funciona ya se ve seleccionado el primer dueño por defecto
+                    cmBox_Dueños.SelectedIndex = -1;
+                    cmBox_Dueños.Text = "Seleccione un dueño";
+                    
                 }
 
             }

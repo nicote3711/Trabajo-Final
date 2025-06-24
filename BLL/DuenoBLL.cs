@@ -1,5 +1,6 @@
 ﻿using DAL;
 using ENTITY;
+using MAPPER;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,9 +19,9 @@ namespace BLL
             {
                 return duenoDAO.BuscarPersonaPorDNI(dni);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                throw;
+                throw new Exception("BLL Dueño error al buscar persona por DNI: " + ex.Message, ex);
             }
         }
 
@@ -38,9 +39,9 @@ namespace BLL
 
                 duenoDAO.AltaDueno(dueno);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                throw;
+                throw new Exception("BLL Dueño error al dar alta Dueño: " + ex.Message, ex);
             }
         }
 
@@ -52,31 +53,41 @@ namespace BLL
             }
             catch (Exception ex)
             {
-                throw new Exception("Error al obtener los dueños.", ex);
+                throw new Exception("BLL Dueño error al obtener dueños: " + ex.Message, ex);
             }
         }
 
-        public void ModificarDueno(Dueno dueno)
+        public void ModificarDueno(Dueno duenoMod)
         {
             try
             {
-                duenoDAO.ModificarDueno(dueno);
+                if (duenoMod == null) throw new ArgumentNullException(nameof(duenoMod), "El dueño no puede ser nulo.");
+                if (string.IsNullOrWhiteSpace(duenoMod.Nombre)) throw new ArgumentException("El nombre no puede estar vacío.");
+                if (string.IsNullOrWhiteSpace(duenoMod.Apellido)) throw new ArgumentException("El apellido no puede estar vacío.");
+                if (string.IsNullOrWhiteSpace(duenoMod.CuitCuil)) throw new ArgumentException("El CUIT/CUIL no puede estar vacío.");
+                if (duenoDAO.BuscarDuenoPorDNI(duenoMod.DNI) != null) throw new Exception("El dueño con ese DNI ya existe.");
+                Dueno dueno = new Dueno();
+                dueno = duenoDAO.BuscarPersonaPorDNI(duenoMod.DNI);
+                if (dueno != null && dueno.IDPersona != duenoMod.IDPersona) throw new Exception("Ya existe otra persona registrar con estew DNI");
+                duenoDAO.ModificarDueno(duenoMod);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                throw;
+                throw new Exception("BLL Dueño error al modoficar dueño: " + ex.Message, ex);
             }
         }
 
-        public void ModificarPersonaExistente(Dueno dueno)
+        public void ModificarPersonaExistente(Dueno duenoMod)
         {
             try
             {
-                duenoDAO.ModificarPersonaExistente(dueno);
+                
+              
+                duenoDAO.ModificarPersonaExistente(duenoMod);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                throw;
+                throw new Exception("BLL Dueño error al modificar persona existente: "+ex.Message,ex);
             }
         }
 
@@ -88,9 +99,9 @@ namespace BLL
                 if (dueno == null) throw new Exception("No se encontró el dueño a eliminar.");
                 duenoDAO.BajaDueno(idDueno);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                throw;
+                throw new Exception("BLL Dueño error al dar bajar a dueño: " + ex.Message, ex);
             }
         }
     }

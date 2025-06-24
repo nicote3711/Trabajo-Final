@@ -25,18 +25,19 @@ namespace UI
         {
 
             List<Dueno> LDuenos = DuenoBLO.ObtenerDuenos();
-            if(checkBox_VerInactivos.Checked )
+            dgv_DuenoAMB.DataSource = null;
+            if (checkBox_VerInactivos.Checked )
             {
                 LDuenos = LDuenos.Where(d => d.Activo).ToList();
             }
             if(LDuenos != null && LDuenos.Count > 0)
             {
-                dgv_DuenoAMB.DataSource = null;
+                
                 dgv_DuenoAMB.DataSource = LDuenos;
 
             }
            
-            dgv_DuenoAMB.DataSource = null;
+           
            
         }
 
