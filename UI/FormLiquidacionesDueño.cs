@@ -88,6 +88,7 @@ namespace UI
             try
             {
                 CargarGrillaLiquidacionesDueno();
+                CargarGrillaFacturasDueno();
 
             }
             catch (Exception ex)
@@ -130,7 +131,7 @@ namespace UI
                 {
                     Dueno dueno = cmBox_Dueños.SelectedItem as Dueno;
                     if (dueno == null || dueno.IdDueno <= 0) throw new Exception("Error al obtener el dueño seleccionado en el combo box");
-                    //LFacturasDueno = LFacturasDueno.Where(f=>f.)   no tengo property mas alla del cuit.
+                    LFacturasDueno = LFacturasDueno.Where(f => f.CuilEmisor.Equals(dueno.CuitCuil)).ToList();   
                     dgv_FacturasLiquidacionDueno.DataSource = LFacturasDueno;
                 }
             }

@@ -139,7 +139,7 @@ namespace BLL
         {
             try
             {
-                
+                if (liquidacion.IdLiquidacionServicio <= 0) throw new Exception("Id liquidacion nulo o invalido");
                 LiquidacionDuenoDAO.QuitarIdFacturaALiquidacion(liquidacion.IdLiquidacionServicio);
             }
             catch ( Exception ex)

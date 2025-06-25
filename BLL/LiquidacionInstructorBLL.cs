@@ -48,7 +48,7 @@ namespace BLL
 			}
         }
 
-        internal void GenerarLiquidacion(LiquidacionInstructor liquidacionI)
+        public void GenerarLiquidacion(LiquidacionInstructor liquidacionI)
         {
             HelperTransaccion helperTransaccion = new HelperTransaccion();
             DataSet ds = helperTransaccion.DfParaTransaccion();
@@ -76,7 +76,7 @@ namespace BLL
             }
         }
 
-        public static void Calcular(LiquidacionInstructor liquidacionI)
+        public  void Calcular(LiquidacionInstructor liquidacionI)
         {
             liquidacionI.CantHoras = 0;
             liquidacionI.MontoTotal = 0;
@@ -126,6 +126,52 @@ namespace BLL
             {
 
                 throw new Exception("BLL LiquidacionInstructor error al generar liquidacion");
+            }
+        }
+
+        public List<LiquidacionInstructor> ObtenerLiquidacionesPorIdFactura(int idFactura)
+        {
+            try
+            {
+                List<LiquidacionInstructor> LLiquidacionesI = LiquidacionInstructorDAO.BuscarLiquidacionesPorIdFactura(idFactura);
+                return LLiquidacionesI;
+
+            }
+            catch (Exception ex)
+            {
+
+                throw new Exception("BLL LiquidacionInstructor error al ObtenerLiquidacionesPorIdFactura");
+            }
+        }
+
+        public void QuitarIdFacturaALiquidacion(LiquidacionInstructor liquidacion)
+        {
+            try
+            {
+                if (liquidacion.IdLiquidacionServicio <= 0) throw new Exception("Id liquidacion nulo o invalido");
+                
+
+                LiquidacionInstructorDAO.QuitarIdFacturaALiquidacion(liquidacion.IdLiquidacionServicio);
+            }
+            catch (Exception ex)
+            {
+
+                throw new Exception("BLL LiquidacionInstructor error al AsignarIdFactura a liquidacion: "+ex.Message,ex);
+            }
+        }
+        public void AsignarIdFacturaALiquidacion(LiquidacionInstructor liquidacion)
+        {
+            try
+            {
+                if (liquidacion.IdLiquidacionServicio <= 0) throw new Exception("Id liquidacion nulo o invalido");
+                if (liquidacion.IdFactura == null || liquidacion.IdFactura <= 0) throw new Exception("Id de factura nulo o invalido");
+
+                LiquidacionInstructorDAO.AsignarIdFacturaALiquidacion(liquidacion.IdLiquidacionServicio,liquidacion.IdFactura);
+            }
+            catch (Exception ex)
+            {
+
+                throw new Exception("BLL LiquidacionInstructor error al AsignarIdFactura a liquidacion: " + ex.Message, ex);
             }
         }
     }

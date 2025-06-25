@@ -34,14 +34,14 @@
             label4 = new Label();
             label3 = new Label();
             btn_RegistrarFactura = new Button();
-            dgv_FacturasLiquidacionDueno = new DataGridView();
+            dgv_FacturasLiquidacionIns = new DataGridView();
             label2 = new Label();
             label1 = new Label();
             Instructores = new Label();
             cmBox_Instructores = new ComboBox();
             dgv_LiquidacionesInstructor = new DataGridView();
             btn_GenerarLiquidaciones = new Button();
-            ((System.ComponentModel.ISupportInitialize)dgv_FacturasLiquidacionDueno).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)dgv_FacturasLiquidacionIns).BeginInit();
             ((System.ComponentModel.ISupportInitialize)dgv_LiquidacionesInstructor).BeginInit();
             SuspendLayout();
             // 
@@ -53,6 +53,7 @@
             btn_EliminarFactura.TabIndex = 25;
             btn_EliminarFactura.Text = "Eliminar Factura";
             btn_EliminarFactura.UseVisualStyleBackColor = true;
+            btn_EliminarFactura.Click += btn_EliminarFactura_Click;
             // 
             // Txt_MontoTotal
             // 
@@ -89,20 +90,21 @@
             // 
             // btn_RegistrarFactura
             // 
-            btn_RegistrarFactura.Location = new Point(402, 518);
+            btn_RegistrarFactura.Location = new Point(413, 527);
             btn_RegistrarFactura.Name = "btn_RegistrarFactura";
-            btn_RegistrarFactura.Size = new Size(133, 25);
+            btn_RegistrarFactura.Size = new Size(122, 25);
             btn_RegistrarFactura.TabIndex = 20;
             btn_RegistrarFactura.Text = "Registrar Factura";
             btn_RegistrarFactura.UseVisualStyleBackColor = true;
+            btn_RegistrarFactura.Click += btn_RegistrarFactura_Click;
             // 
-            // dgv_FacturasLiquidacionDueno
+            // dgv_FacturasLiquidacionIns
             // 
-            dgv_FacturasLiquidacionDueno.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dgv_FacturasLiquidacionDueno.Location = new Point(843, 181);
-            dgv_FacturasLiquidacionDueno.Name = "dgv_FacturasLiquidacionDueno";
-            dgv_FacturasLiquidacionDueno.Size = new Size(489, 260);
-            dgv_FacturasLiquidacionDueno.TabIndex = 19;
+            dgv_FacturasLiquidacionIns.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dgv_FacturasLiquidacionIns.Location = new Point(843, 181);
+            dgv_FacturasLiquidacionIns.Name = "dgv_FacturasLiquidacionIns";
+            dgv_FacturasLiquidacionIns.Size = new Size(489, 260);
+            dgv_FacturasLiquidacionIns.TabIndex = 19;
             // 
             // label2
             // 
@@ -147,6 +149,7 @@
             dgv_LiquidacionesInstructor.Name = "dgv_LiquidacionesInstructor";
             dgv_LiquidacionesInstructor.Size = new Size(502, 260);
             dgv_LiquidacionesInstructor.TabIndex = 14;
+            dgv_LiquidacionesInstructor.SelectionChanged += dgv_LiquidacionesInstructor_SelectionChanged;
             // 
             // btn_GenerarLiquidaciones
             // 
@@ -169,7 +172,7 @@
             Controls.Add(label4);
             Controls.Add(label3);
             Controls.Add(btn_RegistrarFactura);
-            Controls.Add(dgv_FacturasLiquidacionDueno);
+            Controls.Add(dgv_FacturasLiquidacionIns);
             Controls.Add(label2);
             Controls.Add(label1);
             Controls.Add(Instructores);
@@ -179,7 +182,7 @@
             Name = "FormLiquidacionesInstructor";
             Text = "FormLiquidacionesInstructor";
             Load += FormLiquidacionesInstructor_Load;
-            ((System.ComponentModel.ISupportInitialize)dgv_FacturasLiquidacionDueno).EndInit();
+            ((System.ComponentModel.ISupportInitialize)dgv_FacturasLiquidacionIns).EndInit();
             ((System.ComponentModel.ISupportInitialize)dgv_LiquidacionesInstructor).EndInit();
             ResumeLayout(false);
             PerformLayout();
@@ -193,7 +196,7 @@
         private Label label4;
         private Label label3;
         private Button btn_RegistrarFactura;
-        private DataGridView dgv_FacturasLiquidacionDueno;
+        private DataGridView dgv_FacturasLiquidacionIns;
         private Label label2;
         private Label label1;
         private Label Instructores;

@@ -14,6 +14,60 @@ namespace DAL
     {
         private readonly string rutaXml = HelperD.ObtenerConexionXMl();
 
+        public void AsignarIdFacturaALiquidacion(int idLiquidacionServicio, int? idFactura)
+        {
+            try
+            {
+                if (!File.Exists(rutaXml)) throw new FileNotFoundException("No se encontró el archivo XML.");
+                DataSet ds = new DataSet();
+                ds.ReadXml(rutaXml, XmlReadMode.ReadSchema);
+
+                DataTable tabla = ds.Tables["Liquidacion_Servicio"];
+                if (tabla == null) throw new Exception("No se encontró la tabla Liquidacion Servicio.");
+
+                DataRow row = tabla.AsEnumerable().FirstOrDefault(r => r["Id_Liquidacion_Servicio"].Equals(idLiquidacionServicio));
+                if (row == null) throw new Exception("No se encontro la liquidacion");
+                if (idFactura == null) throw new Exception("El id de factura es null");
+                row["Id_Factura"] = idFactura.ToString();
+
+                ds.WriteXml(rutaXml, XmlWriteMode.WriteSchema);
+            }
+            catch (Exception ex)
+            {
+
+                throw new Exception("DAL LiquidacionInstructor error al asignar id factura a liquidacion: "+ex.Message,ex);
+            }
+        }
+
+        public List<LiquidacionInstructor> BuscarLiquidacionesPorIdFactura(int idFactura)
+        {
+            try
+            {
+                if (!File.Exists(rutaXml)) throw new FileNotFoundException("No se encontró el archivo XML.");
+                DataSet ds = new DataSet();
+                ds.ReadXml(rutaXml, XmlReadMode.ReadSchema);
+
+                DataTable tabla = ds.Tables["Liquidacion_Servicio"];
+                if (tabla == null) throw new Exception("No se encontró la tabla Liquidacion Servicio.");
+
+                List<DataRow> rowsLiquidaciones = tabla.AsEnumerable().Where(r => r["Id_Factura"].Equals(idFactura)).ToList();
+                List<LiquidacionInstructor> LLiquidacionInstructor = new List<LiquidacionInstructor>();
+                foreach(DataRow row in rowsLiquidaciones)
+                {
+                    LiquidacionInstructor liquidacionInstructor = new LiquidacionInstructor();
+                    LiquidacionServicioMAP.MapearDesdeDB(liquidacionInstructor, row);
+                    LLiquidacionInstructor.Add(liquidacionInstructor);
+                }
+
+                return LLiquidacionInstructor;
+            }
+            catch (Exception ex)
+            {
+
+                throw new Exception("DAL LiquidacionInstructor error al buscar liquidaciones por id Factura: "+ex.Message,ex);
+            }
+        }
+
         public void GenerarLiquidacionI(LiquidacionInstructor liquidacionI)
         {
             try
@@ -132,6 +186,31 @@ namespace DAL
 
 				throw new Exception("DAL LiquidacionInstructor error al obtener liquidacionesIPorPeriodo:"+ ex.Message, ex);
 			}
+        }
+
+        public void QuitarIdFacturaALiquidacion(int idLiquidacionServicio)
+        {
+            try
+            {
+                if (!File.Exists(rutaXml)) throw new FileNotFoundException("No se encontró el archivo XML.");
+                DataSet ds = new DataSet();
+                ds.ReadXml(rutaXml, XmlReadMode.ReadSchema);
+
+                DataTable tabla = ds.Tables["Liquidacion_Servicio"];
+                if (tabla == null) throw new Exception("No se encontró la tabla Liquidacion Servicio.");
+
+                DataRow row = tabla.AsEnumerable().FirstOrDefault(r => r["Id_Liquidacion_Servicio"].Equals(idLiquidacionServicio));
+                if (row == null) throw new Exception("No se encontro la liquidacion");
+
+                row["Id_Factura"] = DBNull.Value;
+
+                ds.WriteXml(rutaXml, XmlWriteMode.WriteSchema);
+            }
+            catch (Exception ex)
+            {
+
+                throw new Exception("DAL LiquidacionInstructor error al quitar id factura a liquidacion: "+ex.Message,ex);
+            }
         }
     }
 }
