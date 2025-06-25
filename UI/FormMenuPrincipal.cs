@@ -313,10 +313,10 @@ namespace UI
         {
             try
             {
-               FormMecanicosABM formMecanicosABM = new FormMecanicosABM();
-               formMecanicosABM.ShowDialog();
-             //  formMecanicosABM.MdiParent = this; 
-             // formMecanicosABM.Show();
+                FormMecanicosABM formMecanicosABM = new FormMecanicosABM();
+                formMecanicosABM.ShowDialog();
+                //  formMecanicosABM.MdiParent = this; 
+                // formMecanicosABM.Show();
             }
             catch (Exception ex)
             {
@@ -330,9 +330,24 @@ namespace UI
             try
             {
                 FormAeronaveABM formAeronaveABM = new FormAeronaveABM();
-                formAeronaveABM.MdiParent = this;   
-                formAeronaveABM.Show(); 
+                formAeronaveABM.MdiParent = this;
+                formAeronaveABM.Show();
 
+            }
+            catch (Exception ex)
+            {
+
+                MessageBox.Show(ex.Message);
+            }
+        }
+
+        private void liquidarInstructorToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                FormLiquidacionesInstructor formLiquidacionesInstructor = new FormLiquidacionesInstructor();
+                formLiquidacionesInstructor.MdiParent = this;
+                formLiquidacionesInstructor.Show();
             }
             catch (Exception ex)
             {

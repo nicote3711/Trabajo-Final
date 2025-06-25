@@ -101,5 +101,27 @@ namespace BLL
 				throw new Exception("BLL Simulador error al actualizar simulador: "+ex.Message,ex);
 			}
         }
+
+        internal List<Simulador> ObtenerSimuladoresPorIdLiquidacion(int idLiquidacionServicio)
+        {
+			try
+			{
+				List<Simulador> Lsimuladores = SimuladorDAO.ObtenerSimuladoresPorIdLiquidacion(idLiquidacionServicio);
+
+				foreach(Simulador simulador in Lsimuladores)
+				{
+                    simulador.Cliente = ClienteBLO.BuscarClientePorID(simulador.Cliente.IDCliente);
+                    simulador.Instructor = InstructorBLO.BuscarInstructorPorID(simulador.Instructor.IdInstructor);
+                    simulador.Finalidad = FinalidadBLO.ObtenerPorId(simulador.Finalidad.IdFinalidad);
+                }
+
+				return Lsimuladores;
+			}
+			catch (Exception ex)
+			{
+
+				throw new Exception("BLL Simulador error al obtener simuladores por Id Liquidacion: "+ex.Message,ex);
+			}
+        }
     }
 }

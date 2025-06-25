@@ -231,6 +231,35 @@ namespace DAL
             PersonaMap.MapearPesonaDesdeDB(persona, row);
             return persona;
         }
+
+        public Dueno BuscarDuenoPorIdPersona(int iDPersona)
+        {
+            try
+            {
+                DataSet ds = new DataSet();
+                ds.ReadXml(rutaXml, XmlReadMode.ReadSchema);
+
+                var tablaDuenos = ds.Tables["Dueno"];
+                var tablaPersonas = ds.Tables["Persona"];
+
+                var personaRow = tablaPersonas.AsEnumerable().FirstOrDefault(p => p.Field<int>("Id_Persona") == iDPersona);
+                if (personaRow == null) return null;
+
+
+                var duenoRow = tablaDuenos.AsEnumerable().FirstOrDefault(d => d.Field<int>("Id_Persona") == iDPersona);
+                if (duenoRow == null) return null;
+
+                Dueno dueno = new Dueno();
+                DuenoMAP.MapearDuenoDesdeDB(dueno, duenoRow);
+                PersonaMap.MapearPesonaDesdeDB(dueno, personaRow);
+                return dueno;
+            }
+            catch (Exception ex)
+            {
+
+                throw new Exception("DAL Dueno error al buscar dueño por Id Persona:"+ ex.Message, ex);
+            }
+        }
     }
 }
 

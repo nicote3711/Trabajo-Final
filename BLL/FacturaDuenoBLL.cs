@@ -1,5 +1,9 @@
-﻿using System;
+﻿using DAL;
+using ENTITY;
+using Helper;
+using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -8,5 +12,80 @@ namespace BLL
 {
     public class FacturaDuenoBLL
     {
+		FacturaDuenoDAL FacturaDuenoDAO= new FacturaDuenoDAL();
+        public void RegistrarFacturaDueno(FacturaDueno facturaDueno)
+        {	
+		    HelperTransaccion helperTransaccion = new HelperTransaccion();
+			DataSet ds = helperTransaccion.DfParaTransaccion();
+			try
+			{
+				if (facturaDueno == null) throw new ArgumentNullException("La factura no puede ser nula");
+				if (facturaDueno.ListaLiquidaciones == null || facturaDueno.ListaLiquidaciones.Count <= 0) throw new ArgumentNullException("La lista de liquidaciones de la factura no puede estar vacia o ser nula");
+				if (facturaDueno.MontoTotal <= 0) throw new Exception("El monto total no puede ser 0 o menor a 0");
+				if (string.IsNullOrEmpty(facturaDueno.CuilEmisor)) throw new Exception("El cuit no puede ser nulo o vacio");
+
+				FacturaDuenoDAO.RegistrarFactura(facturaDueno);
+				if (facturaDueno.IdFactura == null || facturaDueno.IdFactura <= 0) throw new Exception("el id de la factura es nulo o invalido");
+
+                LiquidacionDuenoBLL LiquidacionDuenoBLO = new LiquidacionDuenoBLL();
+                foreach (LiquidacionDueno liquidacion in facturaDueno.ListaLiquidaciones)
+				{
+					liquidacion.IdFactura = facturaDueno.IdFactura;
+					LiquidacionDuenoBLO.AsignarIdFacturaALiquidacion(liquidacion);	
+				}
+				
+				
+			}
+			catch (Exception ex)
+			{
+				helperTransaccion.RollbackDfParaTransaccion(ds);
+				throw new Exception("BLL FacturaDueño error al registrar factura dueño: "+ex.Message,ex);
+			}
+        }
+
+		public List<FacturaDueno> ObtenerFacturas()
+		{
+			try
+			{
+				List<FacturaDueno> LFacturasDueno = FacturaDuenoDAO.ObtenerFacturas();
+
+				LiquidacionDuenoBLL LiquidacionDuenoBLO = new LiquidacionDuenoBLL();
+				foreach(FacturaDueno factura in LFacturasDueno)
+				{
+					factura.ListaLiquidaciones = LiquidacionDuenoBLO.BuscarLiquidacionesPorIdFactura(factura.IdFactura);
+				}
+				//Aca completar objetos si quisera como por ejemplo la lista de liquidaciones, con metodo de buscar liquidacion por Id. O lo que haga falta
+				return LFacturasDueno; 
+			}
+			catch (Exception ex)
+			{
+
+				throw new Exception("BLL FacturaDueño error al obtener Facturas: "+ex.Message,ex);
+			}
+		}
+
+        public void EliminarFactura(FacturaDueno factura)
+        {
+            HelperTransaccion helperTransaccion = new HelperTransaccion();
+            DataSet ds = helperTransaccion.DfParaTransaccion();
+            try
+			{
+				if (factura.IdFactura == null || factura.IdFactura <= 0) throw new Exception("Id de factura nulo o invalido.");
+				if (factura.ListaLiquidaciones == null || factura.ListaLiquidaciones.Count <= 0) throw new Exception("Lista de liquidaciones de la factura nula o vacia");
+
+				FacturaDuenoDAO.EliminarFactura(factura.IdFactura);
+				LiquidacionDuenoBLL LiquidacionDuenoBLO = new LiquidacionDuenoBLL();
+				foreach(LiquidacionDueno liquidacion in factura.ListaLiquidaciones)
+				{
+					LiquidacionDuenoBLO.QuitarIdFacturaALiquidacion(liquidacion);
+				}
+			}
+			catch (Exception ex)
+			{
+
+                helperTransaccion.RollbackDfParaTransaccion(ds);
+                throw new Exception("BLL FacturaDueño error al eliminar factura dueño: " + ex.Message, ex);
+            }
+        }
     }
 }

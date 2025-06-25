@@ -104,6 +104,22 @@ namespace BLL
                 throw new Exception("BLL Dueño error al dar bajar a dueño: " + ex.Message, ex);
             }
         }
+
+        public Dueno BuscarDuenoPorIdPersona(int iDPersona)
+        {
+            try
+            {
+                if (iDPersona == null || iDPersona <= 0) throw new Exception("Id Nulo o invalido");
+
+                return duenoDAO.BuscarDuenoPorIdPersona(iDPersona); 
+
+            }
+            catch (Exception ex)
+            {
+
+                throw new Exception ("BLL dueño error al buscar Dueño por Id Persona: "+ex.Message,ex);
+            }
+        }
     }
 }
 

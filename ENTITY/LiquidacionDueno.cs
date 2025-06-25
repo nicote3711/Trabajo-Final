@@ -14,7 +14,8 @@ namespace ENTITY
         {
             Servicio = new Servicio();
             Servicio.IdServicio = (int)EnumServicios.Dueño;
-            Vuelos = new List<Vuelo>(); 
+            Vuelos = new List<Vuelo>();
+            Persona = new Dueno();
         }
         public List<Vuelo> Vuelos { get; set; }
 
