@@ -190,6 +190,7 @@ namespace UI
                 if (dueno == null) throw new Exception("Error al obtener el dueño del combo box");
                 if (string.IsNullOrEmpty(dueno.CuitCuil)) throw new Exception("Error al obtener el Cuil del dueño, este es nulo o vacio");
                 facturaDueno.CuilEmisor = dueno.CuitCuil;
+                facturaDueno.Dueno = dueno;
 
 
                 foreach (DataGridViewRow row in dgv_LiquidacionesDueño.SelectedRows)

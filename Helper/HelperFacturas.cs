@@ -141,7 +141,8 @@ namespace Helper
                             foreach (object itemObject in facturaDetalle.ItemsFactura)
                             {
                                 PropertyInfo propiedad = tipoObjeto.GetProperty(item.ItemProperty);
-                                cellList.Add(CreateProductCell(propiedad.GetValue(itemObject).ToString()).SetFont(fontNormal).SetFontSize(8));
+                                var property = propiedad.GetValue(itemObject);
+                                cellList.Add(CreateProductCell(property.ToString()).SetFont(fontNormal).SetFontSize(8));
                             }
                         }
                         
@@ -150,45 +151,28 @@ namespace Helper
                             productsTable.AddCell((cell.SetFontSize(7).SetTextAlignment(TextAlignment.CENTER)));
                         }
 
-                        //productsTable.AddCell(CreateHeaderCell("Cant.").SetTextAlignment(TextAlignment.CENTER));
-                        //productsTable.AddHeaderCell(CreateHeaderCell("Descripción"));
-                        //productsTable.AddHeaderCell(CreateHeaderCell("P. Unit. ($)").SetTextAlignment(TextAlignment.RIGHT));
-                        //productsTable.AddHeaderCell(CreateHeaderCell("Subtotal ($)").SetTextAlignment(TextAlignment.RIGHT));
-
-                        //for (int i = 1; i <= 5; i++)
-                        //{
-                        //    double precioUnitario = Math.Round(rnd.NextDouble() * 100 + 10, 2); // Precio entre 10 y 110
-                        //    int cantidad = rnd.Next(1, 5); // Cantidad entre 1 y 5
-                        //    double subtotalItem = cantidad * precioUnitario;
-                        //    total += subtotalItem;
-
-                        //    productsTable.AddCell(CreateProductCell(cantidad.ToString()).SetTextAlignment(TextAlignment.CENTER));
-                        //    productsTable.AddCell(CreateProductCell("Descripción del Producto/Servicio " + i));
-                        //    productsTable.AddCell(CreateProductCell(precioUnitario.ToString("N2")).SetTextAlignment(TextAlignment.RIGHT));
-                        //    productsTable.AddCell(CreateProductCell(subtotalItem.ToString("N2")).SetTextAlignment(TextAlignment.RIGHT));
-                        //}
-
+                        
                         document.Add(productsTable);
 
                         // --- Resumen de Totales ---
                         Table totalsTable = new Table(UnitValue.CreatePercentArray(new float[] { 0.7f, 0.3f }))
                                               .SetWidth(UnitValue.CreatePercentValue(100))
                                               .SetHorizontalAlignment(HorizontalAlignment.RIGHT); // Alinear la tabla a la derecha
+                        
+                        double totalFinal = Convert.ToDouble(factura.MontoTotal);
+                        double ivaMonto = totalFinal / 0.21;
+                        double subtotalFactura = totalFinal - ivaMonto;
 
-                        //double subtotalFactura = total;
-                        //double ivaMonto = subtotalFactura * ivaRate;
-                        //double totalFinal = subtotalFactura + ivaMonto;
+                        totalsTable.AddCell(CreateLabelCell("Subtotal:").SetTextAlignment(TextAlignment.RIGHT).SetBorder(Border.NO_BORDER));
+                        totalsTable.AddCell(CreateDataCell("$ " + subtotalFactura.ToString("N2")).SetTextAlignment(TextAlignment.RIGHT).SetBorder(Border.NO_BORDER));
 
-                        //totalsTable.AddCell(CreateLabelCell("Subtotal:").SetTextAlignment(TextAlignment.RIGHT).SetBorder(Border.NO_BORDER));
-                        //totalsTable.AddCell(CreateDataCell("$ " + subtotalFactura.ToString("N2")).SetTextAlignment(TextAlignment.RIGHT).SetBorder(Border.NO_BORDER));
+                        totalsTable.AddCell(CreateLabelCell("IVA 21%:").SetTextAlignment(TextAlignment.RIGHT).SetBorder(Border.NO_BORDER));
+                        totalsTable.AddCell(CreateDataCell("$ " + ivaMonto.ToString("N2")).SetTextAlignment(TextAlignment.RIGHT).SetBorder(Border.NO_BORDER));
 
-                        //totalsTable.AddCell(CreateLabelCell("IVA 21%:").SetTextAlignment(TextAlignment.RIGHT).SetBorder(Border.NO_BORDER));
-                        //totalsTable.AddCell(CreateDataCell("$ " + ivaMonto.ToString("N2")).SetTextAlignment(TextAlignment.RIGHT).SetBorder(Border.NO_BORDER));
+                        totalsTable.AddCell(CreateLabelCell("TOTAL:").SetFont(fontBold).SetFontSize(14).SetTextAlignment(TextAlignment.RIGHT).SetBorder(Border.NO_BORDER));
+                        totalsTable.AddCell(CreateDataCell("$ " + totalFinal.ToString("N2")).SetFont(fontBold).SetFontSize(14).SetTextAlignment(TextAlignment.RIGHT).SetBorder(Border.NO_BORDER));
 
-                        //totalsTable.AddCell(CreateLabelCell("TOTAL:").SetFont(fontBold).SetFontSize(14).SetTextAlignment(TextAlignment.RIGHT).SetBorder(Border.NO_BORDER));
-                        //totalsTable.AddCell(CreateDataCell("$ " + totalFinal.ToString("N2")).SetFont(fontBold).SetFontSize(14).SetTextAlignment(TextAlignment.RIGHT).SetBorder(Border.NO_BORDER));
-
-                        //document.Add(totalsTable);
+                        document.Add(totalsTable);
 
                         // --- Pie de página (ej. Leyendas legales, datos de imprenta si aplica) ---
                         document.Add(new Paragraph("\n\n").SetFontSize(8)); // Espacio

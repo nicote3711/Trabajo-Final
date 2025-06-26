@@ -33,9 +33,12 @@ namespace BLL
 					liquidacion.IdFactura = facturaDueno.IdFactura;
 					LiquidacionDuenoBLO.AsignarIdFacturaALiquidacion(liquidacion);	
 				}
-				
-				
-			}
+
+                //Generar FacturaPDF
+                Result result = HelperFacturas.GenerarFacturaPDF(facturaDueno);
+                if (!result.Success)
+                    throw new Exception(result.Message);
+            }
 			catch (Exception ex)
 			{
 				helperTransaccion.RollbackDfParaTransaccion(ds);
