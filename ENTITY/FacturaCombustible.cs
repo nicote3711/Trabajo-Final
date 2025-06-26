@@ -1,4 +1,4 @@
-﻿using Helper;
+﻿using ENTITY.Enum;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,5 +15,20 @@ namespace ENTITY
         }
 
         public RecargaCombustible RecargaCombu { get; set; }
+
+        public override Persona DatosCliente()
+        {
+            throw new NotImplementedException();
+        }
+
+        public override Persona DatosEmisor()
+        {
+            throw new NotImplementedException();
+        }
+
+        public override FacturaDetalle FacturaDetalles()
+        {
+            throw new NotImplementedException();
+        }
     }
 }
