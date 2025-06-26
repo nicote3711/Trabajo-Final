@@ -25,7 +25,11 @@ namespace MAPPER
 
             liquidacion.Servicio.IdServicio = Convert.ToInt32(row["Id_Servicio"]); //las liquidaciones ya crean su objeto servicio porque son de un tipo especifico y deberian saber si Id ademas.
 
-            liquidacion.IdPersona = Convert.ToInt32(row["Id_Persona"]);          
+            liquidacion.IdPersona = Convert.ToInt32(row["Id_Persona"]);
+
+            liquidacion.Persona.IDPersona = Convert.ToInt32(row["Id_Persona"]);
+
+            liquidacion.IdFactura = row["Id_Factura"] == DBNull.Value ? null : (int)row["Id_Factura"];
         }
 
         public static void MapearHaciaDB(LiquidacionServicio liquidacion, DataRow row)

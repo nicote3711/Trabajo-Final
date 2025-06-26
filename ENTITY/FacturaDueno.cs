@@ -11,8 +11,8 @@ namespace ENTITY
     {
         public FacturaDueno() 
         { 
-            TipoFactura tipoFactura = new TipoFactura();
-            tipoFactura.IdTipoFactura = (int)EnumTiposFactura.FacturaDueño;
+            this.TipoFactura = new TipoFactura() { IdTipoFactura = (int)EnumTiposFactura.FacturaDueño };
+            
         }
 
         public List<LiquidacionDueno> ListaLiquidaciones { get; set; }

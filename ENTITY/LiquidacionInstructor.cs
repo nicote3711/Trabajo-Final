@@ -15,6 +15,7 @@ namespace ENTITY
             Servicio.IdServicio = (int)EnumServicios.Instructor;
             Vuelos = new List<Vuelo>();
             Simuladores = new List<Simulador>();
+            Persona = new Instructor();
         }
 
         public List<Vuelo> Vuelos { get; set; } = new();

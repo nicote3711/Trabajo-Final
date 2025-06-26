@@ -159,5 +159,34 @@ namespace BLL
                 throw new Exception("BLL Vuelo error al liquidar vuelo: "+ex.Message,ex);
             }
         }
+
+        internal Vuelo BuscarVueloPorId(int idVuelo)
+        {
+            try
+            {
+                if (idVuelo == null || idVuelo <= 0) throw new Exception("Id de vuelo nulo invalido");
+
+
+                Vuelo vuelo = VueloDAO.BuscarVueloPorId(idVuelo);
+                vuelo.Cliente = ClienteBLO.BuscarClientePorID(vuelo.Cliente.IDCliente);
+                if (vuelo.Instructor != null && vuelo.Instructor.IdInstructor != null)
+                {
+
+                    vuelo.Instructor = InstructorBLO.BuscarInstructorPorID(vuelo.Instructor.IdInstructor); // Si el instructor es null, no se asigna para evitar NullReferenceException
+                }
+
+                vuelo.Aeronave = AeronaveBLO.ObtenerAeronavePorId(vuelo.Aeronave.IdAeronave);
+                vuelo.Finalidad = FinalidadBLO.ObtenerPorId(vuelo.Finalidad.IdFinalidad);
+
+                return vuelo;
+
+
+            }
+            catch (Exception ex)
+            {
+
+                throw new Exception("BLL Vuelo error al buscar vuelo por id: "+ex.Message,ex);
+            }
+        }
     }
 }

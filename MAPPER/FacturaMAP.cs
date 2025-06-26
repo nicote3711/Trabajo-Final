@@ -32,7 +32,6 @@ namespace MAPPER
             row["Monto_Total"] = factura.MontoTotal;
             row["Detalle"] = factura.Detalle;
             row["Id_Tipo_Factura"] = factura.TipoFactura.IdTipoFactura;
-            row["Id_Tipo_Factura"] = factura.TipoFactura.IdTipoFactura;
             row["Id_Transaccion"] = factura.Transaccion==null? DBNull.Value: factura.Transaccion.IdTransaccionFinanciera;
         }
     }

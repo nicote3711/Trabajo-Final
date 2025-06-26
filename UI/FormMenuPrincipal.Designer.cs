@@ -210,7 +210,7 @@
             // 
             dueñosToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { liquidarDueñoToolStripMenuItem, pagarDueñoToolStripMenuItem });
             dueñosToolStripMenuItem.Name = "dueñosToolStripMenuItem";
-            dueñosToolStripMenuItem.Size = new Size(136, 22);
+            dueñosToolStripMenuItem.Size = new Size(180, 22);
             dueñosToolStripMenuItem.Text = "Dueños";
             // 
             // liquidarDueñoToolStripMenuItem
@@ -230,19 +230,20 @@
             // 
             instructorToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { liquidarInstructorToolStripMenuItem, pagarInstructorToolStripMenuItem });
             instructorToolStripMenuItem.Name = "instructorToolStripMenuItem";
-            instructorToolStripMenuItem.Size = new Size(136, 22);
+            instructorToolStripMenuItem.Size = new Size(180, 22);
             instructorToolStripMenuItem.Text = "Instructores";
             // 
             // liquidarInstructorToolStripMenuItem
             // 
             liquidarInstructorToolStripMenuItem.Name = "liquidarInstructorToolStripMenuItem";
-            liquidarInstructorToolStripMenuItem.Size = new Size(171, 22);
+            liquidarInstructorToolStripMenuItem.Size = new Size(180, 22);
             liquidarInstructorToolStripMenuItem.Text = "Liquidar Instructor";
+            liquidarInstructorToolStripMenuItem.Click += liquidarInstructorToolStripMenuItem_Click;
             // 
             // pagarInstructorToolStripMenuItem
             // 
             pagarInstructorToolStripMenuItem.Name = "pagarInstructorToolStripMenuItem";
-            pagarInstructorToolStripMenuItem.Size = new Size(171, 22);
+            pagarInstructorToolStripMenuItem.Size = new Size(180, 22);
             pagarInstructorToolStripMenuItem.Text = "Pagar Instructor";
             // 
             // combustibleToolStripMenuItem
@@ -274,35 +275,35 @@
             // aeronaveToolStripMenuItem
             // 
             aeronaveToolStripMenuItem.Name = "aeronaveToolStripMenuItem";
-            aeronaveToolStripMenuItem.Size = new Size(180, 22);
+            aeronaveToolStripMenuItem.Size = new Size(155, 22);
             aeronaveToolStripMenuItem.Text = "Aeronave ABM";
             aeronaveToolStripMenuItem.Click += aeronaveToolStripMenuItem_Click;
             // 
             // mecanicoToolStripMenuItem
             // 
             mecanicoToolStripMenuItem.Name = "mecanicoToolStripMenuItem";
-            mecanicoToolStripMenuItem.Size = new Size(180, 22);
+            mecanicoToolStripMenuItem.Size = new Size(155, 22);
             mecanicoToolStripMenuItem.Text = "Mecanico ABM";
             mecanicoToolStripMenuItem.Click += mecanicoToolStripMenuItem_Click;
             // 
             // instuctorToolStripMenuItem
             // 
             instuctorToolStripMenuItem.Name = "instuctorToolStripMenuItem";
-            instuctorToolStripMenuItem.Size = new Size(180, 22);
+            instuctorToolStripMenuItem.Size = new Size(155, 22);
             instuctorToolStripMenuItem.Text = "Instructor ABM";
             instuctorToolStripMenuItem.Click += instuctorToolStripMenuItem_Click;
             // 
             // clienteToolStripMenuItem
             // 
             clienteToolStripMenuItem.Name = "clienteToolStripMenuItem";
-            clienteToolStripMenuItem.Size = new Size(180, 22);
+            clienteToolStripMenuItem.Size = new Size(155, 22);
             clienteToolStripMenuItem.Text = "Clientes ABM";
             clienteToolStripMenuItem.Click += clienteToolStripMenuItem_Click;
             // 
             // dueñoToolStripMenuItem
             // 
             dueñoToolStripMenuItem.Name = "dueñoToolStripMenuItem";
-            dueñoToolStripMenuItem.Size = new Size(180, 22);
+            dueñoToolStripMenuItem.Size = new Size(155, 22);
             dueñoToolStripMenuItem.Text = "Dueño ABM";
             dueñoToolStripMenuItem.Click += dueñoToolStripMenuItem_Click_1;
             // 

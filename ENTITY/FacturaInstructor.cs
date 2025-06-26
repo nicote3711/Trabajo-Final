@@ -13,6 +13,7 @@ namespace ENTITY
         {
             this.TipoFactura = new TipoFactura();   
             TipoFactura.IdTipoFactura = (int)EnumTiposFactura.FacturaInstructor;
+            
         }
 
         public List<LiquidacionInstructor> ListaLiquidaciones { get; set; }

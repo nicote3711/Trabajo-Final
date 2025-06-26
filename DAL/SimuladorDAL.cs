@@ -144,5 +144,35 @@ namespace DAL
                 throw new Exception("DAL Simulador error al asignar liquidacion: "+ex.Message,ex);
             }
         }
+
+        public List<Simulador> ObtenerSimuladoresPorIdLiquidacion(int idLiquidacionServicio)
+        {
+            try
+            {
+                if (!File.Exists(rutaXml)) throw new FileNotFoundException("No se encontró el archivo XML.");
+                DataSet ds = new DataSet();
+                ds.ReadXml(rutaXml, XmlReadMode.ReadSchema);
+
+                DataTable tabla = ds.Tables["Simulador"];
+                if (tabla == null) throw new Exception("No se encontró la tabla Simulador.");
+
+                List<DataRow> rows = tabla.AsEnumerable().Where(r => r["Id_Liquidacion"].Equals(idLiquidacionServicio)).ToList(); 
+                List<Simulador> LSimuladores = new List<Simulador>();
+
+                foreach (DataRow row in rows)
+                {
+                    Simulador simulador = new Simulador();
+                    SimuladorMAP.MapearDesdeDB(simulador, row);
+                    LSimuladores.Add(simulador);
+                }
+
+                return LSimuladores;
+            }
+            catch (Exception ex)
+            {
+
+                throw new Exception("DAL Simulador error al obtener simuladores por IdLiquidacion: "+ex.Message,ex);
+            }
+        }
     }
 }

@@ -16,7 +16,9 @@ namespace ENTITY
             this.TipoFactura = new TipoFactura()
             {
                 IdTipoFactura = (int)EnumTiposFactura.FacturaSolicitudHoras
-            };  
+                               
+            };
+           
         }
         public SolicitudHoras Solicitud { get; set; }
 
