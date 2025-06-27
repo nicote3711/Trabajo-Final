@@ -210,7 +210,7 @@
             // 
             dueñosToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { liquidarDueñoToolStripMenuItem, pagarDueñoToolStripMenuItem });
             dueñosToolStripMenuItem.Name = "dueñosToolStripMenuItem";
-            dueñosToolStripMenuItem.Size = new Size(180, 22);
+            dueñosToolStripMenuItem.Size = new Size(136, 22);
             dueñosToolStripMenuItem.Text = "Dueños";
             // 
             // liquidarDueñoToolStripMenuItem
@@ -230,20 +230,20 @@
             // 
             instructorToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { liquidarInstructorToolStripMenuItem, pagarInstructorToolStripMenuItem });
             instructorToolStripMenuItem.Name = "instructorToolStripMenuItem";
-            instructorToolStripMenuItem.Size = new Size(180, 22);
+            instructorToolStripMenuItem.Size = new Size(136, 22);
             instructorToolStripMenuItem.Text = "Instructores";
             // 
             // liquidarInstructorToolStripMenuItem
             // 
             liquidarInstructorToolStripMenuItem.Name = "liquidarInstructorToolStripMenuItem";
-            liquidarInstructorToolStripMenuItem.Size = new Size(180, 22);
+            liquidarInstructorToolStripMenuItem.Size = new Size(171, 22);
             liquidarInstructorToolStripMenuItem.Text = "Liquidar Instructor";
             liquidarInstructorToolStripMenuItem.Click += liquidarInstructorToolStripMenuItem_Click;
             // 
             // pagarInstructorToolStripMenuItem
             // 
             pagarInstructorToolStripMenuItem.Name = "pagarInstructorToolStripMenuItem";
-            pagarInstructorToolStripMenuItem.Size = new Size(180, 22);
+            pagarInstructorToolStripMenuItem.Size = new Size(171, 22);
             pagarInstructorToolStripMenuItem.Text = "Pagar Instructor";
             // 
             // combustibleToolStripMenuItem
@@ -258,6 +258,7 @@
             registrarRecargarToolStripMenuItem.Name = "registrarRecargarToolStripMenuItem";
             registrarRecargarToolStripMenuItem.Size = new Size(236, 22);
             registrarRecargarToolStripMenuItem.Text = "Registrar Recarga Combustible";
+            registrarRecargarToolStripMenuItem.Click += registrarRecargarToolStripMenuItem_Click;
             // 
             // pagarCombustibleToolStripMenuItem
             // 
