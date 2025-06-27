@@ -134,14 +134,7 @@ namespace UI
 
 
 
-
-
-
-
-
         #endregion Fin Funciones Form
-
-
 
 
         #region Botones Form
@@ -213,8 +206,6 @@ namespace UI
                 MessageBox.Show(ex.Message);
             }
         }
-
-
 
         #endregion Fin Botones Form
 
