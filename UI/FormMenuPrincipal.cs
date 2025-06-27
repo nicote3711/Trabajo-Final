@@ -355,5 +355,20 @@ namespace UI
                 MessageBox.Show(ex.Message);
             }
         }
+
+        private void registrarRecargarToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                FormRecargaCombustible formRecargaCombustible = new FormRecargaCombustible();
+                formRecargaCombustible.MdiParent = this; 
+                formRecargaCombustible.Show();
+            }
+            catch (Exception ex)
+            {
+
+                MessageBox.Show(ex.Message);
+            }
+        }
     }
 }
