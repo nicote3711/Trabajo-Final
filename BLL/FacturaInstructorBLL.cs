@@ -80,6 +80,10 @@ namespace BLL
                     LiquidacionInstructorBLO.AsignarIdFacturaALiquidacion(liquidacion); 
                 }
 
+                //Generar FacturaPDF
+                Result result = HelperFacturas.GenerarFacturaPDF(facturaInstructor);
+                if (!result.Success)
+                    throw new Exception(result.Message);
             }
             catch (Exception ex)
             {

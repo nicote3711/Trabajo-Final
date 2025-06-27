@@ -5,7 +5,6 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
-using static ENTITY.FacturaDetalle;
 
 namespace ENTITY
 {
@@ -16,7 +15,6 @@ namespace ENTITY
             this.TipoFactura = new TipoFactura()
             {
                 IdTipoFactura = (int)EnumTiposFactura.FacturaSolicitudHoras
-                               
             };
            
         }
@@ -38,19 +36,15 @@ namespace ENTITY
             return emisor;
         }
 
-        public override FacturaDetalle FacturaDetalles()
+        public override List<LiquidacionDetalle> FacturaDetalles()
         {
-            FacturaDetalle detalleFactura = new FacturaDetalle();
-            detalleFactura.TipoItemFactura = typeof(SolicitudHoras).AssemblyQualifiedName;
-            detalleFactura.ItemsFactura.Add(Solicitud);
-            detalleFactura.FacturaDetalleItems.Add(new FacturaDetalleItem() { Cabecera = "Solicitud",ItemProperty = "IdSolicitudHoras" });
-            detalleFactura.FacturaDetalleItems.Add(new FacturaDetalleItem() { Cabecera = "Fecha Solicitud", ItemProperty = "FechaSolicitud" });
-            detalleFactura.FacturaDetalleItems.Add(new FacturaDetalleItem() { Cabecera = "Horas de vuelo", ItemProperty = "CantidadHorasVuelo" });
-            detalleFactura.FacturaDetalleItems.Add(new FacturaDetalleItem() { Cabecera = "Horas Simulador", ItemProperty = "CantidadHorasSimulador" });
-            detalleFactura.FacturaDetalleItems.Add(new FacturaDetalleItem() { Cabecera = "Precio Vuelo", ItemProperty = "ValorHoraVuelo" }); 
-            detalleFactura.FacturaDetalleItems.Add(new FacturaDetalleItem() { Cabecera = "Precio Simulador", ItemProperty = "ValorHoraSimulador" });
+            List<LiquidacionDetalle> detalleLiq = new List<LiquidacionDetalle>();
+            if(Solicitud.CantidadHorasVuelo > 0)
+                detalleLiq.Add(new LiquidacionDetalle(Solicitud.FechaSolicitud, "Solicitud de horas de Vuelo", Solicitud.CantidadHorasVuelo, Solicitud.ValorHoraVuelo));
+            if (Solicitud.CantidadHorasSimulador > 0)
+                detalleLiq.Add(new LiquidacionDetalle(Solicitud.FechaSolicitud,"Solicitud de horas de Simulador", Solicitud.CantidadHorasSimulador,Solicitud.ValorHoraSimulador));
             
-            return detalleFactura;
+            return detalleLiq;
         }
     }
 }

@@ -190,15 +190,18 @@ namespace UI
                 if (dueno == null) throw new Exception("Error al obtener el dueño del combo box");
                 if (string.IsNullOrEmpty(dueno.CuitCuil)) throw new Exception("Error al obtener el Cuil del dueño, este es nulo o vacio");
                 facturaDueno.CuilEmisor = dueno.CuitCuil;
-                facturaDueno.Dueno = dueno;
+                facturaDueno.Dueno = DuenoBLO.BuscarDuenoPorCuit(dueno.CuitCuil);
 
 
                 foreach (DataGridViewRow row in dgv_LiquidacionesDueño.SelectedRows)
                 {
                     LiquidacionDueno liquidacion = row.DataBoundItem as LiquidacionDueno;
                     if (liquidacion == null) throw new Exception("Error al obtener la liquidacion de la grilla");
+                    
                     if (liquidacion.IdFactura != null && liquidacion.IdFactura >= 0) throw new Exception($"La liquidacion{liquidacion.IdLiquidacionServicio} ya tiene una factura asociada{liquidacion.IdFactura}");
+                    //facturaDueno.ListaLiquidaciones.Add(LiquidacionDuenoBLO.BuscarLiquidacionPorId(liquidacion.IdLiquidacionServicio));
                     facturaDueno.ListaLiquidaciones.Add(liquidacion);
+
                 }
 
 

@@ -55,7 +55,8 @@ namespace BLL
         {
             try
             {
-                return InstructorDAO.ObtenerInstructores();
+                List <Instructor> instructores = InstructorDAO.ObtenerInstructores();
+                return instructores;
             }
             catch (Exception ex)
             {

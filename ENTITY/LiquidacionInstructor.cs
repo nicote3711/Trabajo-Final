@@ -21,8 +21,10 @@ namespace ENTITY
         public List<Vuelo> Vuelos { get; set; } = new();
         public List<Simulador> Simuladores { get; set; } = new();    
 
-        public override List<string> ObtenerDetalle()
+        public override List<LiquidacionDetalle> ObtenerDetalle()
         {
+            List<LiquidacionDetalle> liquidacionDetalles = new List<LiquidacionDetalle>();
+
             decimal tiempoVuelo = 0;
             decimal tiempoSimu = 0;
             foreach (Vuelo v in Vuelos)
@@ -34,13 +36,10 @@ namespace ENTITY
                 tiempoSimu += s.TS;
             }
             
-            var detalles = new List<string>();
-            detalles.Add($"Vuelos: {Vuelos.Count}");
-            detalles.Add($"Tiempo Vuelo: {tiempoVuelo}");
-            detalles.Add($"Simuladores: {Simuladores.Count}");
-            detalles.Add($"Tiempo Simulador: {tiempoSimu}");
+            liquidacionDetalles.Add(new LiquidacionDetalle(Periodo,"Total de horas de Vuelo (" + Vuelos.Count + " vuelos)", tiempoVuelo, this.Servicio.Precio));
+            liquidacionDetalles.Add(new LiquidacionDetalle(Periodo,"Total de horas de Simulador (" + Simuladores.Count + " simuladores)", tiempoSimu, this.Servicio.Precio));
 
-            return detalles;
+            return liquidacionDetalles;
         }
     }
 }

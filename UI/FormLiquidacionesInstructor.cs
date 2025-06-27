@@ -211,6 +211,7 @@ namespace UI
                 if (instructor == null) throw new Exception("Error al obtener el instructor del combo box");
                 if (string.IsNullOrEmpty(instructor.CuitCuil)) throw new Exception("Error al obtener el cuit del instructor, este es vacio o nulo");
                 facturaInstructor.CuilEmisor = instructor.CuitCuil;
+                facturaInstructor.Instructor = instructor;
 
 
                 foreach (DataGridViewRow row in dgv_LiquidacionesInstructor.SelectedRows)
@@ -222,6 +223,7 @@ namespace UI
                 }
 
                 FacturaInstructorBLO.RegistrarFacturaInstructor(facturaInstructor);
+
                 CargarGrillaLiquidacionesI();
                 CargarGrillaFacturasI();
                 MessageBox.Show("Factura Registrada Correctamente");

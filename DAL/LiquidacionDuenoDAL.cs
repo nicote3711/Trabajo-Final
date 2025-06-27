@@ -68,6 +68,29 @@ namespace DAL
             }
         }
 
+        public LiquidacionDueno BuscarLiquidacionPorId(int idLiquidacion)
+        {
+            try
+            {
+                if (!File.Exists(rutaXml)) throw new FileNotFoundException("No se encontró el archivo XML.");
+                DataSet ds = new DataSet();
+                ds.ReadXml(rutaXml, XmlReadMode.ReadSchema);
+
+                DataTable tabla = ds.Tables["Liquidacion_Servicio"];
+                if (tabla == null) throw new Exception("No se encontró la tabla Liquidacion Servicio.");
+
+                DataRow row = tabla.AsEnumerable().FirstOrDefault(r => r["Id_Liquidacion_Servicio"].Equals(idLiquidacion));
+                LiquidacionDueno liquidacion = new LiquidacionDueno();
+                LiquidacionServicioMAP.MapearDesdeDB(liquidacion, row);
+                return liquidacion;
+            }
+            catch (Exception ex)
+            {
+
+                throw new Exception("DAL LiquidacionesDueño error al buscar Liquidaciones por id: " + ex.Message, ex);
+            }
+        }
+
         public void GenerarLiquidacionD(LiquidacionDueno liquidacionD)
         {
             try

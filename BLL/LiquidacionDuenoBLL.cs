@@ -13,6 +13,7 @@ namespace BLL
 	public class LiquidacionDuenoBLL
     {
 		LiquidacionDuenoDAL LiquidacionDuenoDAO = new LiquidacionDuenoDAL();	
+        
         public List<LiquidacionDueno> ObtenerLiquidacionesDPorPeriodo(DateTime periodo)
         {
 			try
@@ -39,12 +40,14 @@ namespace BLL
                 List<LiquidacionDueno> LLiquidacionesD = LiquidacionDuenoDAO.ObtenerLiquidacionesDPorIdPersonaDueño(idPersona);
                 DuenoBLL DuenoBLO = new DuenoBLL();
                 VueloBLL VueloBLO = new VueloBLL();
+                ServicioBLL servicioBLO = new ServicioBLL();
                 foreach (LiquidacionDueno liquidacion in LLiquidacionesD)
                 {
 
                     Dueno dueno = DuenoBLO.BuscarDuenoPorIdPersona(liquidacion.Persona.IDPersona); // TO DO: Metodo
                     if (dueno == null) throw new Exception("Error al obtener el dueño para la liquidacion");
                     liquidacion.Persona = dueno;
+                    liquidacion.Servicio = servicioBLO.BuscarServicioPorID(liquidacion.Servicio.IdServicio);
 
                     List<Vuelo> vuelosCompletos = new List<Vuelo>();
                     foreach (Vuelo vueloIncompleto in liquidacion.Vuelos)
@@ -132,6 +135,23 @@ namespace BLL
             {
 
                 throw new Exception("DAL LiquidacionDueño error al buscar liquidacion por Id Factura: "+ex.Message,ex);
+            }
+        }
+
+        public LiquidacionDueno BuscarLiquidacionPorId(int idLiquidacion)
+        {
+            ServicioBLL servicioBLO = new ServicioBLL();
+            try
+            {
+                LiquidacionDueno liquidacion = LiquidacionDuenoDAO.BuscarLiquidacionPorId(idLiquidacion);
+                liquidacion.Servicio = servicioBLO.BuscarServicioPorID(liquidacion.Servicio.IdServicio);
+
+                return liquidacion;
+            }
+            catch (Exception ex)
+            {
+
+                throw new Exception("DAL LiquidacionDueño error al buscar liquidacion por Id: " + ex.Message, ex);
             }
         }
 

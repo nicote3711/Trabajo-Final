@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using static ENTITY.FacturaDetalle;
 
 namespace ENTITY
 {
@@ -37,16 +36,15 @@ namespace ENTITY
             return emisor;
         }
 
-        public override FacturaDetalle FacturaDetalles()
+        public override List<LiquidacionDetalle> FacturaDetalles()
         {
-            FacturaDetalle detalleFactura = new FacturaDetalle();
-            detalleFactura.TipoItemFactura = typeof(LiquidacionDueno).AssemblyQualifiedName;
-            detalleFactura.ItemsFactura.AddRange(ListaLiquidaciones);
-            detalleFactura.FacturaDetalleItems.Add(new FacturaDetalleItem() { Cabecera = "Periodo", ItemProperty = "Periodo" });
-            detalleFactura.FacturaDetalleItems.Add(new FacturaDetalleItem() { Cabecera = "Horas de vuelo", ItemProperty = "CantHoras" });
-            detalleFactura.FacturaDetalleItems.Add(new FacturaDetalleItem() { Cabecera = "Monto", ItemProperty = "MontoTotal" });
+            List<LiquidacionDetalle> detalleLiq = new List<LiquidacionDetalle>();
+            foreach (LiquidacionDueno liquidacion in ListaLiquidaciones)
+            {
+                detalleLiq.AddRange(liquidacion.ObtenerDetalle());
+            }
 
-            return detalleFactura;
+            return detalleLiq;
         }
     }
 }

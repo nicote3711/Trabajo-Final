@@ -24,7 +24,7 @@ namespace ENTITY
         public abstract Persona DatosCliente();
         public abstract Persona DatosEmisor();
 
-        public abstract FacturaDetalle FacturaDetalles();
+        public abstract List<LiquidacionDetalle> FacturaDetalles();
 
     }
 }

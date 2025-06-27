@@ -19,17 +19,20 @@ namespace ENTITY
         }
         public List<Vuelo> Vuelos { get; set; }
 
-        public override List<string> ObtenerDetalle()
+        public override List<LiquidacionDetalle> ObtenerDetalle()
         {
+            List<LiquidacionDetalle> liquidacionDetalles = new List<LiquidacionDetalle>();
             decimal tiempoVuelo = 0;
             foreach (Vuelo v in Vuelos)
             {
                 tiempoVuelo += v.TV;
             }
+
             var detalles = new List<string>();
-            detalles.Add($"Vuelos: {Vuelos.Count}");
-            detalles.Add($"Tiempo Vuelo: {tiempoVuelo}");
-            return detalles;
+
+            liquidacionDetalles.Add(new LiquidacionDetalle(Periodo, "Total de horas de Vuelo (" + Vuelos.Count + " vuelos)", tiempoVuelo, this.Servicio.Precio));
+
+            return liquidacionDetalles;
         }
     }
 }

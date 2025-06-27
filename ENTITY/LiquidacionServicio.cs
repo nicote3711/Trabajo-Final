@@ -18,6 +18,8 @@ namespace ENTITY
         public Persona Persona { get; set; }   // Instructor o Dueño tendra que verificarse en algun lado en la especializacion
         public int? IdFactura { get; set; } // FK opcional, se completa al facturar nose si solo el Id alcanza o necesito el objeto factura
 
-        public abstract List<string> ObtenerDetalle(); // comportamiento específico
+        public abstract List<LiquidacionDetalle> ObtenerDetalle(); // comportamiento específico
+
+        
     }
 }

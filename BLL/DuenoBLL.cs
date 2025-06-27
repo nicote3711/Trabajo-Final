@@ -120,6 +120,22 @@ namespace BLL
                 throw new Exception ("BLL dueño error al buscar Dueño por Id Persona: "+ex.Message,ex);
             }
         }
+
+        public Dueno BuscarDuenoPorCuit(string cuit)
+        {
+            try
+            {
+                if (string.IsNullOrEmpty(cuit)) throw new Exception("cuit invalido");
+
+                return duenoDAO.BuscarDuenoPorCuit(cuit);
+
+            }
+            catch (Exception ex)
+            {
+
+                throw new Exception("BLL dueño error al buscar Dueño por Id Persona: " + ex.Message, ex);
+            }
+        }
     }
 }
 

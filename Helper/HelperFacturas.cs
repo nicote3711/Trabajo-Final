@@ -19,7 +19,6 @@ using System.Reflection;
 using System.Reflection.Metadata;
 using System.Text;
 using System.Threading.Tasks;
-using static ENTITY.FacturaDetalle;
 using Document = iText.Layout.Document;
 
 
@@ -117,41 +116,32 @@ namespace Helper
                         document.Add(new Paragraph("\n").SetFontSize(8)); // Espacio
 
                         // --- Detalle de Productos/Servicios ---
-                        var facturaDetalle = factura.FacturaDetalles();
-                        var anchoColumnas = new List<float>();
-                        foreach (FacturaDetalleItem item in facturaDetalle.FacturaDetalleItems)
-                        {
-                            anchoColumnas.Add(0.2f);
-                        }
-
-                        Table productsTable = new Table(UnitValue.CreatePercentArray(anchoColumnas.ToArray()))
+                        List<LiquidacionDetalle> facturaDetalle = factura.FacturaDetalles();
+                        
+                        Table productsTable = new Table(UnitValue.CreatePercentArray(new float[] { 0.2f,0.3f, 0.15f, 0.15f,0.2f }))
                                                   .SetWidth(UnitValue.CreatePercentValue(100))
                                                   .SetBorder(new SolidBorder(DeviceRgb.MakeLighter((DeviceRgb)DeviceRgb.BLACK), 0.5f));
+
                         productsTable.SetFixedLayout();
 
                         // Encabezados del detalle
-                        
-                        Type tipoObjeto = Type.GetType(facturaDetalle.TipoItemFactura);
-                        
-                        List<Cell> cellList = new List<Cell>();
+                        productsTable.AddHeaderCell((CreateHeaderCell("Fecha").SetFont(fontNormal).SetFontSize(8).SetTextAlignment(TextAlignment.CENTER)));
+                        productsTable.AddHeaderCell((CreateHeaderCell("Descripcion").SetFont(fontNormal).SetFontSize(8).SetTextAlignment(TextAlignment.LEFT)));
+                        productsTable.AddHeaderCell((CreateHeaderCell("Cantidad").SetFont(fontNormal).SetFontSize(8).SetTextAlignment(TextAlignment.RIGHT)));
+                        productsTable.AddHeaderCell((CreateHeaderCell("Precio").SetFont(fontNormal).SetFontSize(8).SetTextAlignment(TextAlignment.RIGHT)));
+                        productsTable.AddHeaderCell((CreateHeaderCell("Total").SetFont(fontNormal).SetFontSize(8).SetTextAlignment(TextAlignment.RIGHT)));
+                       
 
-                        foreach (FacturaDetalleItem item in facturaDetalle.FacturaDetalleItems) 
+                        foreach (LiquidacionDetalle detalle in facturaDetalle)
                         {
-                            productsTable.AddHeaderCell((CreateHeaderCell(item.Cabecera).SetFont(fontNormal).SetFontSize(7).SetTextAlignment(TextAlignment.CENTER)));
-                            foreach (object itemObject in facturaDetalle.ItemsFactura)
-                            {
-                                PropertyInfo propiedad = tipoObjeto.GetProperty(item.ItemProperty);
-                                var property = propiedad.GetValue(itemObject);
-                                cellList.Add(CreateProductCell(property.ToString()).SetFont(fontNormal).SetFontSize(8));
-                            }
-                        }
-                        
-                        foreach (Cell cell in cellList)
-                        {
-                            productsTable.AddCell((cell.SetFontSize(7).SetTextAlignment(TextAlignment.CENTER)));
+                            productsTable.AddCell((CreateProductCell(detalle.FechaLiquidacion.ToShortDateString()).SetFontSize(7).SetTextAlignment(TextAlignment.CENTER)));
+                            productsTable.AddCell((CreateProductCell(detalle.Descripcion).SetFontSize(7).SetTextAlignment(TextAlignment.LEFT)));
+                            productsTable.AddCell((CreateProductCell(detalle.Cantidad.ToString()).SetFontSize(7).SetTextAlignment(TextAlignment.RIGHT)));
+                            productsTable.AddCell((CreateProductCell(detalle.Valor.ToString()).SetFontSize(7).SetTextAlignment(TextAlignment.RIGHT)));
+                            productsTable.AddCell((CreateProductCell(detalle.MontoTotal.ToString("N2")).SetFontSize(7).SetTextAlignment(TextAlignment.RIGHT)));
                         }
 
-                        
+
                         document.Add(productsTable);
 
                         // --- Resumen de Totales ---
@@ -160,14 +150,14 @@ namespace Helper
                                               .SetHorizontalAlignment(HorizontalAlignment.RIGHT); // Alinear la tabla a la derecha
                         
                         double totalFinal = Convert.ToDouble(factura.MontoTotal);
-                        double ivaMonto = totalFinal / 0.21;
-                        double subtotalFactura = totalFinal - ivaMonto;
+                        double subtotalFactura = totalFinal / 1.21;
+                        double ivaMonto = totalFinal - subtotalFactura;
 
-                        totalsTable.AddCell(CreateLabelCell("Subtotal:").SetTextAlignment(TextAlignment.RIGHT).SetBorder(Border.NO_BORDER));
-                        totalsTable.AddCell(CreateDataCell("$ " + subtotalFactura.ToString("N2")).SetTextAlignment(TextAlignment.RIGHT).SetBorder(Border.NO_BORDER));
+                        //totalsTable.AddCell(CreateLabelCell("Subtotal:").SetTextAlignment(TextAlignment.RIGHT).SetBorder(Border.NO_BORDER));
+                        //totalsTable.AddCell(CreateDataCell("$ " + subtotalFactura.ToString("N2")).SetTextAlignment(TextAlignment.RIGHT).SetBorder(Border.NO_BORDER));
 
-                        totalsTable.AddCell(CreateLabelCell("IVA 21%:").SetTextAlignment(TextAlignment.RIGHT).SetBorder(Border.NO_BORDER));
-                        totalsTable.AddCell(CreateDataCell("$ " + ivaMonto.ToString("N2")).SetTextAlignment(TextAlignment.RIGHT).SetBorder(Border.NO_BORDER));
+                        //totalsTable.AddCell(CreateLabelCell("IVA 21%:").SetTextAlignment(TextAlignment.RIGHT).SetBorder(Border.NO_BORDER));
+                        //totalsTable.AddCell(CreateDataCell("$ " + ivaMonto.ToString("N2")).SetTextAlignment(TextAlignment.RIGHT).SetBorder(Border.NO_BORDER));
 
                         totalsTable.AddCell(CreateLabelCell("TOTAL:").SetFont(fontBold).SetFontSize(14).SetTextAlignment(TextAlignment.RIGHT).SetBorder(Border.NO_BORDER));
                         totalsTable.AddCell(CreateDataCell("$ " + totalFinal.ToString("N2")).SetFont(fontBold).SetFontSize(14).SetTextAlignment(TextAlignment.RIGHT).SetBorder(Border.NO_BORDER));

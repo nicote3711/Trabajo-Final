@@ -18,17 +18,22 @@ namespace ENTITY
 
         public override Persona DatosCliente()
         {
-            throw new NotImplementedException();
+            Cliente cliente = new Cliente();
+
+            return cliente;
         }
 
         public override Persona DatosEmisor()
         {
-            throw new NotImplementedException();
+            Empresa emisor = new Empresa();
+            return emisor;
         }
 
-        public override FacturaDetalle FacturaDetalles()
+        public override List<LiquidacionDetalle> FacturaDetalles()
         {
-            throw new NotImplementedException();
+            List<LiquidacionDetalle> facturaDetalles = new List<LiquidacionDetalle>();
+
+            return facturaDetalles;
         }
     }
 }

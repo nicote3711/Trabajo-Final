@@ -13,24 +13,38 @@ namespace ENTITY
         {
             this.TipoFactura = new TipoFactura();   
             TipoFactura.IdTipoFactura = (int)EnumTiposFactura.FacturaInstructor;
-            
         }
 
         public List<LiquidacionInstructor> ListaLiquidaciones { get; set; }
+        public Instructor Instructor { get; set; }
 
         public override Persona DatosCliente()
         {
-            throw new NotImplementedException();
+            Cliente cliente = new Cliente();
+            cliente.Nombre = "Flight MRB";
+            cliente.Apellido = string.Empty;
+            cliente.CuitCuil = "3013549875";
+            return cliente;
         }
 
         public override Persona DatosEmisor()
         {
-            throw new NotImplementedException();
+            Empresa emisor = new Empresa();
+            //emisor.Nombre = Nombre;
+            //emisor.Apellido = Dueno.Apellido;
+            //emisor.CuitCuil = Dueno.CuitCuil;
+            return emisor;
         }
 
-        public override FacturaDetalle FacturaDetalles()
+        public override List<LiquidacionDetalle> FacturaDetalles()
         {
-            throw new NotImplementedException();
+            List<LiquidacionDetalle> detalleLiq = new List<LiquidacionDetalle>();
+            foreach (LiquidacionInstructor liquidacion in ListaLiquidaciones)
+            {
+                detalleLiq.AddRange(liquidacion.ObtenerDetalle());
+            }
+
+            return detalleLiq;
         }
     }
 }
