@@ -1,5 +1,6 @@
 ﻿using DAL;
 using ENTITY;
+using ENTITY.Enum;
 using Helper;
 using System;
 using System.Collections.Generic;
@@ -25,8 +26,8 @@ namespace BLL
                 if (facturaCombustible.Transaccion != null) throw new Exception("No se puede eliminar una factura ya pagada");
 
 				FacturaCombustibleDAO.EliminarFacturaPorId(facturaCombustible.IdFactura);
-
-				RecargaCombustibleBLL RecargaCombustibleBLO = new RecargaCombustibleBLL();
+				Result result = HelperFacturas.EliminarFacturaPDF((int)EnumTiposFactura.FacturaRecargaCombustible, facturaCombustible.NroFactura);
+                RecargaCombustibleBLL RecargaCombustibleBLO = new RecargaCombustibleBLL();
 				RecargaCombustibleBLO.EliminarRecargaPorIdFactura(facturaCombustible.IdFactura); // aca podria eliminar por Id Recarga simplemente ya que tengo el Id al mappear todo el objeto.
 
             }
@@ -65,6 +66,7 @@ namespace BLL
         {
 			HelperTransaccion helperTransaccion = new HelperTransaccion();
 			DataSet ds = helperTransaccion.DfParaTransaccion();
+
 			try
 			{
 				CargarFacturaCombuConRecarga(facturaCombustible);
@@ -75,7 +77,11 @@ namespace BLL
 				facturaCombustible.RecargaCombu.FacturaCombu.IdFactura = facturaCombustible.IdFactura;	
 				RecargaCombustibleBLL RecargaCombustibleBLO = new RecargaCombustibleBLL();
 				RecargaCombustibleBLO.RegistrarRecargaCombustible(facturaCombustible.RecargaCombu);
-			}
+
+				Result resultado = HelperFacturas.GenerarFacturaPDF(facturaCombustible);
+				if (!resultado.Success) throw new Exception(resultado.Message);
+
+            }
 			catch (Exception ex)
 			{
 				helperTransaccion.RollbackDfParaTransaccion(ds);

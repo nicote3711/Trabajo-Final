@@ -92,6 +92,7 @@
             txt_CantidadLitros.Name = "txt_CantidadLitros";
             txt_CantidadLitros.Size = new Size(121, 23);
             txt_CantidadLitros.TabIndex = 4;
+            txt_CantidadLitros.TextChanged += txt_CantidadLitros_TextChanged;
             // 
             // label3
             // 
@@ -117,6 +118,7 @@
             txt_PrecioLitro.Name = "txt_PrecioLitro";
             txt_PrecioLitro.Size = new Size(121, 23);
             txt_PrecioLitro.TabIndex = 6;
+            txt_PrecioLitro.TextChanged += txt_PrecioLitro_TextChanged;
             // 
             // label5
             // 
@@ -129,6 +131,7 @@
             // 
             // txt_MontoFactura
             // 
+            txt_MontoFactura.Enabled = false;
             txt_MontoFactura.Location = new Point(187, 331);
             txt_MontoFactura.Name = "txt_MontoFactura";
             txt_MontoFactura.Size = new Size(121, 23);

@@ -1,5 +1,6 @@
 ﻿using DAL;
 using ENTITY;
+using ENTITY.Enum;
 using Helper;
 using System;
 using System.Collections.Generic;
@@ -77,7 +78,9 @@ namespace BLL
 				if (factura.ListaLiquidaciones == null || factura.ListaLiquidaciones.Count <= 0) throw new Exception("Lista de liquidaciones de la factura nula o vacia");
 
 				FacturaDuenoDAO.EliminarFactura(factura.IdFactura);
-				LiquidacionDuenoBLL LiquidacionDuenoBLO = new LiquidacionDuenoBLL();
+                Result result = HelperFacturas.EliminarFacturaPDF((int)EnumTiposFactura.FacturaDueño, factura.NroFactura);
+
+                LiquidacionDuenoBLL LiquidacionDuenoBLO = new LiquidacionDuenoBLL();
 				foreach(LiquidacionDueno liquidacion in factura.ListaLiquidaciones)
 				{
 					LiquidacionDuenoBLO.QuitarIdFacturaALiquidacion(liquidacion);

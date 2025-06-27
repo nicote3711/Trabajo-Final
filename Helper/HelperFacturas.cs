@@ -15,6 +15,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;        // For FileStream
 using System.Linq;
+using System.Linq.Expressions;
 using System.Reflection;
 using System.Reflection.Metadata;
 using System.Text;
@@ -26,9 +27,32 @@ namespace Helper
 {
     public static class HelperFacturas
     {
+        #region GENERACION PDF
         const string fileName = "F_{NumeroFactura}.pdf";
         const string filePath = "\\Facturas\\{TipoFactura}\\";
-        
+
+        public static Result EliminarFacturaPDF(int tipoFactura,int nroFactura) 
+        {
+            Result result = new Result();
+            try
+            {
+                string directorio = AppDomain.CurrentDomain.BaseDirectory; // Starting Dir
+                FileInfo fileInfo = new FileInfo(directorio.Substring(0, (directorio.Split("UI\\")[0] + "UI\\").Length));
+                string baseDirNombre = fileInfo.Directory.FullName;
+                string pathDocumento = baseDirNombre + filePath.Replace("{TipoFactura}", EnumTiposFactura.GetName((EnumTiposFactura)tipoFactura)) + fileName.Replace("{NumeroFactura}", nroFactura.ToString());
+
+                File.Delete(pathDocumento);
+                result.Success = true;
+                result.Message = "PDF Factura Eliminado exitosamente";
+            }
+            catch (Exception ex)
+            {
+                result.Success = false;
+                result.Message = "Error al eliminar PDF Factura: " + ex.Message;
+            }
+            return result;
+        }
+
         public static Result GenerarFacturaPDF(Factura factura) 
         {
             try
@@ -226,7 +250,7 @@ namespace Helper
                 .SetPadding(3);
         }
 
-
+        #endregion
 
     }
 }

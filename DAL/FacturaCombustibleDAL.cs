@@ -83,6 +83,7 @@ namespace DAL
                 if (tabla == null)throw new Exception("No se encontró la tabla Factura.");
 
                 facturaCombustible.IdFactura = HelperD.ObtenerProximoID(tabla, "Id_Factura");
+                //facturaCombustible.NroFactura = HelperD.ObtenerProximoNumeroFactura(tabla,(int)EnumTiposFactura.FacturaRecargaCombustible);
 
                 DataRow row = tabla.NewRow();
                 FacturaMAP.MapearHaciaDB(facturaCombustible, row);

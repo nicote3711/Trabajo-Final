@@ -1,6 +1,7 @@
 ﻿using BLL;
 using DAL;
 using ENTITY;
+using Helper;
 using Org.BouncyCastle.Crypto.General;
 using System;
 using System.Collections.Generic;
@@ -34,7 +35,7 @@ namespace UI
             CargarDgvFacturaRecargaCombu();
         }
 
-     
+
 
 
         #region Funciones Form
@@ -53,7 +54,7 @@ namespace UI
             {
                 List<DepositoCombustible> LDepositosCombu = DepositoCombustibleDAO.ObtenerTodos();
                 cmBox_DepositoCombu.DataSource = null;
-                if(LDepositosCombu.Count>=0)
+                if (LDepositosCombu.Count >= 0)
                 {
                     cmBox_DepositoCombu.DataSource = LDepositosCombu;
                     cmBox_DepositoCombu.DisplayMember = "IdDepositoCombustible";
@@ -101,9 +102,9 @@ namespace UI
             {
                 List<FacturaCombustible> LFacturaCombu = FacturaCombustibleBLO.ObtenerTodos();
                 dgv_FacturasRecarga.DataSource = null;
-                if(LFacturaCombu.Count >= 0)
+                if (LFacturaCombu.Count >= 0)
                 {
-                    dgv_FacturasRecarga.DataSource= LFacturaCombu;
+                    dgv_FacturasRecarga.DataSource = LFacturaCombu;
                 }
 
             }
@@ -120,9 +121,9 @@ namespace UI
             {
                 List<RecargaCombustible> LRecargarsCombu = RecargaCombustibleBLO.ObtenerTodos();
                 dgv_RecargasCombustible.DataSource = null;
-                if(LRecargarsCombu.Count >= 0)
+                if (LRecargarsCombu.Count >= 0)
                 {
-                    dgv_RecargasCombustible.DataSource= LRecargarsCombu;
+                    dgv_RecargasCombustible.DataSource = LRecargarsCombu;
                 }
             }
             catch (Exception ex)
@@ -151,20 +152,20 @@ namespace UI
                 DepositoCombustible depositoCombustible = cmBox_DepositoCombu.SelectedItem as DepositoCombustible;
                 if (depositoCombustible == null) throw new Exception("Error al obtener deposito de combustible del combo box");
 
-                if(!decimal.TryParse(txt_CantidadLitros.Text, out decimal cantidadLitros)) throw new Exception("cantidad de litros invalida. Debe ser numerica");
-                if(!decimal.TryParse(txt_PrecioLitro.Text,out decimal precioLitro)) throw new Exception("Precio de litro invalido, debe ser numerico");
+                if (!decimal.TryParse(txt_CantidadLitros.Text, out decimal cantidadLitros)) throw new Exception("cantidad de litros invalida. Debe ser numerica");
+                if (!decimal.TryParse(txt_PrecioLitro.Text, out decimal precioLitro)) throw new Exception("Precio de litro invalido, debe ser numerico");
 
-                if (!int.TryParse(txt_NroFactura.Text,out int nroFactura)) throw new Exception("Nro de factura invalido, este debe ser numerico");
+                if (!int.TryParse(txt_NroFactura.Text, out int nroFactura)) throw new Exception("Nro de factura invalido, este debe ser numerico");
                 if (!decimal.TryParse(txt_MontoFactura.Text, out decimal montoFactura)) throw new Exception("Monto Factura invalido, este debe ser numerico");
 
                 RecargaCombustible recarga = new RecargaCombustible()
                 {
-                   ProveedorCombu = proveedorCombustible,
-                   DepositoCombu = depositoCombustible,
-                   PrecioLitros = precioLitro,
-                   CantidadLitros = cantidadLitros,
-                   Fecha = dtp_Fecha.Value,
-                   
+                    ProveedorCombu = proveedorCombustible,
+                    DepositoCombu = depositoCombustible,
+                    PrecioLitros = precioLitro,
+                    CantidadLitros = cantidadLitros,
+                    Fecha = dtp_Fecha.Value,
+
                 };
                 FacturaCombustible facturaCombustible = new FacturaCombustible()
                 {
@@ -174,7 +175,8 @@ namespace UI
                 };
 
                 FacturaCombustibleBLO.RegistrarFacturaCombustible(facturaCombustible);
-
+                CargarDgvFacturaRecargaCombu();
+                CargarDgvRecargasCombu();
                 MessageBox.Show("Recarga y Factura de combustible registradas correctamente");
             }
             catch (Exception ex)
@@ -191,14 +193,14 @@ namespace UI
                 if (dgv_FacturasRecarga.Rows.Count <= 0) throw new Exception("no hay facturas para eliminar");
                 if (dgv_FacturasRecarga.SelectedRows.Count <= 0) throw new Exception("debe seleccionar uan factura a eliminar");
                 FacturaCombustible facturaCombustible = dgv_FacturasRecarga.SelectedRows[0].DataBoundItem as FacturaCombustible;
-             
+
 
                 FacturaCombustibleBLO.EliminarFactura(facturaCombustible);
 
                 CargarDgvFacturaRecargaCombu();
                 CargarDgvRecargasCombu();
                 MessageBox.Show("Factura eliminada correctamente");
-    
+
             }
             catch (Exception ex)
             {
@@ -209,6 +211,27 @@ namespace UI
 
         #endregion Fin Botones Form
 
- 
+
+        private void txt_CantidadLitros_TextChanged(object sender, EventArgs e)
+        {
+            CalcularMontoFactura();
+        }
+
+        private void txt_PrecioLitro_TextChanged(object sender, EventArgs e)
+        {
+            CalcularMontoFactura();
+        }
+
+        private void CalcularMontoFactura()
+        {
+            decimal cantidadLitros = 0;
+            decimal precioPorLitro = 0;
+
+            decimal.TryParse(txt_CantidadLitros.Text, out cantidadLitros);
+
+            decimal.TryParse(txt_PrecioLitro.Text, out precioPorLitro);
+
+            txt_MontoFactura.Text = (cantidadLitros * precioPorLitro).ToString("N2");
+        }
     }
 }

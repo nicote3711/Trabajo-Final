@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ENTITY.Enum;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
@@ -20,6 +21,18 @@ namespace Helper
 
             return valores.Any() ? valores.Max() + 1 : 1;
         }
+
+        public static int ObtenerProximoNumeroFactura(DataTable tabla, int tipoFactura)
+        {
+            if (tabla == null || tabla.Rows.Count == 0)
+                return 1;
+
+            var valores = tabla.AsEnumerable()
+                                .Where(row => Convert.ToInt32(row["Id_Tipo_Factura"]).Equals(tipoFactura));
+
+            return valores.Any() ? valores.Max(row => Convert.ToInt32(row["Nro_Factura"])) + 1 : 1;
+        }
+
         public static string ObtenerConexionXMl()
         {
             return "GestionEscuelaVuelo_FINAL.xml";

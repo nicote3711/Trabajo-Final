@@ -1,5 +1,6 @@
 ﻿using DAL;
 using ENTITY;
+using ENTITY.Enum;
 using Helper;
 using System;
 using System.Collections.Generic;
@@ -110,8 +111,8 @@ namespace BLL
 
                 FacturaSolicitudHorasBLL FacturaSolicitudHorasBLO = new FacturaSolicitudHorasBLL(); // Instancia de FacturaSolicitudHorasBLL para manejar facturas asociadas a solicitudes
 				FacturaSolicitudHorasBLO.EliminarFacturaPorId(solicitudHoras.Factura.IdFactura); // Eliminar la factura asociada a la solicitud de horas
-
-				SolicitudHorasDAO.EliminarSolicitudHorasPorId(solicitudHoras.IdSolicitudHoras); // Eliminar la solicitud de horas por ID en la base de datos o archivo XML
+                Result result = HelperFacturas.EliminarFacturaPDF((int)EnumTiposFactura.FacturaSolicitudHoras, solicitudHoras.Factura.NroFactura);
+                SolicitudHorasDAO.EliminarSolicitudHorasPorId(solicitudHoras.IdSolicitudHoras); // Eliminar la solicitud de horas por ID en la base de datos o archivo XML
 
             }
 			catch (Exception ex)
