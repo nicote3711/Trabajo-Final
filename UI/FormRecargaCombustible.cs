@@ -1,6 +1,7 @@
 ﻿using BLL;
 using DAL;
 using ENTITY;
+using Org.BouncyCastle.Crypto.General;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -17,7 +18,8 @@ namespace UI
     {
         ProveedorCombustibleBLL ProveedorCombustibleBLO = new ProveedorCombustibleBLL();
         DepositoCombustibleDAL DepositoCombustibleDAO = new DepositoCombustibleDAL();
-        FacturaCombustibleBLL FacturaCombustibleBLO = new FacturaCombustibleBLL();  
+        FacturaCombustibleBLL FacturaCombustibleBLO = new FacturaCombustibleBLL();
+        RecargaCombustibleBLL RecargaCombustibleBLO = new RecargaCombustibleBLL();
 
         public FormRecargaCombustible()
         {
@@ -28,7 +30,11 @@ namespace UI
         private void FormRecargaCombustible_Load(object sender, EventArgs e)
         {
             CargarComboBoxes();
+            CargarDgvRecargasCombu();
+            CargarDgvFacturaRecargaCombu();
         }
+
+     
 
 
         #region Funciones Form
@@ -61,7 +67,10 @@ namespace UI
 
                 MessageBox.Show(ex.Message);
             }
+
+
         }
+
 
         private void CargarComboBoxProveedorCombu()
         {
@@ -84,6 +93,50 @@ namespace UI
                 MessageBox.Show(ex.Message);
             }
         }
+
+
+        private void CargarDgvFacturaRecargaCombu()
+        {
+            try
+            {
+                List<FacturaCombustible> LFacturaCombu = FacturaCombustibleBLO.ObtenerTodos();
+                dgv_FacturasRecarga.DataSource = null;
+                if(LFacturaCombu.Count >= 0)
+                {
+                    dgv_FacturasRecarga.DataSource= LFacturaCombu;
+                }
+
+            }
+            catch (Exception ex)
+            {
+
+                MessageBox.Show(ex.Message);
+            }
+        }
+
+        private void CargarDgvRecargasCombu()
+        {
+            try
+            {
+                List<RecargaCombustible> LRecargarsCombu = RecargaCombustibleBLO.ObtenerTodos();
+                dgv_RecargasCombustible.DataSource = null;
+                if(LRecargarsCombu.Count >= 0)
+                {
+                    dgv_RecargasCombustible.DataSource= LRecargarsCombu;
+                }
+            }
+            catch (Exception ex)
+            {
+
+                MessageBox.Show(ex.Message);
+            }
+        }
+
+
+
+
+
+
 
 
         #endregion Fin Funciones Form
@@ -142,7 +195,17 @@ namespace UI
         {
             try
             {
+                if (dgv_FacturasRecarga.Rows.Count <= 0) throw new Exception("no hay facturas para eliminar");
+                if (dgv_FacturasRecarga.SelectedRows.Count <= 0) throw new Exception("debe seleccionar uan factura a eliminar");
+                FacturaCombustible facturaCombustible = dgv_FacturasRecarga.SelectedRows[0].DataBoundItem as FacturaCombustible;
+             
 
+                FacturaCombustibleBLO.EliminarFactura(facturaCombustible);
+
+                CargarDgvFacturaRecargaCombu();
+                CargarDgvRecargasCombu();
+                MessageBox.Show("Factura eliminada correctamente");
+    
             }
             catch (Exception ex)
             {

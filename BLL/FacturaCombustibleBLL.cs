@@ -13,7 +13,31 @@ namespace BLL
     public class FacturaCombustibleBLL
     {
 		FacturaCombustibleDAL FacturaCombustibleDAO = new FacturaCombustibleDAL();
-		public List<FacturaCombustible> ObtenerTodos()
+
+        public void EliminarFactura(FacturaCombustible facturaCombustible)
+        {
+			HelperTransaccion helperTransaccion = new HelperTransaccion();
+			DataSet ds = helperTransaccion.DfParaTransaccion();
+			try
+			{
+                if (facturaCombustible == null || facturaCombustible.IdFactura <= 0 ) throw new Exception("error al obtener la factura de la grilla esta es nulo o con id invalid");
+				if (facturaCombustible.RecargaCombu == null || facturaCombustible.RecargaCombu.IdRecargaCombustible <= 0) throw new Exception("error al obtener la factura de la grila, no tiene recarga asociada o su id es invalido");
+                if (facturaCombustible.Transaccion != null) throw new Exception("No se puede eliminar una factura ya pagada");
+
+				FacturaCombustibleDAO.EliminarFacturaPorId(facturaCombustible.IdFactura);
+
+				RecargaCombustibleBLL RecargaCombustibleBLO = new RecargaCombustibleBLL();
+				RecargaCombustibleBLO.EliminarRecargaPorIdFactura(facturaCombustible.IdFactura); // aca podria eliminar por Id Recarga simplemente ya que tengo el Id al mappear todo el objeto.
+
+            }
+			catch (Exception ex)
+			{
+				helperTransaccion.RollbackDfParaTransaccion(ds);
+				throw new Exception("BLL FacturaCombustible error al eliminar Factura: "+ex.Message,ex);
+			}
+        }
+
+        public List<FacturaCombustible> ObtenerTodos()
 		{
 			try
 			{

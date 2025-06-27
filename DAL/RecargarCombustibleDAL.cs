@@ -128,5 +128,31 @@ namespace DAL
                 throw new Exception("DAL RecagarCombustible error al buscar recarga por Id Factura: "+ex.Message,ex);
             }
         }
+
+        public void EliminarRecargarPorIdFactura(int idFactura)
+        {
+            try
+            {
+                if (!File.Exists(rutaXml)) throw new FileNotFoundException("No se encontró el archivo XML.");
+
+                DataSet ds = new DataSet();
+                ds.ReadXml(rutaXml, XmlReadMode.ReadSchema);
+
+                DataTable tabla = ds.Tables["Recarga_Combustible"];
+                if (tabla == null) throw new Exception("No se encontró la tabla Recarga_Combustible.");
+
+                DataRow row = tabla.AsEnumerable().FirstOrDefault(rc => rc["Id_Factura"].Equals(idFactura));
+                if (row == null) throw new Exception($"no se encontro una recarga asociada a el id de Factura {idFactura}");
+
+                row.Delete();
+
+                ds.WriteXml(rutaXml,XmlWriteMode.WriteSchema);
+            }
+            catch (Exception ex)
+            {
+
+                throw new Exception("DAL RecargaCombustible error al eliminar recarga por id factura: "+ex.Message,ex);
+            }
+        }
     }
 }

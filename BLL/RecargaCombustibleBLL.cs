@@ -42,6 +42,36 @@ namespace BLL
 			}
         }
 
+        public List<RecargaCombustible> ObtenerTodos()
+        {
+			try
+			{
+				List<RecargaCombustible> LRecargasCombu = RecargarCombustibleDAO.ObtenerTodos();
+				if (LRecargasCombu == null) throw new Exception("la lista de recargas es nula");
+				
+
+				ProveedorCombustibleBLL ProveedorCombustibleBLO = new ProveedorCombustibleBLL();
+				DepositoCombustibleBLL DepositoCombustibleBLO = new DepositoCombustibleBLL();
+
+				foreach(RecargaCombustible recarga in LRecargasCombu)
+				{
+					if (recarga.IdRecargaCombustible <= 0) throw new Exception("Id de recarga invalido");
+					if (recarga.ProveedorCombu == null || recarga.ProveedorCombu.IdProveedorCombustible <= 0) throw new Exception($"la recarga id {recarga.IdRecargaCombustible} no tiene asignado un proveedor o su id es invalido");
+					ProveedorCombustible proveedor = ProveedorCombustibleBLO.BuscarProveedorPorId(recarga.ProveedorCombu.IdProveedorCombustible);
+					recarga.ProveedorCombu = proveedor;
+					if (recarga.DepositoCombu == null || recarga.DepositoCombu.IdDepositoCombustible <= 0) throw new Exception($"la recarga id {recarga.IdRecargaCombustible} tiene deposito nulo o id invalido");
+					DepositoCombustible depositoCombu = DepositoCombustibleBLO.BuscarDepositoCombuPorId(recarga.DepositoCombu.IdDepositoCombustible);
+					recarga.DepositoCombu = depositoCombu;
+				}
+
+				return LRecargasCombu;
+			}
+			catch (Exception ex)
+			{
+				throw new Exception("BLL RecargaCombustible error al obtener todas las recargas: "+ex.Message,ex);
+			}
+        }
+
         public void RegistrarRecargaCombustible(RecargaCombustible recargaCombu)
         {
 			try
@@ -59,6 +89,20 @@ namespace BLL
 			{
 
 				throw new Exception("BLL RecargarCombustible error al registra recarga: "+ex.Message,ex);
+			}
+        }
+
+        internal void EliminarRecargaPorIdFactura(int idFactura)
+        {
+			try
+			{
+				if (idFactura <= 0) throw new Exception("id de factura invalido");
+				RecargarCombustibleDAO.EliminarRecargarPorIdFactura(idFactura);
+			}
+			catch (Exception ex)
+			{
+
+				throw new Exception("BLL Recarga Combustible error al borrar Recarga por id Factura");
 			}
         }
     }
