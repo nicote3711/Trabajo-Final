@@ -23,7 +23,7 @@ namespace ENTITY
             throw new NotImplementedException();
         }
 
-        public override FacturaDetalle FacturaDetalles()
+        public override List<LiquidacionDetalle> FacturaDetalles()
         {
             throw new NotImplementedException();
         }
