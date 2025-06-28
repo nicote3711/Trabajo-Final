@@ -105,13 +105,29 @@ namespace BLL
         {
             try
             {
-                var mecanico = MecanicoDAO.BuscarMecanicoPorId(idMecanico);
+                Mecanico mecanico = MecanicoDAO.BuscarMecanicoPorId(idMecanico);
                 if (mecanico == null) throw new Exception("No se encontró el mecánico con el ID especificado.");    
                 MecanicoDAO.BajaMecanico(idMecanico);
             }
             catch (Exception)
             {
                 throw;
+            }
+        }
+
+        public Mecanico BuscarMecanicoPorId(int idMecanico)
+        {
+            try
+            {
+                Mecanico mecanico = MecanicoDAO.BuscarMecanicoPorId(idMecanico);
+                if (mecanico == null) throw new Exception($"No se encontro al mecanico id {idMecanico}");
+
+                return mecanico;
+            }
+            catch (Exception ex)
+            {
+
+                throw new Exception("BLL Mecanico error al buscar mecanico por id: "+ex.Message,ex);
             }
         }
     }

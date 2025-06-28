@@ -110,7 +110,24 @@ namespace BLL
                 }
                 else if(aeronave.Revision100Hs >= 100)
                 {
-                    //TODO: Implementar lógica para manejar la revisión de 100 horas;
+                    TipoMantenimientoBLL TipoMantenimientoBLO = new TipoMantenimientoBLL();
+                    MantenimientoBLL MantenimientoBLO = new MantenimientoBLL();
+                    EstadoMantenimientoBLL EstadoMantenimientoBLO = new EstadoMantenimientoBLL();
+
+                    Mantenimiento mantenimiento100Hs = new Mantenimiento();
+                    TipoMantenimiento tipoMantenimiento = TipoMantenimientoBLO.BuscarTipoMantenimientoPorId((int)EnumTipoMantenimiento.Hs100);
+                    if (tipoMantenimiento == null) throw new Exception($"tipo mantenimiento 100Hs con id {(int)EnumTipoMantenimiento.Hs100} no encontrado");
+
+                    EstadoMantenimiento estadoMantenimiento = EstadoMantenimientoBLO.BuscarEstadoMantenimientoPorId((int)EnumEstadoMantenimiento.Pendiente);
+                    if (estadoMantenimiento == null) throw new Exception($"estado matenimiento pendiente con id {(int)EnumEstadoMantenimiento.Pendiente} no encontrado");
+
+                    mantenimiento100Hs.EstadoMantenimiento = estadoMantenimiento;
+                    mantenimiento100Hs.TipoMantenimiento = tipoMantenimiento;
+                    mantenimiento100Hs.Aeronave = aeronave;
+                    mantenimiento100Hs.Fecha = DateTime.Now.Date;
+                    mantenimiento100Hs.Detalle = $"Mantenimiento de 100hs a la aeronave matricula {aeronave.Matricula}.";
+
+                    MantenimientoBLO.AltaMantenimiento(mantenimiento100Hs);
                 }
 
             }

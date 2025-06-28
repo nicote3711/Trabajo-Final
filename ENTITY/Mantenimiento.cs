@@ -15,7 +15,7 @@ namespace ENTITY
         public Aeronave Aeronave { get; set; }
         public Mecanico Mecanico { get; set; }
 
-        public FacturaMantenimiento FacturaMantenimientio { get; set; }
+        public FacturaMantenimiento FacturaMantenimiento { get; set; }
         
         public TipoMantenimiento TipoMantenimiento { get; set; } 
         

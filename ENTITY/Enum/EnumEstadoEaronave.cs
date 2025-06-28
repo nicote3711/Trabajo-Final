@@ -8,11 +8,8 @@ namespace ENTITY.Enum
 {
     public enum EnumEstadoEaronave
     {
-        Activo =1,
-        PendienteMantenimiento =2,
-        Mantenimiento =3,
-        Inactivo =4,
-
-
+        Activo =1,        
+        Mantenimiento =2,
+        Inactivo =3,
     }
 }

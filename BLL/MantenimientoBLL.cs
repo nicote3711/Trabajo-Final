@@ -12,6 +12,44 @@ namespace BLL
 	public class MantenimientoBLL
 	{
 		MantenimientoDAL MantenimientoDAO = new MantenimientoDAL();
+
+        public List<Mantenimiento> ObtenerTodos()
+        {
+            try
+            {
+                List<Mantenimiento> LMantenimientos = MantenimientoDAO.ObtenerTodos();
+
+                foreach(Mantenimiento mantenimiento in LMantenimientos)
+                {
+
+                    AeronaveBLL AeronaveBLO = new AeronaveBLL();                   
+                    TipoMantenimientoBLL TipoMantenimientoBLO = new TipoMantenimientoBLL();
+                    EstadoMantenimientoBLL EstadoMantenimientoBLO = new EstadoMantenimientoBLL();
+
+                    mantenimiento.Aeronave = AeronaveBLO.BuscarAeronavePorId(mantenimiento.Aeronave.IdAeronave);
+                    mantenimiento.TipoMantenimiento = TipoMantenimientoBLO.BuscarTipoMantenimientoPorId(mantenimiento.TipoMantenimiento.IdTipoMantenimiento);
+                    mantenimiento.EstadoMantenimiento = EstadoMantenimientoBLO.BuscarEstadoMantenimientoPorId(mantenimiento.EstadoMantenimiento.IdEstadoMantenimiento);
+
+                    if(mantenimiento.Mecanico!=null && mantenimiento.Mecanico.IdMecanico>0)
+                    {
+                        MecanicoBLL MecanicoBLO = new MecanicoBLL();
+                        mantenimiento.Mecanico = MecanicoBLO.BuscarMecanicoPorId(mantenimiento.Mecanico.IdMecanico); //falta implementar
+                    }
+                    if(mantenimiento.FacturaMantenimiento!=null && mantenimiento.FacturaMantenimiento.IdFactura>0)
+                    {
+                        FacturaMantenimientoBLL FacturaMantenimientoBLO = new FacturaMantenimientoBLL();
+                        mantenimiento.FacturaMantenimiento = FacturaMantenimientoBLO.BuscarFacturaMPorId(mantenimiento.FacturaMantenimiento.IdFactura);
+                    }
+                    
+                }
+                return LMantenimientos;
+            }
+            catch (Exception ex)
+            {
+
+                throw new Exception("BLL Mantenimiento error al obtener todos: "+ex.Message,ex);
+            }
+        }
 		public void AltaMantenimiento(Mantenimiento mantenimiento)
 		{
 			try
@@ -21,6 +59,12 @@ namespace BLL
 
 				// Dar Alta 
 				MantenimientoDAO.AltaMantenimiento(mantenimiento);
+                AeronaveBLL AeronaveBLO = new AeronaveBLL();
+                EstadoAeronaveBLL EstadoAeronaveBLO = new EstadoAeronaveBLL();
+                EstadoAeronave estado = EstadoAeronaveBLO.BuscarPorId((int)EnumEstadoEaronave.Mantenimiento);
+                if (estado == null) throw new Exception("no se encontro el estado mantenimiento para la aernonave");
+                //Actualizar la aeronave a en mantenimiento
+                AeronaveBLO.ActualizarEstadoAeronave(mantenimiento.Aeronave.IdAeronave, estado);
 
 			}
 			catch (Exception ex)
@@ -45,7 +89,7 @@ namespace BLL
                                                                                                                                                          m.EstadoMantenimiento.IdEstadoMantenimiento != (int)EnumEstadoMantenimiento.Finalizado);
             //Vale la pena hacer un metodo en DAL( equivalente a una query)? ya puedo sacar el filtrado por Id aeronave ahora que no busco todos 
 
-            if (mantenimientoAux != null) throw new Exception($"La aeronave id {mantenimiento.Aeronave.IdAeronave} ya tiene un mantenimiento pendiente o en curso");
+            if (mantenimientoAux != null) throw new Exception($"La aeronave id {mantenimiento.Aeronave.IdAeronave} ya tiene un mantenimiento pendiente o en curso con id {mantenimientoAux.IdMantenimiento}");
 
             switch ((EnumTipoMantenimiento)mantenimiento.TipoMantenimiento.IdTipoMantenimiento)
             {

@@ -23,7 +23,7 @@ namespace MAPPER
 
             mantenimiento.TipoMantenimiento = new TipoMantenimiento { IdTipoMantenimiento = Convert.ToInt32(row["Id_Tipo_Mantenimiento"]) };
 
-            mantenimiento.FacturaMantenimientio = string.IsNullOrEmpty(row["Id_Factura"].ToString())? null:new FacturaMantenimiento { IdFactura = Convert.ToInt32(row["Id_Factura"]) };
+            mantenimiento.FacturaMantenimiento = string.IsNullOrEmpty(row["Id_Factura"].ToString())? null:new FacturaMantenimiento { IdFactura = Convert.ToInt32(row["Id_Factura"]) };
 
             mantenimiento.EstadoMantenimiento = new EstadoMantenimiento { IdEstadoMantenimiento = Convert.ToInt32(row["Id_Estado_Mantenimiento"]) };
         }
@@ -40,7 +40,7 @@ namespace MAPPER
 
             row["Id_Tipo_Mantenimiento"] = mantenimiento.TipoMantenimiento.IdTipoMantenimiento;
 
-            row["Id_Factura"] = mantenimiento.FacturaMantenimientio == null? DBNull.Value:mantenimiento.FacturaMantenimientio.IdFactura;
+            row["Id_Factura"] = mantenimiento.FacturaMantenimiento == null? DBNull.Value:mantenimiento.FacturaMantenimiento.IdFactura;
 
             row["Id_Estado_Mantenimiento"] = mantenimiento.EstadoMantenimiento.IdEstadoMantenimiento;
         }
