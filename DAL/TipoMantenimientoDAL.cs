@@ -16,38 +16,55 @@ namespace DAL
 
         public List<TipoMantenimiento> ObtenerTipos()
         {
-            if (!File.Exists(rutaXml)) throw new FileNotFoundException("Archivo XML no encontrado.");
-
-            DataSet ds = new DataSet();
-            ds.ReadXml(rutaXml, XmlReadMode.ReadSchema);
-
-            var tabla = ds.Tables["Tipo_Mantenimiento"];
-            if (tabla == null) throw new Exception("No se encontró la tabla Tipo_Mantenimiento.");
-
-            List<TipoMantenimiento> listaTipoMantenimiento = new List<TipoMantenimiento>();
-            foreach (DataRow row in tabla.Rows)
+            try
             {
-                TipoMantenimiento tipo = new TipoMantenimiento();
-                TipoMantenimientoMAP.MapearTipoMantenimientoDesdeDB(tipo, row);
-                listaTipoMantenimiento.Add(tipo);
+                if (!File.Exists(rutaXml)) throw new FileNotFoundException("Archivo XML no encontrado.");
+
+                DataSet ds = new DataSet();
+                ds.ReadXml(rutaXml, XmlReadMode.ReadSchema);
+
+                DataTable tabla = ds.Tables["Tipo_Mantenimiento"];
+                if (tabla == null) throw new Exception("No se encontró la tabla Tipo_Mantenimiento.");
+
+                List<TipoMantenimiento> listaTipoMantenimiento = new List<TipoMantenimiento>();
+                foreach (DataRow row in tabla.Rows)
+                {
+                    TipoMantenimiento tipo = new TipoMantenimiento();
+                    TipoMantenimientoMAP.MapearTipoMantenimientoDesdeDB(tipo, row);
+                    listaTipoMantenimiento.Add(tipo);
+                }
+
+                return listaTipoMantenimiento;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("DAL TipoMantenimiento error al obtener tipos: " + ex.Message, ex);
             }
 
-            return listaTipoMantenimiento;
         }
 
         public TipoMantenimiento BuscarPorId(int id)
         {
-            if (!File.Exists(rutaXml)) throw new FileNotFoundException("Archivo XML no encontrado.");
+            try
+            {
+                if (!File.Exists(rutaXml)) throw new FileNotFoundException("Archivo XML no encontrado.");
 
-            DataSet ds = new DataSet();
-            ds.ReadXml(rutaXml, XmlReadMode.ReadSchema);
-            var tabla = ds.Tables["Tipo_Mantenimiento"];
-            var row = tabla.AsEnumerable().FirstOrDefault(r => r.Field<int>("Id_Tipo_Mantenimiento") == id);
-            if (row == null) return null;
+                DataSet ds = new DataSet();
+                ds.ReadXml(rutaXml, XmlReadMode.ReadSchema);
 
-            TipoMantenimiento tipoMantenimiento = new TipoMantenimiento();
-            TipoMantenimientoMAP.MapearTipoMantenimientoDesdeDB(tipoMantenimiento, row);
-            return tipoMantenimiento;
+                DataTable tabla = ds.Tables["Tipo_Mantenimiento"];
+                DataRow row = tabla.AsEnumerable().FirstOrDefault(r => r.Field<int>("Id_Tipo_Mantenimiento").Equals(id));
+                if (row == null) return null;
+
+                TipoMantenimiento tipoMantenimiento = new TipoMantenimiento();
+                TipoMantenimientoMAP.MapearTipoMantenimientoDesdeDB(tipoMantenimiento, row);
+                return tipoMantenimiento;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("DAL TipoMantenimiento error al buscar por ID: " + ex.Message, ex);
+            }
+         
         }
     }
 }
