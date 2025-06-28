@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Helper;
 using System.Data;
+using ENTITY.Enum;
 
 
 namespace BLL
@@ -85,7 +86,29 @@ namespace BLL
                 AeronaveBLO.ActualizarHorasAeronave(vuelo.Aeronave.IdAeronave, vuelo.TV);
                 
                 Aeronave aeronave = AeronaveBLO.ObtenerAeronavePorId(vuelo.Aeronave.IdAeronave);
-                if(aeronave.Revision100Hs>=100)
+                if(aeronave.RevisionAnual.Date<DateTime.Now.Date)
+                {
+                    TipoMantenimientoBLL TipoMantenimientoBLO = new TipoMantenimientoBLL();
+                    MantenimientoBLL MantenimientoBLO = new MantenimientoBLL();
+                    EstadoMantenimientoBLL EstadoMantenimientoBLO = new EstadoMantenimientoBLL(); 
+
+                    Mantenimiento mantenimientoAnual = new Mantenimiento();
+                    TipoMantenimiento tipoMantenimiento = TipoMantenimientoBLO.BuscarTipoMantenimientoPorId((int)EnumTipoMantenimiento.Anual);
+                    if (tipoMantenimiento == null) throw new Exception($"tipo mantenimiento anual con id {(int)EnumTipoMantenimiento.Anual} no encontrado");
+
+                    EstadoMantenimiento estadoMantenimiento = EstadoMantenimientoBLO.BuscarEstadoMantenimientoPorId((int)EnumEstadoMantenimiento.Pendiente);
+                    if (estadoMantenimiento == null) throw new Exception($"estado matenimiento pendiente con id {(int)EnumEstadoMantenimiento.Pendiente} no encontrado");
+
+                    mantenimientoAnual.EstadoMantenimiento = estadoMantenimiento;
+                    mantenimientoAnual.TipoMantenimiento = tipoMantenimiento;
+                    mantenimientoAnual.Aeronave = aeronave;
+                    mantenimientoAnual.Fecha = DateTime.Now.Date;
+                    mantenimientoAnual.Detalle = $"Mantenimiento anual a la aeronave matricula {aeronave.Matricula}.";
+
+                    MantenimientoBLO.AltaMantenimiento(mantenimientoAnual);
+
+                }
+                else if(aeronave.Revision100Hs >= 100)
                 {
                     //TODO: Implementar lógica para manejar la revisión de 100 horas;
                 }
