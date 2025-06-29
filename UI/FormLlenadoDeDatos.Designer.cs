@@ -259,6 +259,7 @@
             button8.TabIndex = 18;
             button8.Text = "Generar Instructores";
             button8.UseVisualStyleBackColor = false;
+            button8.Click += GenerarInstructores_Click;
             // 
             // label11
             // 
@@ -281,6 +282,7 @@
             button9.TabIndex = 20;
             button9.Text = "Generar Dueños";
             button9.UseVisualStyleBackColor = false;
+            button9.Click += GenerarDueños_Click;
             // 
             // label12
             // 
