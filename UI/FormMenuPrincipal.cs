@@ -361,8 +361,53 @@ namespace UI
             try
             {
                 FormRecargaCombustible formRecargaCombustible = new FormRecargaCombustible();
-                formRecargaCombustible.MdiParent = this; 
+                formRecargaCombustible.MdiParent = this;
                 formRecargaCombustible.Show();
+            }
+            catch (Exception ex)
+            {
+
+                MessageBox.Show(ex.Message);
+            }
+        }
+
+        private void solicitarMantenimiento100HsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                FormSolicitarMantenimiento100Hs formSolicitarMantenimiento100Hs = new FormSolicitarMantenimiento100Hs();
+                formSolicitarMantenimiento100Hs.MdiParent = this;
+                formSolicitarMantenimiento100Hs.Show();
+            }
+            catch (Exception ex)
+            {
+
+                MessageBox.Show(ex.Message);
+            }
+        }
+
+        private void solicitarMantenimientoAnualToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                FormSolicitadMantenimientoAnual formSolicitadMantenimientoAnual = new FormSolicitadMantenimientoAnual();
+                formSolicitadMantenimientoAnual.MdiParent = this;
+                formSolicitadMantenimientoAnual.Show();
+            }
+            catch (Exception ex)
+            {
+
+                MessageBox.Show(ex.Message);
+            }
+        }
+
+        private void solicitarMantenimientoExtraordinarioToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                FormSolicitadMantenimientoExtraordinario formSolicitadMantenimientoExtraordinario = new FormSolicitadMantenimientoExtraordinario();
+                formSolicitadMantenimientoExtraordinario.MdiParent = this;
+                formSolicitadMantenimientoExtraordinario.Show();
             }
             catch (Exception ex)
             {

@@ -146,5 +146,21 @@ namespace BLL
             }
         }
 
+        public void ActualizarEstadoAeronave(int idAeronave, EstadoAeronave estado)
+        {
+            try
+            {
+                Aeronave aeronave = AeronaveDAO.BuscarAeronavePorId(idAeronave);
+                if (aeronave == null) throw new Exception($"No se encontro la aeronave id {idAeronave}");
+                if (estado==null|| estado.IdEstadoAeronave<=0) throw new Exception("el estado es nulo o su id es invalido");
+
+                AeronaveDAO.ActualizarEstadoAeronave(idAeronave, estado);
+            }
+            catch (Exception ex)
+            {
+
+                throw new Exception ("BLL Aeronave error al actualizar estado de la Aeronave: "+ex.Message,ex);
+            }
+        }
     }
 }

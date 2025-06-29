@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 
 namespace ENTITY.Enum
 {
-    public enum EnumEstadoEaronave
+    public enum EnumTipoMantenimiento
     {
-        Activo =1,        
-        Mantenimiento =2,
-        Inactivo =3,
+        Hs100 =1,
+        Anual=2,
+        Extraordinario =3,
     }
 }

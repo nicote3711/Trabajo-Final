@@ -12,11 +12,13 @@ namespace ENTITY
         public DateTime Fecha { get; set; }
 
         public string Detalle { get; set; }
-        Aeronave Aeronave { get; set; }
-        Mecanico Mecanico { get; set; }
+        public Aeronave Aeronave { get; set; }
+        public Mecanico Mecanico { get; set; }
 
-        FacturaMantenimiento FacturaMantenimientio { get; set; }
+        public FacturaMantenimiento FacturaMantenimiento { get; set; }
         
-        TipoMantenimiento TipoMantenimiento { get; set; }   
+        public TipoMantenimiento TipoMantenimiento { get; set; } 
+        
+        public EstadoMantenimiento EstadoMantenimiento{ get; set; }
     }
 }

@@ -76,7 +76,7 @@
             menuStrip1.Items.AddRange(new ToolStripItem[] { inicioToolStripMenuItem, actividadesDeVueloToolStripMenuItem, toolStripMenuItem1, liquidacionesToolStripMenuItem, combustibleToolStripMenuItem, gestionAMBSToolStripMenuItem, BackUP_RestoretoolStripMenuItem, gestioDeUsuariosToolStripMenuItem });
             menuStrip1.Location = new Point(0, 0);
             menuStrip1.Name = "menuStrip1";
-            menuStrip1.Size = new Size(1439, 24);
+            menuStrip1.Size = new Size(1370, 24);
             menuStrip1.TabIndex = 2;
             menuStrip1.Text = "menuStrip1";
             // 
@@ -167,18 +167,21 @@
             solicitarMantenimiento100HsToolStripMenuItem.Name = "solicitarMantenimiento100HsToolStripMenuItem";
             solicitarMantenimiento100HsToolStripMenuItem.Size = new Size(277, 22);
             solicitarMantenimiento100HsToolStripMenuItem.Text = "Solicitar Mantenimiento 100 Hs";
+            solicitarMantenimiento100HsToolStripMenuItem.Click += solicitarMantenimiento100HsToolStripMenuItem_Click;
             // 
             // solicitarMantenimientoAnualToolStripMenuItem
             // 
             solicitarMantenimientoAnualToolStripMenuItem.Name = "solicitarMantenimientoAnualToolStripMenuItem";
             solicitarMantenimientoAnualToolStripMenuItem.Size = new Size(277, 22);
             solicitarMantenimientoAnualToolStripMenuItem.Text = "Solicitar Mantenimiento Anual";
+            solicitarMantenimientoAnualToolStripMenuItem.Click += solicitarMantenimientoAnualToolStripMenuItem_Click;
             // 
             // solicitarMantenimientoExtraordinarioToolStripMenuItem
             // 
             solicitarMantenimientoExtraordinarioToolStripMenuItem.Name = "solicitarMantenimientoExtraordinarioToolStripMenuItem";
             solicitarMantenimientoExtraordinarioToolStripMenuItem.Size = new Size(277, 22);
             solicitarMantenimientoExtraordinarioToolStripMenuItem.Text = "Solicitar Mantenimiento Extraordinario";
+            solicitarMantenimientoExtraordinarioToolStripMenuItem.Click += solicitarMantenimientoExtraordinarioToolStripMenuItem_Click;
             // 
             // resgistrarManteniToolStripMenuItem
             // 
@@ -347,7 +350,7 @@
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(1439, 620);
+            ClientSize = new Size(1370, 620);
             Controls.Add(menuStrip1);
             IsMdiContainer = true;
             MainMenuStrip = menuStrip1;
