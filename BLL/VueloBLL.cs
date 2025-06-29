@@ -1,5 +1,6 @@
 ﻿using DAL;
 using ENTITY;
+using ENTITY.Enum;
 using Helper;
 using System;
 using System.Collections.Generic;
@@ -186,6 +187,45 @@ namespace BLL
             {
 
                 throw new Exception("BLL Vuelo error al buscar vuelo por id: "+ex.Message,ex);
+            }
+        }
+
+        public Dictionary<string,int> BuscarVuelosPorFiltro(DashboardFiltroPeriodo filtroVuelo)
+        {
+            try
+            {
+                Dictionary<string,int> vuelos = new Dictionary<string,int>();
+
+                if (filtroVuelo == null) throw new Exception("Filtro invalido");
+
+                switch (filtroVuelo.TipoFiltro) 
+                {
+                    case (int)EnumFiltrosDashboard.Semanal: 
+                        {
+                            vuelos = VueloDAO.BuscarVuelosFiltroSemanal(filtroVuelo.Anio,filtroVuelo.Mes);
+                            break; 
+                        }
+                    case (int)EnumFiltrosDashboard.Diario:
+                        {
+                            vuelos = VueloDAO.BuscarVuelosFiltroDiario(filtroVuelo.Anio, filtroVuelo.Mes, filtroVuelo.Semana);
+                            break;
+                        }
+                    default:
+                        {
+                            vuelos = VueloDAO.BuscarVuelosFiltroMensual(filtroVuelo.Anio);
+                            break;
+                        }
+                }
+
+                
+                return vuelos;
+
+
+            }
+            catch (Exception ex)
+            {
+
+                throw new Exception("BLL Vuelo error al buscar vuelo por id: " + ex.Message, ex);
             }
         }
     }

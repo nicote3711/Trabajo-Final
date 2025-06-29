@@ -4,11 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Helper
+namespace ENTITY.Enum
 {
-    public class Result
+    public enum EnumFiltrosDashboard
     {
-        public bool Success { get; set; }
-        public string Message { get; set; }
+        Mensual = 1,
+        Semanal = 2,
+        Diario = 3
     }
 }

@@ -67,7 +67,7 @@ namespace BLL
                 SolicitudHorasBLO.AltaSolicitudHoras(factura.Solicitud); // Registrar la solicitud de horas asociada a la factura
 
                 
-                Result result = HelperFacturas.GenerarFacturaPDF(factura);
+                Resultado result = HelperFacturas.GenerarFacturaPDF(factura);
                 if (!result.Success)
                 throw new Exception(result.Message);
 

@@ -25,7 +25,7 @@ namespace BLL
                 if (facturaInstructor.ListaLiquidaciones == null || facturaInstructor.ListaLiquidaciones.Count <= 0) throw new Exception("Lista de liquidaciones de la factura nula o vacia");
 
                 FacturaInstructorDAO.EliminarFactura(facturaInstructor.IdFactura);
-                Result result = HelperFacturas.EliminarFacturaPDF((int)EnumTiposFactura.FacturaInstructor, facturaInstructor.NroFactura);
+                Resultado result = HelperFacturas.EliminarFacturaPDF((int)EnumTiposFactura.FacturaInstructor, facturaInstructor.NroFactura);
                 LiquidacionInstructorBLL LiquidacionInstructorBLO = new LiquidacionInstructorBLL();
                 foreach(LiquidacionInstructor liquidacion in facturaInstructor.ListaLiquidaciones)
                 {
@@ -82,7 +82,7 @@ namespace BLL
                 }
 
                 //Generar FacturaPDF
-                Result result = HelperFacturas.GenerarFacturaPDF(facturaInstructor);
+                Resultado result = HelperFacturas.GenerarFacturaPDF(facturaInstructor);
                 if (!result.Success)
                     throw new Exception(result.Message);
             }

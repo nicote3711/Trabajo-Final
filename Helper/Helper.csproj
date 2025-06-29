@@ -7,6 +7,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Include="Resultado.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="itext.bouncy-castle-adapter" Version="9.2.0" />
     <PackageReference Include="itext.bouncy-castle-fips-adapter" Version="9.2.0" />
     <PackageReference Include="itext7" Version="9.2.0" />

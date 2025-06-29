@@ -36,7 +36,7 @@ namespace BLL
 				}
 
                 //Generar FacturaPDF
-                Result result = HelperFacturas.GenerarFacturaPDF(facturaDueno);
+                Resultado result = HelperFacturas.GenerarFacturaPDF(facturaDueno);
                 if (!result.Success)
                     throw new Exception(result.Message);
             }
@@ -78,7 +78,7 @@ namespace BLL
 				if (factura.ListaLiquidaciones == null || factura.ListaLiquidaciones.Count <= 0) throw new Exception("Lista de liquidaciones de la factura nula o vacia");
 
 				FacturaDuenoDAO.EliminarFactura(factura.IdFactura);
-                Result result = HelperFacturas.EliminarFacturaPDF((int)EnumTiposFactura.FacturaDueño, factura.NroFactura);
+                Resultado result = HelperFacturas.EliminarFacturaPDF((int)EnumTiposFactura.FacturaDueño, factura.NroFactura);
 
                 LiquidacionDuenoBLL LiquidacionDuenoBLO = new LiquidacionDuenoBLL();
 				foreach(LiquidacionDueno liquidacion in factura.ListaLiquidaciones)

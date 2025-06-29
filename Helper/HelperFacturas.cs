@@ -31,9 +31,9 @@ namespace Helper
         const string fileName = "F_{NumeroFactura}.pdf";
         const string filePath = "\\Facturas\\{TipoFactura}\\";
 
-        public static Result EliminarFacturaPDF(int tipoFactura,int nroFactura) 
+        public static Resultado EliminarFacturaPDF(int tipoFactura,int nroFactura) 
         {
-            Result result = new Result();
+            Resultado result = new Resultado();
             try
             {
                 string directorio = AppDomain.CurrentDomain.BaseDirectory; // Starting Dir
@@ -53,7 +53,7 @@ namespace Helper
             return result;
         }
 
-        public static Result GenerarFacturaPDF(Factura factura) 
+        public static Resultado GenerarFacturaPDF(Factura factura) 
         {
             try
             {
@@ -207,13 +207,13 @@ namespace Helper
 
                         document.Close();
 
-                        return new Result() { Success = true, Message = "PDF factura creado exitosamente en: " + filePath };
+                        return new Resultado() { Success = true, Message = "PDF factura creado exitosamente en: " + filePath };
                     }
                 }
             }
             catch (Exception ex)
             {
-                return new Result() { Success = false, Message = "Error creado PDF factura: " + ex.Message };
+                return new Resultado() { Success = false, Message = "Error creado PDF factura: " + ex.Message };
             }
         }
 
