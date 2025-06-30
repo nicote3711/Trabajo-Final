@@ -113,5 +113,72 @@ namespace BLL
                     throw new Exception("Tipo de mantenimiento no reconocido.");
             }
         }
-	}
+
+        public void AsignarMecanico(Mantenimiento mantenimiento, Mecanico mecanico)
+        {
+            try
+            {
+                if (mantenimiento.TipoMantenimiento.IdTipoMantenimiento.Equals((int)EnumTipoMantenimiento.Extraordinario)) throw new Exception($"A los mantenimientos de tipo extraordinario con id {mantenimiento.TipoMantenimiento.IdTipoMantenimiento} no se les puede asignar un mecanico");
+                if (mecanico == null || mecanico.IdMecanico <= 0) throw new Exception("Mecanico nulo o con id invalido");
+                Mantenimiento mantAux = MantenimientoDAO.BuscarPorId(mantenimiento.IdMantenimiento);
+                if (mantAux == null) throw new Exception("No se encontro el mantenimiento en la base de datos");
+                if (mantenimiento.Mecanico != null) throw new Exception("El mantenimiento no debe tener ya un mecanico asignado");
+
+                EstadoMantenimientoBLL EstadoMantenimientoBLO = new EstadoMantenimientoBLL();
+                EstadoMantenimiento estadoEnMant = EstadoMantenimientoBLO.BuscarEstadoMantenimientoPorId((int)EnumEstadoMantenimiento.EnMantenimiento);
+                if (estadoEnMant == null) throw new Exception("no se encontro el estado en mantenimiento en la base de datos");
+
+                mantenimiento.EstadoMantenimiento = estadoEnMant;
+                mantenimiento.Mecanico = mecanico;
+
+                MantenimientoDAO.AsignarMecanico(mantenimiento);
+
+            }
+            catch (Exception ex)
+            {
+
+                throw new Exception("BLL Mantenimiento error al asignar Mecanico a mantenimiento: "+ex.Message,ex);
+            }
+        }
+
+        public void EliminarMantenimiento(Mantenimiento mantenimiento)
+        {
+            try
+            {
+
+            }
+            catch (Exception ex)
+            {
+
+                throw new Exception ("Error al eliminar mantenimiento: "+ex.Message,ex);
+            }
+        }
+
+        public void DesAsignarMecanico(Mantenimiento mantenimiento)
+        {
+            try
+            {
+                if (mantenimiento.TipoMantenimiento.IdTipoMantenimiento.Equals((int)EnumTipoMantenimiento.Extraordinario)) throw new Exception($"A los mantenimientos de tipo extraordinario con id {mantenimiento.TipoMantenimiento.IdTipoMantenimiento} no se les puede des-asignar un mecanico");
+                if (mantenimiento.Mecanico == null) throw new Exception("El mantenimiento no debe tener ya un mecanico asignado");
+                if (mantenimiento.Mecanico.IdMecanico <= 0) throw new Exception("Mecanico con id invalido");
+                Mantenimiento mantAux = MantenimientoDAO.BuscarPorId(mantenimiento.IdMantenimiento);
+                if (mantAux == null) throw new Exception("No se encontro el mantenimiento en la base de datos");
+              
+
+                EstadoMantenimientoBLL EstadoMantenimientoBLO = new EstadoMantenimientoBLL();
+                EstadoMantenimiento estadoPendiente = EstadoMantenimientoBLO.BuscarEstadoMantenimientoPorId((int)EnumEstadoMantenimiento.Pendiente);
+                if (estadoPendiente == null) throw new Exception("no se encontro el estado pendiente en la base de datos");
+
+                mantenimiento.EstadoMantenimiento = estadoPendiente;
+                mantenimiento.Mecanico = null;
+
+                MantenimientoDAO.DesAsignarMecanico(mantenimiento);
+            }
+            catch (Exception ex )
+            {
+
+                throw new Exception("Error al desasignar mecanico: "+ex.Message,ex);
+            }
+        }
+    }
 }

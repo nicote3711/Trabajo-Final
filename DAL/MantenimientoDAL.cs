@@ -71,7 +71,7 @@ namespace DAL
             }
         }
 
-        public void AsignarMecanico(int idMantenimiento, int idMecanico)
+        public void AsignarMecanico(Mantenimiento mantenimiento)
         {
             try
             {
@@ -83,12 +83,12 @@ namespace DAL
                 DataTable tabla = ds.Tables["Mantenimiento"];
                 if (tabla == null) throw new Exception("No se encontró la tabla Mantenimiento.");
 
-                DataRow row = tabla.AsEnumerable().FirstOrDefault(r => Convert.ToInt32(r["Id_Mantenimiento"]) == idMantenimiento);
+                DataRow row = tabla.AsEnumerable().FirstOrDefault(r => Convert.ToInt32(r["Id_Mantenimiento"]).Equals(mantenimiento.IdMantenimiento));
 
-                if (row == null) throw new Exception($"No se encontró mantenimiento con ID {idMantenimiento}.");
+                if (row == null) throw new Exception($"No se encontró mantenimiento con ID {mantenimiento.IdMantenimiento}.");
 
-                row["Id_Mecanico"] = idMecanico;
-                row["Id_Estado_Mantenimiento"] = (int)EnumEstadoMantenimiento.EnMantenimiento; //deberia validarlo antes
+                row["Id_Mecanico"] = mantenimiento.Mecanico.IdMecanico;
+                row["Id_Estado_Mantenimiento"] = mantenimiento.EstadoMantenimiento.IdEstadoMantenimiento; //deberia validarlo antes
 
                 ds.WriteXml(rutaXml, XmlWriteMode.WriteSchema);
             }
@@ -179,5 +179,42 @@ namespace DAL
             }
         }
 
+        public void DesAsignarMecanico(Mantenimiento mantenimiento)
+        {
+            try
+            {
+                if (!File.Exists(rutaXml)) throw new FileNotFoundException("Archivo XML no encontrado.");
+
+                DataSet ds = new DataSet();
+                ds.ReadXml(rutaXml, XmlReadMode.ReadSchema);
+
+                DataTable tabla = ds.Tables["Mantenimiento"];
+                if (tabla == null) throw new Exception("No se encontró la tabla Mantenimiento.");
+
+                DataRow row = tabla.AsEnumerable().FirstOrDefault(r => Convert.ToInt32(r["Id_Mantenimiento"]).Equals(mantenimiento.IdMantenimiento));
+
+                if (row == null) throw new Exception($"No se encontró mantenimiento con ID {mantenimiento.IdMantenimiento}.");
+
+                if(mantenimiento.Mecanico == null)
+                {
+                    row["Id_Mecanico"] = DBNull.Value;
+                }
+                else
+                {
+                    row["Id_Mecanico"] = mantenimiento.Mecanico.IdMecanico; // para el futuro por si quiero desAsignar y reAsignar. Por ahora lo mando en null.
+                }
+
+                row["Id_Estado_Mantenimiento"] = mantenimiento.EstadoMantenimiento.IdEstadoMantenimiento; //deberia validarlo antes
+
+                ds.WriteXml(rutaXml, XmlWriteMode.WriteSchema);
+
+
+            }
+            catch (Exception ex)
+            {
+
+                throw new Exception("DAL Mantenimiento error al desasignar el mecanico del mantenimiento: "+ex.Message,ex);
+            }
+        }
     }
 }
