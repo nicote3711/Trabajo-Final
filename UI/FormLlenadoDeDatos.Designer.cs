@@ -69,7 +69,7 @@
             btnGenerarVuelos.TabIndex = 0;
             btnGenerarVuelos.Text = "Generar Vuelos";
             btnGenerarVuelos.UseVisualStyleBackColor = false;
-            btnGenerarVuelos.Click += button1_Click;
+            btnGenerarVuelos.Click += GenerarVuelos_Click;
             // 
             // btnGenerarLiquidaciones
             // 
@@ -84,7 +84,7 @@
             btnGenerarLiquidaciones.TabIndex = 1;
             btnGenerarLiquidaciones.Text = "Generar Liquidaciones";
             btnGenerarLiquidaciones.UseVisualStyleBackColor = false;
-            btnGenerarLiquidaciones.Click += button2_Click;
+            btnGenerarLiquidaciones.Click += GenerarLiquidaciones_Click;
             // 
             // label1
             // 
@@ -146,7 +146,7 @@
             button2.TabIndex = 6;
             button2.Text = "Generar Aeronaves";
             button2.UseVisualStyleBackColor = false;
-            button2.Click += button2_Click_1;
+            button2.Click += GenerarAeronaves_Click;
             // 
             // label5
             // 
@@ -169,7 +169,7 @@
             button3.TabIndex = 8;
             button3.Text = "Generar Simulaciones";
             button3.UseVisualStyleBackColor = false;
-            button3.Click += button3_Click;
+            button3.Click += GenerarSimulaciones_Click;
             // 
             // button4
             // 
@@ -184,6 +184,7 @@
             button4.TabIndex = 10;
             button4.Text = "Generar Solicitudes";
             button4.UseVisualStyleBackColor = false;
+            button4.Click += GenerarSolicitudes_Click;
             // 
             // label6
             // 
@@ -305,6 +306,7 @@
             button10.TabIndex = 22;
             button10.Text = "Generar Mecanicos";
             button10.UseVisualStyleBackColor = false;
+            button10.Click += GenerarMecanicos_Click;
             // 
             // label13
             // 
@@ -327,6 +329,7 @@
             button11.TabIndex = 24;
             button11.Text = "Generar Recargas Combustibles";
             button11.UseVisualStyleBackColor = false;
+            button11.Click += GenerarRecargasCombustible_Click;
             // 
             // label8
             // 
@@ -347,8 +350,9 @@
             button6.Name = "button6";
             button6.Size = new Size(213, 48);
             button6.TabIndex = 26;
-            button6.Text = "Registrar Mantenimientos";
+            button6.Text = "Registrar Facturas Mantenimientos";
             button6.UseVisualStyleBackColor = false;
+            button6.Click += RegistrarFacturasMantenimientos_Click;
             // 
             // FormLlenadoDeDatos
             // 

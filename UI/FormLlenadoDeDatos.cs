@@ -1,5 +1,6 @@
 ﻿using BLL;
 using ENTITY;
+using ENTITY.Enum;
 using Newtonsoft.Json;
 using Org.BouncyCastle.Tls;
 using System;
@@ -17,17 +18,22 @@ namespace UI
 {
     public partial class FormLlenadoDeDatos : Form
     {
+        List<string> MesesDelAnio = ["Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre"];
+
         public FormLlenadoDeDatos()
         {
             InitializeComponent();
         }
 
-        private void button1_Click(object sender, EventArgs e)
-        {
 
+        private void GenerarVuelos_Click(object sender, EventArgs e)
+        {
+            foreach (string mes in MesesDelAnio) 
+            {
+            }
         }
 
-        private void button2_Click(object sender, EventArgs e)
+        private void GenerarLiquidaciones_Click(object sender, EventArgs e)
         {
 
         }
@@ -37,8 +43,156 @@ namespace UI
 
         }
 
-        private void button2_Click_1(object sender, EventArgs e)
+        private void GenerarAeronaves_Click(object sender, EventArgs e)
         {
+            string aeronavesJson = @"
+            [
+              {
+                ""matricula"": ""LV-ABC"",
+                ""modelo"": ""Cessna 172 Skyhawk"",
+                ""marca"": ""Cessna"",
+                ""anio"": 1998
+              },
+              {
+                ""matricula"": ""LV-DEF"",
+                ""modelo"": ""Piper PA-28 Cherokee"",
+                ""marca"": ""Piper Aircraft"",
+                ""anio"": 2005
+              },
+              {
+                ""matricula"": ""LV-GHI"",
+                ""modelo"": ""Airbus A320"",
+                ""marca"": ""Airbus"",
+                ""anio"": 2012
+              },
+              {
+                ""matricula"": ""LV-JKL"",
+                ""modelo"": ""Boeing 737-800"",
+                ""marca"": ""Boeing"",
+                ""anio"": 2018
+              },
+              {
+                ""matricula"": ""LV-MNO"",
+                ""modelo"": ""Embraer E190"",
+                ""marca"": ""Embraer"",
+                ""anio"": 2009
+              },
+              {
+                ""matricula"": ""LV-PQR"",
+                ""modelo"": ""Learjet 60"",
+                ""marca"": ""Bombardier Aerospace"",
+                ""anio"": 2003
+              },
+              {
+                ""matricula"": ""LV-STU"",
+                ""modelo"": ""Beechcraft Baron 58"",
+                ""marca"": ""Beechcraft"",
+                ""anio"": 2007
+              },
+              {
+                ""matricula"": ""LV-VWX"",
+                ""modelo"": ""Bell 206 JetRanger"",
+                ""marca"": ""Bell Helicopter"",
+                ""anio"": 1995
+              },
+              {
+                ""matricula"": ""LV-YZA"",
+                ""modelo"": ""Robinson R44 Raven II"",
+                ""marca"": ""Robinson Helicopter"",
+                ""anio"": 2015
+              },
+              {
+                ""matricula"": ""LV-BCD"",
+                ""modelo"": ""Cirrus SR22"",
+                ""marca"": ""Cirrus Aircraft"",
+                ""anio"": 2020
+              },
+              {
+                ""matricula"": ""LV-EFG"",
+                ""modelo"": ""De Havilland Canada DHC-6 Twin Otter"",
+                ""marca"": ""De Havilland Canada"",
+                ""anio"": 1980
+              },
+              {
+                ""matricula"": ""LV-HIJ"",
+                ""modelo"": ""Fokker 100"",
+                ""marca"": ""Fokker"",
+                ""anio"": 1993
+              },
+              {
+                ""matricula"": ""LV-KLM"",
+                ""modelo"": ""Saab 340"",
+                ""marca"": ""Saab AB"",
+                ""anio"": 1989
+              },
+              {
+                ""matricula"": ""LV-NOP"",
+                ""modelo"": ""Cessna Citation X"",
+                ""marca"": ""Cessna"",
+                ""anio"": 2001
+              },
+              {
+                ""matricula"": ""LV-QRS"",
+                ""modelo"": ""Gulfstream G650"",
+                ""marca"": ""Gulfstream Aerospace"",
+                ""anio"": 2022
+              },
+              {
+                ""matricula"": ""LV-TUV"",
+                ""modelo"": ""ATR 72-600"",
+                ""marca"": ""ATR"",
+                ""anio"": 2016
+              },
+              {
+                ""matricula"": ""LV-WXY"",
+                ""modelo"": ""Tecnam P2006T"",
+                ""marca"": ""Tecnam"",
+                ""anio"": 2014
+              },
+              {
+                ""matricula"": ""LV-ZAB"",
+                ""modelo"": ""Eurocopter AS350 Écureuil"",
+                ""marca"": ""Airbus Helicopters"",
+                ""anio"": 2010
+              },
+              {
+                ""matricula"": ""LV-CDE"",
+                ""modelo"": ""Diamond DA40 Star"",
+                ""marca"": ""Diamond Aircraft"",
+                ""anio"": 2008
+              },
+              {
+                ""matricula"": ""LV-FGH"",
+                ""modelo"": ""Bombardier CRJ200"",
+                ""marca"": ""Bombardier Aerospace"",
+                ""anio"": 1999
+              }
+            ]";
+            List<Aeronave> listaAeronaves = JsonConvert.DeserializeObject<List<Aeronave>>(aeronavesJson);
+            List<Aeronave> aeronavesNoInsertadas = new List<Aeronave>();
+            try
+            {
+
+                foreach (Aeronave aeronave in listaAeronaves)
+                {
+                    AeronaveBLL aeronaveBLO = new AeronaveBLL();
+                    Aeronave personaexistente = aeronaveBLO.BuscarAeronavePorMatricula(aeronave.Matricula);
+
+                    if (personaexistente != null)
+                    {
+                        aeronavesNoInsertadas.Add(aeronave);
+                    }
+                    else
+                    {
+                        aeronaveBLO.AltaAeronave(aeronave);
+                    }
+                }
+                MessageBox.Show("Se generaron " + (listaAeronaves.Count - aeronavesNoInsertadas.Count) + " aeronaves");
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error insertando aeronaves: " + ex.Message);
+            }
 
         }
 
@@ -47,7 +201,7 @@ namespace UI
 
         }
 
-        private void button3_Click(object sender, EventArgs e)
+        private void GenerarSimulaciones_Click(object sender, EventArgs e)
         {
 
         }
@@ -570,7 +724,7 @@ namespace UI
 
         private void GenerarDueños_Click(object sender, EventArgs e)
         {
-            string personasJson =@"
+            string personasJson = @"
             [
               {
                 ""Nombre"": ""Elena"",
@@ -690,6 +844,144 @@ namespace UI
             }
         }
 
+        private void GenerarMecanicos_Click(object sender, EventArgs e)
+        {
+            string personasJson = @"
+            [
+              {
+                ""Nombre"": ""Bianca"",
+                ""Apellido"": ""Flores"",
+                ""DNI"": ""72112233"",
+                ""CuitCuil"": ""27-72112233-0"",
+                ""FechaNacimiento"": ""2000-04-10"",
+                ""Email"": ""bianca.flores@example.com"",
+                ""Telefono"": ""+5491155559191"",
+                ""DireccionTaller"": ""Av. Corrientes 1543, Balvanera, Ciudad Autónoma de Buenos Aires""
+              },
+              {
+                ""Nombre"": ""Lorenzo"",
+                ""Apellido"": ""Moreno"",
+                ""DNI"": ""73012345"",
+                ""CuitCuil"": ""20-73012345-8"",
+                ""FechaNacimiento"": ""1999-09-22"",
+                ""Email"": ""lorenzo.moreno@example.com"",
+                ""Telefono"": ""+5491155550202"",
+                ""DireccionTaller"": ""Defensa 880, San Telmo, Ciudad Autónoma de Buenos Aires""
+              },
+              {
+                ""Nombre"": ""Abril"",
+                ""Apellido"": ""Salas"",
+                ""DNI"": ""74123456"",
+                ""CuitCuil"": ""27-74123456-3"",
+                ""FechaNacimiento"": ""2001-01-05"",
+                ""Email"": ""abril.salas@example.com"",
+                ""Telefono"": ""+5491155551313"",
+                ""DireccionTaller"": ""Libertador 5050, Palermo, Ciudad Autónoma de Buenos Aires""
+              },
+              {
+                ""Nombre"": ""Genaro"",
+                ""Apellido"": ""Vega"",
+                ""DNI"": ""75098765"",
+                ""CuitCuil"": ""20-75098765-1"",
+                ""FechaNacimiento"": ""2002-06-30"",
+                ""Email"": ""genaro.vega@example.com"",
+                ""Telefono"": ""+5491155552424"",
+                ""DireccionTaller"": ""Cabildo 2005, Belgrano, Ciudad Autónoma de Buenos Aires""
+              },
+              {
+                ""Nombre"": ""Indiana"",
+                ""Apellido"": ""Cruz"",
+                ""DNI"": ""76123456"",
+                ""CuitCuil"": ""27-76123456-6"",
+                ""FechaNacimiento"": ""2000-11-19"",
+                ""Email"": ""indiana.cruz@example.com"",
+                ""Telefono"": ""+5491155553535"",
+                ""DireccionTaller"": ""Rivadavia 7890, Flores, Ciudad Autónoma de Buenos Aires""
+              },
+              {
+                ""Nombre"": ""Gastón"",
+                ""Apellido"": ""Ferreyra"",
+                ""DNI"": ""77012345"",
+                ""CuitCuil"": ""20-77012345-4"",
+                ""FechaNacimiento"": ""1997-03-08"",
+                ""Email"": ""gaston.ferreyra@example.com"",
+                ""Telefono"": ""+5491155554646"",
+                ""DireccionTaller"": ""Florida 123, San Nicolás, Ciudad Autónoma de Buenos Aires""
+              },
+              {
+                ""Nombre"": ""Maia"",
+                ""Apellido"": ""Romero"",
+                ""DNI"": ""78123456"",
+                ""CuitCuil"": ""27-78123456-9"",
+                ""FechaNacimiento"": ""1998-07-27"",
+                ""Email"": ""maia.romero@example.com"",
+                ""Telefono"": ""+5491155555757"",
+                 ""DireccionTaller"": ""Uriarte 2450, Palermo, Ciudad Autónoma de Buenos Aires""
+              },
+              {
+                ""Nombre"": ""Bautista"",
+                ""Apellido"": ""Miranda"",
+                ""DNI"": ""79098765"",
+                ""CuitCuil"": ""20-79098765-7"",
+                ""FechaNacimiento"": ""1996-12-04"",
+                ""Email"": ""bautista.miranda@example.com"",
+                ""Telefono"": ""+5491155556868"",
+                ""DireccionTaller"": ""Piedras 50, Monserrat, Ciudad Autónoma de Buenos Aires""
+              },
+              {
+                ""Nombre"": ""Mia"",
+                ""Apellido"": ""Rojas"",
+                ""DNI"": ""80123456"",
+                ""CuitCuil"": ""27-80123456-2"",
+                ""FechaNacimiento"": ""2003-05-15"",
+                ""Email"": ""mia.rojas@example.com"",
+                ""Telefono"": ""+5491155557979"",
+                ""DireccionTaller"": ""Av. La Plata 1003, Caballito, Ciudad Autónoma de Buenos Aires""
+              },
+              {
+                ""Nombre"": ""Valentin"",
+                ""Apellido"": ""González"",
+                ""DNI"": ""81012345"",
+                ""CuitCuil"": ""20-81012345-0"",
+                ""FechaNacimiento"": ""2004-02-28"",
+                ""Email"": ""valentin.gonzalez@example.com"",
+                ""Telefono"": ""+5491155558080"",
+                ""DireccionTaller"": ""Vuelta de Obligado 3500, Núñez, Ciudad Autónoma de Buenos Aires""
+              }
+            ]
+            ";
+
+            List<Mecanico> listaPersonas = JsonConvert.DeserializeObject<List<Mecanico>>(personasJson);
+            List<Persona> personasNoInsertadas = new List<Persona>();
+            try
+            {
+
+                foreach (Mecanico mecanico in listaPersonas)
+                {
+                    MecanicoBLL mecanicoBLO = new MecanicoBLL();
+                    Mecanico personaexistente = mecanicoBLO.BuscarPersonaPorDni(mecanico.DNI);
+
+                    if (personaexistente != null)
+                    {
+                        personasNoInsertadas.Add(mecanico);
+                    }
+                    else
+                    {
+                        mecanico.MatriculaTecnica = GenerarNumeroLicenciaAleatorio();
+                        mecanico.TiposDeMantenimiento = new List<TipoMantenimiento>();
+                        Random randomVar = new Random();
+                        mecanico.TiposDeMantenimiento.Add(new TipoMantenimiento() { IdTipoMantenimiento = randomVar.Next(1, 4) });
+                        mecanicoBLO.AltaMecanico(mecanico);
+                    }
+                }
+                MessageBox.Show("Se generaron " + (listaPersonas.Count - personasNoInsertadas.Count) + " mecanicos");
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error insertando mecanicos: " + ex.Message);
+            }
+        }
+
         private string GenerarNumeroLicenciaAleatorio()
         {
             Random random = new Random();
@@ -699,6 +991,21 @@ namespace UI
                 sb.Append(random.Next(0, 10));
             }
             return sb.ToString();
+        }
+
+        private void GenerarRecargasCombustible_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void GenerarSolicitudes_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void RegistrarFacturasMantenimientos_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }
