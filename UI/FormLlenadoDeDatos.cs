@@ -1,4 +1,5 @@
 ﻿using BLL;
+using DAL;
 using ENTITY;
 using ENTITY.Enum;
 using Newtonsoft.Json;
@@ -13,12 +14,13 @@ using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace UI
 {
     public partial class FormLlenadoDeDatos : Form
     {
-        List<string> MesesDelAnio = ["Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre"];
+        List<string> MesesDelAnio = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
 
         public FormLlenadoDeDatos()
         {
@@ -28,13 +30,88 @@ namespace UI
 
         private void GenerarVuelos_Click(object sender, EventArgs e)
         {
-            foreach (string mes in MesesDelAnio) 
+
+
+
+            VueloBLL vuelosBLO = new VueloBLL();
+            InstructorBLL instructorBLO = new InstructorBLL();
+            AeronaveBLL aeronaveBLO = new AeronaveBLL();
+            ClienteBLL clienteBLO = new ClienteBLL();
+            FinalidadBLL finalidadBLO = new FinalidadBLL();
+
+
+
+            List<Instructor> instructores = instructorBLO.ObtenerInstructores();
+            List<Aeronave> aeronaves = aeronaveBLO.ObtenerTodas();
+            List<Cliente> clientes = clienteBLO.ObtenerClientes();
+            List<Finalidad> finalidades = finalidadBLO.ObtenerTodas();
+
+            List<int> anios = [2024,2025];
+            List<Instructor> instructoresActivos = new List<Instructor>();
+            List<Aeronave> aeronavesActivas = new List<Aeronave>();
+            List<Cliente> clientesHabilitados = new List<Cliente>();
+
+            foreach (int anio in anios)
             {
+                Vuelo vuelo = new Vuelo();
+                Random random = new Random();
+
+                foreach (string mes in MesesDelAnio)
+                {
+                    for (int i = 0; i < 10; i++) //Inserto 5 vuelos por mes
+                    {
+
+                        instructores = instructorBLO.ObtenerInstructores();
+                        aeronaves = aeronaveBLO.ObtenerTodas();
+                        clientes = clienteBLO.ObtenerClientes();
+
+                        instructoresActivos = instructores.Where(i => i.Activo.Equals(true)).ToList();
+                        aeronavesActivas = aeronaves.Where(a => a.Estado.IdEstadoAeronave.Equals((int)EnumEstadoEaronave.Activo)).ToList();
+                        clientesHabilitados = clientes.Where(c => c.Activo.Equals(true) && c.SaldoHorasVuelo > -10).ToList();
+
+                        if (instructoresActivos.Count > 0 && aeronavesActivas.Count > 0 && clientesHabilitados.Count > 0)
+                        {
+                            vuelo.Fecha = new DateTime(anio, MesesDelAnio.IndexOf(mes) + 1, random.Next(1, 29));
+                            vuelo.Instructor = instructoresActivos[random.Next(0, instructoresActivos.Count())];
+                            vuelo.Aeronave = aeronavesActivas[random.Next(0, aeronavesActivas.Count())];
+                            vuelo.Cliente = clientesHabilitados[random.Next(0, clientesHabilitados.Count())];
+
+                            vuelo.Finalidad = finalidades[random.Next(0, finalidades.Count())];
+                            vuelo.HoraPM = TimeOnly.FromDateTime(ObtenerFechaAleatoria());
+                            vuelo.HoraCorte = vuelo.HoraPM.AddHours(2);
+                            vuelo.Origen = "Cañuelas";
+                            vuelo.Destino = "Cañuelas";
+                            vuelo.HubInicial = 0;
+                            vuelo.HubFinal = 1;
+                            vuelosBLO.RegistrarVuelo(vuelo);
+                        }
+                        else
+                        {
+                            MessageBox.Show("No hay instructores activos o aeronaves disponibles");
+                            return;
+                        }
+                    }
+                }
             }
         }
 
         private void GenerarLiquidaciones_Click(object sender, EventArgs e)
         {
+            AeronaveBLL aeronaveBLO = new AeronaveBLL();
+            List<Aeronave> aeronaves = aeronaveBLO.ObtenerTodas();
+            try
+            {
+                foreach (Aeronave aeronave in aeronaves)
+                {
+                    aeronave.RevisionAnual = DateTime.Now;
+                    aeronave.RevisionAnual.AddYears(1);
+                    aeronaveBLO.ModificarAeronave(aeronave);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
 
         }
 
@@ -170,6 +247,9 @@ namespace UI
             ]";
             List<Aeronave> listaAeronaves = JsonConvert.DeserializeObject<List<Aeronave>>(aeronavesJson);
             List<Aeronave> aeronavesNoInsertadas = new List<Aeronave>();
+            DuenoBLL duenoBLL = new DuenoBLL();
+            List<Dueno> duenios = duenoBLL.ObtenerDuenos();
+            List<Dueno> dueniosActivos = duenios.Where(d => d.Activo.Equals(true)).ToList();
             try
             {
 
@@ -184,6 +264,10 @@ namespace UI
                     }
                     else
                     {
+                        Random randomDuenio = new Random();
+                        aeronave.Dueno = dueniosActivos[randomDuenio.Next(0, dueniosActivos.Count())];
+                        aeronave.RevisionAnual = DateTime.Now;
+                        aeronave.RevisionAnual.AddYears(1);
                         aeronaveBLO.AltaAeronave(aeronave);
                     }
                 }
@@ -193,7 +277,6 @@ namespace UI
             {
                 MessageBox.Show("Error insertando aeronaves: " + ex.Message);
             }
-
         }
 
         private void button1_Click_1(object sender, EventArgs e)
@@ -479,6 +562,9 @@ namespace UI
             ""Email"": ""hernan.luna@example.com"",
             ""Telefono"": ""+5491155556666""
             }]";
+            ClienteBLL clienteBLO = new ClienteBLL();
+            DuenoBLL duenoBLO = new DuenoBLL();
+
 
             List<Cliente> listaPersonas = JsonConvert.DeserializeObject<List<Cliente>>(personasJson);
             List<Persona> personasNoInsertadas = new List<Persona>();
@@ -487,7 +573,6 @@ namespace UI
 
                 foreach (Cliente cliente in listaPersonas)
                 {
-                    ClienteBLL clienteBLO = new ClienteBLL();
                     Cliente personaexistente = clienteBLO.BuscarPersonaPorDni(cliente.DNI);
 
                     if (personaexistente != null)
@@ -499,7 +584,31 @@ namespace UI
                         clienteBLO.AltaCliente(cliente);
                     }
                 }
+
                 MessageBox.Show("Se generaron " + (listaPersonas.Count - personasNoInsertadas.Count) + " clientes");
+
+                List<Dueno> duenios = new List<Dueno>();
+                List<Persona> dueniosNoInsertados = new List<Persona>();
+
+                duenios = duenoBLO.ObtenerDuenos();
+
+                foreach (Dueno dueno in duenios)
+                {
+                    Cliente cliente = clienteBLO.BuscarClientePorDni(dueno.DNI);
+                    
+                    if (cliente != null)
+                    {
+                        dueniosNoInsertados.Add(cliente);
+                    }
+                    else
+                    {
+                        cliente = clienteBLO.BuscarPersonaPorDni(dueno.DNI);
+                        clienteBLO.AltaCliente(cliente);
+                    }
+                }
+
+                MessageBox.Show("Se registraron " + (duenios.Count - dueniosNoInsertados.Count) + " duenios como clientes");
+
             }
             catch (Exception ex)
             {
@@ -1004,6 +1113,28 @@ namespace UI
         }
 
         private void RegistrarFacturasMantenimientos_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private DateTime ObtenerFechaAleatoria()
+        {
+            Random random = new Random();
+
+            // Generar un número aleatorio para la hora (0-23)
+            int hora = random.Next(0, 24);
+
+            // Generar un número aleatorio para los minutos (0-59)
+            int minuto = random.Next(0, 60);
+
+            // Crear una nueva instancia de DateTime con la fecha actual y la hora aleatoria
+            DateTime fechaHoraAleatoria = DateTime.Today.AddHours(hora).AddMinutes(minuto);
+
+            // Mostrar la hora y minuto aleatorios en un TextBox (por ejemplo)
+            return fechaHoraAleatoria;
+        }
+
+        private void label11_Click(object sender, EventArgs e)
         {
 
         }

@@ -63,6 +63,18 @@ namespace BLL
             }
         }
 
+        public Cliente BuscarClientePorDni(long dNI)
+        {
+            try
+            {
+                return clienteDAO.BuscarClientePorDNI(dNI);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("BLL cliente error al Buscar Persona por Dni: " + ex.Message, ex);
+            }
+        }
+
         public void ModifcarPersonaExistente(Cliente cliente)
         {
             try

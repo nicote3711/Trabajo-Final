@@ -218,7 +218,7 @@
             // 
             // label9
             // 
-            label9.Location = new Point(63, 99);
+            label9.Location = new Point(602, 99);
             label9.Name = "label9";
             label9.Size = new Size(213, 41);
             label9.TabIndex = 17;
@@ -231,7 +231,7 @@
             button7.FlatStyle = FlatStyle.Flat;
             button7.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
             button7.ForeColor = Color.White;
-            button7.Location = new Point(63, 26);
+            button7.Location = new Point(602, 26);
             button7.Name = "button7";
             button7.Size = new Size(213, 48);
             button7.TabIndex = 16;
@@ -264,11 +264,12 @@
             // 
             // label11
             // 
-            label11.Location = new Point(602, 99);
+            label11.Location = new Point(63, 99);
             label11.Name = "label11";
-            label11.Size = new Size(213, 41);
+            label11.Size = new Size(213, 38);
             label11.TabIndex = 21;
             label11.Text = "Generara mantenimientos de todos los vuelos incluyendo los del mes en curso";
+            label11.Click += label11_Click;
             // 
             // button9
             // 
@@ -277,9 +278,9 @@
             button9.FlatStyle = FlatStyle.Flat;
             button9.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
             button9.ForeColor = Color.White;
-            button9.Location = new Point(602, 26);
+            button9.Location = new Point(63, 26);
             button9.Name = "button9";
-            button9.Size = new Size(213, 48);
+            button9.Size = new Size(213, 45);
             button9.TabIndex = 20;
             button9.Text = "Generar Dueños";
             button9.UseVisualStyleBackColor = false;

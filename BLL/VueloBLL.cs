@@ -87,7 +87,7 @@ namespace BLL
                 AeronaveBLO.ActualizarHorasAeronave(vuelo.Aeronave.IdAeronave, vuelo.TV);
                 
                 Aeronave aeronave = AeronaveBLO.ObtenerAeronavePorId(vuelo.Aeronave.IdAeronave);
-                if(aeronave.RevisionAnual.Date<DateTime.Now.Date)
+                if(aeronave.RevisionAnual.Date < DateTime.Now.Date)
                 {
                     TipoMantenimientoBLL TipoMantenimientoBLO = new TipoMantenimientoBLL();
                     MantenimientoBLL MantenimientoBLO = new MantenimientoBLL();

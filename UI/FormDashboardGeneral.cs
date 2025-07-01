@@ -59,14 +59,6 @@ namespace UI
             filtroVuelo.Semana = 4;
 
             datosVuelos = new VueloBLL().BuscarVuelosPorFiltro(filtroVuelo);
-            //{
-            //    { "Enero", 150 },
-            //    { "Febrero", 180 },
-            //    { "Marzo", 220 },
-            //    { "Abril", 190 },
-            //    { "Mayo", 250 },
-            //    { "Junio", 200 }
-            //};
 
             Series serieTorta = new Series("Vuelos por Mes");
             serieTorta.ChartType = SeriesChartType.Pie; // Establecer el tipo de gráfico como torta
