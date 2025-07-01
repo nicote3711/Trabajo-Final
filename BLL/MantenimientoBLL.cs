@@ -1,8 +1,10 @@
 ﻿using DAL;
 using ENTITY;
 using ENTITY.Enum;
+using Helper;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -70,7 +72,7 @@ namespace BLL
 			catch (Exception ex)
 			{
 
-				throw new Exception("BLL Mantenimiento error al dar alta mantenimiento");
+				throw new Exception("BLL Mantenimiento error al dar alta mantenimiento:" +ex.Message,ex);
 			}
 		}
 
@@ -86,7 +88,7 @@ namespace BLL
 
 
             Mantenimiento mantenimientoAux = MantenimientoDAO.BuscarMantenimientosPorIdAeronave(mantenimiento.Aeronave.IdAeronave).FirstOrDefault(m => m.Aeronave.IdAeronave.Equals(mantenimiento.Aeronave.IdAeronave) &&
-                                                                                                                                                         m.EstadoMantenimiento.IdEstadoMantenimiento != (int)EnumEstadoMantenimiento.Finalizado);
+                                                                                                                                                       m.EstadoMantenimiento.IdEstadoMantenimiento != (int)EnumEstadoMantenimiento.Finalizado);
             //Vale la pena hacer un metodo en DAL( equivalente a una query)? ya puedo sacar el filtrado por Id aeronave ahora que no busco todos 
 
             if (mantenimientoAux != null) throw new Exception($"La aeronave id {mantenimiento.Aeronave.IdAeronave} ya tiene un mantenimiento pendiente o en curso con id {mantenimientoAux.IdMantenimiento}");
@@ -143,13 +145,28 @@ namespace BLL
 
         public void EliminarMantenimiento(Mantenimiento mantenimiento)
         {
+            HelperTransaccion helperTransaccion = new HelperTransaccion();
+            DataSet ds = helperTransaccion.DfParaTransaccion();
             try
             {
+                if (mantenimiento == null || mantenimiento.IdMantenimiento <= 0) throw new Exception("mantenimiento nulo o id de mantenimiento invalido");
+                if (mantenimiento.Aeronave == null || mantenimiento.Aeronave.IdAeronave <= 0) throw new Exception("aeronave nula o con id invalido");
+                if (mantenimiento.FacturaMantenimiento!= null) throw new Exception("El mantenimiento ya tiene presentada la factura  y no puede eliminarse");
 
+                if (mantenimiento.TipoMantenimiento.IdTipoMantenimiento.Equals((int)EnumTipoMantenimiento.Hs100) && mantenimiento.Aeronave.Revision100Hs >= 100) throw new Exception("No se puede eliminar el mantanimiento de 100hs si la aeronave no cumple el requisito tecnico");
+                if (mantenimiento.TipoMantenimiento.IdTipoMantenimiento.Equals((int)EnumTipoMantenimiento.Anual) && mantenimiento.Aeronave.RevisionAnual < DateTime.Now.Date) throw new Exception("No se puede elmiminar el mantenimiento anual si tiene vencida la fecha");
+
+                AeronaveBLL AeronaveBLO = new AeronaveBLL();
+                EstadoAeronaveBLL EstadoAeronaveBLO = new EstadoAeronaveBLL();
+                EstadoAeronave estadoAeronave = EstadoAeronaveBLO.BuscarPorId((int)EnumEstadoEaronave.Activo);
+                if (estadoAeronave == null) throw new Exception("no se encontro el estado aeronave activo");
+
+                MantenimientoDAO.EliminarMantenimiento(mantenimiento.IdMantenimiento);
+                AeronaveBLO.ActualizarEstadoAeronave(mantenimiento.Aeronave.IdAeronave, estadoAeronave);
             }
             catch (Exception ex)
             {
-
+                helperTransaccion.RollbackDfParaTransaccion(ds);
                 throw new Exception ("Error al eliminar mantenimiento: "+ex.Message,ex);
             }
         }

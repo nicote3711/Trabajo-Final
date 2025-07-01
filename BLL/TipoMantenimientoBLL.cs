@@ -12,6 +12,9 @@ namespace BLL
     public class TipoMantenimientoBLL
     {
 		TipoMantenimientoDAL TipoMantenimientoDAO = new TipoMantenimientoDAL();
+
+       
+
         public List<TipoMantenimiento> ObtenerTiposMantenimiento()
         {
 			try
@@ -25,7 +28,7 @@ namespace BLL
 			}
         }
 
-        internal TipoMantenimiento BuscarTipoMantenimientoPorId(int IdMantenimiento)
+        public TipoMantenimiento BuscarTipoMantenimientoPorId(int IdMantenimiento)
         {
 			try
 			{

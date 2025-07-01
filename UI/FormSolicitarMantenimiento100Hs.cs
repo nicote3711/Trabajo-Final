@@ -34,7 +34,7 @@ namespace UI
         {
             try
             {
-                List<Mecanico> LMecanicos = MecanicoBLO.ObtenerMecanicos().Where(m => m.TiposDeMantenimiento.Any(tm => tm.IdTipoMantenimiento.Equals((int)EnumTipoMantenimiento.Hs100))).ToList();
+                List<Mecanico> LMecanicos = MecanicoBLO.ObtenerMecanicos().Where(m =>m.Activo&& m.TiposDeMantenimiento.Any(tm => tm.IdTipoMantenimiento.Equals((int)EnumTipoMantenimiento.Hs100))).ToList();
 
                 cmBox_Mecanicos.DataSource = null;
                 if (LMecanicos.Count > 0)
