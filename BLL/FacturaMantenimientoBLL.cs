@@ -110,8 +110,9 @@ namespace BLL
                 FacturaMantenimientoDAO.RegistrarFactura(facturaMantenimiento);
 
                 if (facturaMantenimiento.IdFactura <= 0) throw new Exception("error al obtener el id de la factura");
-                facturaMantenimiento.Mantenimiento.FacturaMantenimiento = new FacturaMantenimiento(){IdFactura = facturaMantenimiento.IdFactura};
+                facturaMantenimiento.Mantenimiento.FacturaMantenimiento = new FacturaMantenimiento(){IdFactura = facturaMantenimiento.IdFactura, FechaFactura=facturaMantenimiento.FechaFactura};
 
+            
                 
                 MantenimientoBLL MantenimientoBLO = new MantenimientoBLL();
                 MantenimientoBLO.RegistrarFacturaMant(facturaMantenimiento.Mantenimiento);
