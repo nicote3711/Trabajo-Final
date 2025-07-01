@@ -243,5 +243,92 @@ namespace DAL
                 throw new Exception("DAL Mantenimiento error al eliminar mantenmiento: "+ex.Message,ex);
             }
         }
+
+        public void RegistrarFacturaMant(Mantenimiento mantenimiento)
+        {
+            try
+            {
+                if (!File.Exists(rutaXml)) throw new FileNotFoundException("Archivo XML no encontrado.");
+
+                DataSet ds = new DataSet();
+                ds.ReadXml(rutaXml, XmlReadMode.ReadSchema);
+
+                DataTable tabla = ds.Tables["Mantenimiento"];
+                if (tabla == null) throw new Exception("No se encontró la tabla Mantenimiento.");
+
+                DataRow row = tabla.AsEnumerable().FirstOrDefault(r => Convert.ToInt32(r["Id_Mantenimiento"]).Equals(mantenimiento.IdMantenimiento));
+
+                if (row == null) throw new Exception($"No se encontró mantenimiento con ID {mantenimiento.IdMantenimiento}.");
+
+                row["Id_Estado_Mantenimiento"]= mantenimiento.EstadoMantenimiento.IdEstadoMantenimiento;
+                row["Id_Factura"] = mantenimiento.FacturaMantenimiento.IdFactura;
+
+                ds.WriteXml(rutaXml, XmlWriteMode.WriteSchema);
+
+            }
+            catch (Exception ex)
+            {
+
+                throw new Exception("DAL Mantenimiento error al registrar Factura mantenimient: "+ex.Message,ex);
+            }
+        }
+
+        public Mantenimiento BuscarMantenimientoPorIdFactura(int idFactura)
+        {
+            try
+            {
+                if (!File.Exists(rutaXml)) throw new FileNotFoundException("No se encontró el archivo XML.");
+
+                DataSet ds = new DataSet();
+                ds.ReadXml(rutaXml, XmlReadMode.ReadSchema);
+
+                DataTable tabla = ds.Tables["Mantenimiento"];
+                if (tabla == null) throw new Exception("No se encontró la tabla Mantenimiento.");
+
+                DataRow row = tabla.AsEnumerable().FirstOrDefault(r=> r["Id_Factura"].Equals(idFactura));
+                if (row == null) throw new Exception($"No se encontro ninguna mantenimiento con el id factura {idFactura}");
+                Mantenimiento mantenimiento = new Mantenimiento();
+
+                MantenimientoMAP.MapearDesdeDB(mantenimiento, row);
+
+
+                return mantenimiento;
+
+            }
+            catch (Exception ex)
+            {
+
+                throw new Exception("DAL Mantenimiento error al buscar mantenimiento por id factura: "+ex.Message,ex);
+            }
+        }
+
+        public void EliminarFacturadeMantenimiento(Mantenimiento mantenimiento)
+        {
+            try
+            {
+                if (!File.Exists(rutaXml)) throw new FileNotFoundException("Archivo XML no encontrado.");
+
+                DataSet ds = new DataSet();
+                ds.ReadXml(rutaXml, XmlReadMode.ReadSchema);
+
+                DataTable tabla = ds.Tables["Mantenimiento"];
+                if (tabla == null) throw new Exception("No se encontró la tabla Mantenimiento.");
+
+                DataRow row = tabla.AsEnumerable().FirstOrDefault(r => Convert.ToInt32(r["Id_Mantenimiento"]).Equals(mantenimiento.IdMantenimiento));
+
+                if (row == null) throw new Exception($"No se encontró mantenimiento con ID {mantenimiento.IdMantenimiento}.");
+
+                row["Id_Estado_Mantenimiento"] = mantenimiento.EstadoMantenimiento.IdEstadoMantenimiento;
+                row["Id_Factura"] = DBNull.Value;
+
+                ds.WriteXml(rutaXml, XmlWriteMode.WriteSchema);
+
+            }
+            catch (Exception ex)
+            {
+
+                throw new Exception("DAL Mantenimiento error al eliminar factura de mantenimiento: "+ex.Message,ex);
+            }
+        }
     }
 }

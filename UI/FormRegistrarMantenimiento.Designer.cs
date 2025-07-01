@@ -34,6 +34,16 @@
             label2 = new Label();
             dgv_FacturasMantenimiento = new DataGridView();
             label3 = new Label();
+            btn_RegistrarFactura = new Button();
+            label4 = new Label();
+            txt_NroFactura = new TextBox();
+            label5 = new Label();
+            txt_MontoTotal = new TextBox();
+            txt_Detalle = new TextBox();
+            label6 = new Label();
+            btn_EliminarFactura = new Button();
+            dtp_FechaFactura = new DateTimePicker();
+            label7 = new Label();
             ((System.ComponentModel.ISupportInitialize)dgv_MantenimientosEnCurso).BeginInit();
             ((System.ComponentModel.ISupportInitialize)dgv_FacturasMantenimiento).BeginInit();
             SuspendLayout();
@@ -90,11 +100,106 @@
             label3.TabIndex = 5;
             label3.Text = "Facturas Mantenimiento";
             // 
+            // btn_RegistrarFactura
+            // 
+            btn_RegistrarFactura.Location = new Point(134, 494);
+            btn_RegistrarFactura.Name = "btn_RegistrarFactura";
+            btn_RegistrarFactura.Size = new Size(130, 23);
+            btn_RegistrarFactura.TabIndex = 6;
+            btn_RegistrarFactura.Text = "Registrar Factura";
+            btn_RegistrarFactura.UseVisualStyleBackColor = true;
+            btn_RegistrarFactura.Click += btn_RegistrarFactura_Click;
+            // 
+            // label4
+            // 
+            label4.AutoSize = true;
+            label4.Location = new Point(31, 373);
+            label4.Name = "label4";
+            label4.Size = new Size(69, 15);
+            label4.TabIndex = 7;
+            label4.Text = "Nro Factura";
+            // 
+            // txt_NroFactura
+            // 
+            txt_NroFactura.Location = new Point(134, 365);
+            txt_NroFactura.Name = "txt_NroFactura";
+            txt_NroFactura.Size = new Size(130, 23);
+            txt_NroFactura.TabIndex = 8;
+            // 
+            // label5
+            // 
+            label5.AutoSize = true;
+            label5.Location = new Point(31, 459);
+            label5.Name = "label5";
+            label5.Size = new Size(72, 15);
+            label5.TabIndex = 9;
+            label5.Text = "Monto Total";
+            // 
+            // txt_MontoTotal
+            // 
+            txt_MontoTotal.Location = new Point(134, 459);
+            txt_MontoTotal.Name = "txt_MontoTotal";
+            txt_MontoTotal.Size = new Size(130, 23);
+            txt_MontoTotal.TabIndex = 10;
+            // 
+            // txt_Detalle
+            // 
+            txt_Detalle.Location = new Point(134, 421);
+            txt_Detalle.Name = "txt_Detalle";
+            txt_Detalle.Size = new Size(130, 23);
+            txt_Detalle.TabIndex = 12;
+            // 
+            // label6
+            // 
+            label6.AutoSize = true;
+            label6.Location = new Point(31, 424);
+            label6.Name = "label6";
+            label6.Size = new Size(85, 15);
+            label6.TabIndex = 11;
+            label6.Text = "Detalle Factura";
+            // 
+            // btn_EliminarFactura
+            // 
+            btn_EliminarFactura.Location = new Point(1049, 364);
+            btn_EliminarFactura.Name = "btn_EliminarFactura";
+            btn_EliminarFactura.Size = new Size(103, 23);
+            btn_EliminarFactura.TabIndex = 13;
+            btn_EliminarFactura.Text = "Eliminar Factura";
+            btn_EliminarFactura.UseVisualStyleBackColor = true;
+            btn_EliminarFactura.Click += btn_EliminarFactura_Click;
+            // 
+            // dtp_FechaFactura
+            // 
+            dtp_FechaFactura.Format = DateTimePickerFormat.Short;
+            dtp_FechaFactura.Location = new Point(134, 394);
+            dtp_FechaFactura.Name = "dtp_FechaFactura";
+            dtp_FechaFactura.Size = new Size(130, 23);
+            dtp_FechaFactura.TabIndex = 14;
+            // 
+            // label7
+            // 
+            label7.AutoSize = true;
+            label7.Location = new Point(31, 394);
+            label7.Name = "label7";
+            label7.Size = new Size(80, 15);
+            label7.TabIndex = 15;
+            label7.Text = "Fecha Factura";
+            // 
             // FormRegistrarMantenimiento
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(1173, 531);
+            ClientSize = new Size(1173, 577);
+            Controls.Add(label7);
+            Controls.Add(dtp_FechaFactura);
+            Controls.Add(btn_EliminarFactura);
+            Controls.Add(txt_Detalle);
+            Controls.Add(label6);
+            Controls.Add(txt_MontoTotal);
+            Controls.Add(label5);
+            Controls.Add(txt_NroFactura);
+            Controls.Add(label4);
+            Controls.Add(btn_RegistrarFactura);
             Controls.Add(label3);
             Controls.Add(dgv_FacturasMantenimiento);
             Controls.Add(label2);
@@ -118,5 +223,15 @@
         private Label label2;
         private DataGridView dgv_FacturasMantenimiento;
         private Label label3;
+        private Button btn_RegistrarFactura;
+        private Label label4;
+        private TextBox txt_NroFactura;
+        private Label label5;
+        private TextBox txt_MontoTotal;
+        private TextBox txt_Detalle;
+        private Label label6;
+        private Button btn_EliminarFactura;
+        private DateTimePicker dtp_FechaFactura;
+        private Label label7;
     }
 }

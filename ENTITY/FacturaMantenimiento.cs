@@ -11,7 +11,7 @@ namespace ENTITY
     {
         public FacturaMantenimiento() { this.TipoFactura = new TipoFactura() { IdTipoFactura = (int)EnumTiposFactura.FacturaMantenimiento }; }
 
-        public Mantenimiento mantenimiento { get; set; }
+        public Mantenimiento Mantenimiento { get; set; }
 
         public override Persona DatosCliente()
         {
