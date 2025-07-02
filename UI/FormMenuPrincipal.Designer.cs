@@ -195,6 +195,7 @@
             registrarMantenimientoToolStripMenuItem.Name = "registrarMantenimientoToolStripMenuItem";
             registrarMantenimientoToolStripMenuItem.Size = new Size(205, 22);
             registrarMantenimientoToolStripMenuItem.Text = "Registrar Mantenimiento";
+            registrarMantenimientoToolStripMenuItem.Click += registrarMantenimientoToolStripMenuItem_Click;
             // 
             // pagarMantenimientoToolStripMenuItem
             // 

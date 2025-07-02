@@ -415,5 +415,20 @@ namespace UI
                 MessageBox.Show(ex.Message);
             }
         }
+
+        private void registrarMantenimientoToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                FormRegistrarMantenimiento formRegistrarMantenimiento = new FormRegistrarMantenimiento();
+                formRegistrarMantenimiento.MdiParent = this;
+                formRegistrarMantenimiento.Show();
+            }
+            catch (Exception ex)
+            {
+
+                MessageBox.Show(ex.Message);
+            }
+        }
     }
 }

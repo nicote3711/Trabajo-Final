@@ -19,7 +19,7 @@ namespace MAPPER
             factura.MontoTotal = Convert.ToDecimal(row["Monto_Total"]);
             factura.Detalle = row["Detalle"].ToString();
             factura.TipoFactura = new TipoFactura { IdTipoFactura = Convert.ToInt32(row["Id_Tipo_Factura"]) };
-            factura.Transaccion = row["Id_Transaccion"] == DBNull.Value ? null : new TransaccionFinanciera { IdTransaccionFinanciera= Convert.ToInt32(row["Id_Transaccion"]) };
+          
    
         }
 
@@ -32,7 +32,7 @@ namespace MAPPER
             row["Monto_Total"] = factura.MontoTotal;
             row["Detalle"] = factura.Detalle;
             row["Id_Tipo_Factura"] = factura.TipoFactura.IdTipoFactura;
-            row["Id_Transaccion"] = factura.Transaccion==null? DBNull.Value: factura.Transaccion.IdTransaccionFinanciera;
+        
         }
     }
 }

@@ -168,11 +168,13 @@ namespace BLL
             try
             {
                 if (vuelo == null) throw new ArgumentNullException(nameof(vuelo), "El vuelo no puede ser nulo.");
-                if(vuelo.Liquidado) throw new Exception("No se puede eliminar un vuelo ya liquidado.");
+                if (vuelo.Liquidado) throw new Exception("No se puede eliminar un vuelo ya liquidado.");
                 VueloDAO.EliminarVuelo(vuelo);
                 ClienteBLO.AcreditarSaldoVuelo(vuelo.Cliente.IDCliente, vuelo.TV); // Se resta el saldo del cliente por el vuelo eliminado
                 AeronaveBLO.ActualizarHorasAeronave(vuelo.Aeronave.IdAeronave, -vuelo.TV); // Se resta las horas de la aeronave por el vuelo eliminado
 
+
+                //Falta retrotraer mantenimiento 100Hs en caso de que el vuelo lo haya provocado. Ej si aernova hs- hs vuelo <100 Mantenimiento 100hs delete. Y mantenimiento en pediente porque si se asigno mecanico no se puede volver atras.
 
             }
             catch (Exception ex)
