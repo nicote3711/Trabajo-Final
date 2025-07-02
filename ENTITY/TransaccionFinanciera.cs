@@ -14,6 +14,7 @@ namespace ENTITY
         public TipoTransaccion TipoTransaccion { get; set; }
         public FormaPago FormaPago { get; set; }
 
+        public int? ReferenciaExterna { get; set; }
         public int IdFactura { get; set; } // como factura es abastracta y no la voy a poder instaciar primero me traigo id Id hasta saber el tipo 
         public Factura Factura { get; set; } // Dependencia obligatoria, ya que es una composicion de factura con Transaccion Financiera, esta no existe sin la factura.
     }
