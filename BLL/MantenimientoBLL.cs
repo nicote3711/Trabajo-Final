@@ -305,6 +305,18 @@ namespace BLL
 
                 MantenimientoDAO.EliminarFacturadeMantenimiento(mantenimiento);
                 AeronaveBLL AeronaveBLO = new AeronaveBLL();
+
+                if (mantenimiento.TipoMantenimiento.IdTipoMantenimiento.Equals((int)EnumTipoMantenimiento.Anual))
+                {
+                    mantenimiento.Aeronave.RevisionAnual = mantenimiento.FechaAnualAeronave;
+                    mantenimiento.Aeronave.Revision100Hs = mantenimiento.HorasAeronave;
+                }
+                if (mantenimiento.TipoMantenimiento.IdTipoMantenimiento.Equals((int)EnumTipoMantenimiento.Hs100))
+                {
+                    mantenimiento.Aeronave.Revision100Hs = mantenimiento.HorasAeronave;
+                }
+                AeronaveBLO.ModificarAeronave(mantenimiento.Aeronave);
+
                 AeronaveBLO.ActualizarEstadoAeronave(mantenimiento.Aeronave.IdAeronave, estadoAeronave);
 
 

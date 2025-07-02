@@ -103,6 +103,8 @@ namespace BLL
                     mantenimientoAnual.EstadoMantenimiento = estadoMantenimiento;
                     mantenimientoAnual.TipoMantenimiento = tipoMantenimiento;
                     mantenimientoAnual.Aeronave = aeronave;
+                    mantenimientoAnual.HorasAeronave = aeronave.Revision100Hs;
+                    mantenimientoAnual.FechaAnualAeronave = aeronave.RevisionAnual;
                     mantenimientoAnual.Fecha = DateTime.Now.Date;
                     mantenimientoAnual.Detalle = $"Mantenimiento anual a la aeronave matricula {aeronave.Matricula}.";
 
@@ -125,6 +127,8 @@ namespace BLL
                     mantenimiento100Hs.EstadoMantenimiento = estadoMantenimiento;
                     mantenimiento100Hs.TipoMantenimiento = tipoMantenimiento;
                     mantenimiento100Hs.Aeronave = aeronave;
+                    mantenimiento100Hs.HorasAeronave = aeronave.Revision100Hs;
+                    mantenimiento100Hs.FechaAnualAeronave = aeronave.RevisionAnual;
                     mantenimiento100Hs.Fecha = DateTime.Now.Date;
                     mantenimiento100Hs.Detalle = $"Mantenimiento de 100hs a la aeronave matricula {aeronave.Matricula}.";
 

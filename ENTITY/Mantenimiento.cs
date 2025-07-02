@@ -13,6 +13,8 @@ namespace ENTITY
 
         public string Detalle { get; set; }
         public Aeronave Aeronave { get; set; }
+        public decimal HorasAeronave { get; set; }
+        public DateTime FechaAnualAeronave { get; set; }
         public Mecanico Mecanico { get; set; }
 
         public FacturaMantenimiento FacturaMantenimiento { get; set; }

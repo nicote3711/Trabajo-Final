@@ -19,6 +19,10 @@ namespace MAPPER
 
             mantenimiento.Aeronave = new Aeronave { IdAeronave = Convert.ToInt32(row["Id_Aeronave"]) };
 
+            mantenimiento.HorasAeronave = Convert.ToDecimal(row["Horas_Aeronave"]);
+
+            mantenimiento.FechaAnualAeronave = DateTime.ParseExact(row["Fecha_Anual_Aeronave"].ToString(), "dd/MM/yyyy", null);
+
             mantenimiento.Mecanico = string.IsNullOrEmpty(row["Id_Mecanico"].ToString())? null: new Mecanico { IdMecanico = Convert.ToInt32(row["Id_Mecanico"]) };
 
             mantenimiento.TipoMantenimiento = new TipoMantenimiento { IdTipoMantenimiento = Convert.ToInt32(row["Id_Tipo_Mantenimiento"]) };
@@ -35,6 +39,10 @@ namespace MAPPER
             row["Detalle"] = mantenimiento.Detalle;
 
             row["Id_Aeronave"] = mantenimiento.Aeronave.IdAeronave;
+
+            row["Horas_Aeronave"] = mantenimiento.HorasAeronave;
+
+            row["Fecha_Anual_Aeronave"] = mantenimiento.FechaAnualAeronave.ToString("dd/MM/yyyy");
 
             row["Id_Mecanico"] = mantenimiento.Mecanico == null? DBNull.Value: mantenimiento.Mecanico.IdMecanico;
 
