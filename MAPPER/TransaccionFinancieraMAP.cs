@@ -23,6 +23,8 @@ namespace MAPPER
 
                 transaccion.FormaPago = new FormaPago {IdFormaPago = Convert.ToInt32(row["Id_Forma_Pago"])};
 
+                transaccion.ReferenciaExterna = row.IsNull("Referencia_Externa")? null:Convert.ToInt32(row["Referencia_Externa"]);
+
                 transaccion.IdFactura = Convert.ToInt32(row["Id_Factura"]);
 
             }
@@ -44,6 +46,7 @@ namespace MAPPER
 
                 row["Id_Tipo_Transaccion"] = transaccion.TipoTransaccion.IdTipoTransaccion;
                 row["Id_Forma_Pago"] = transaccion.FormaPago.IdFormaPago;
+                row["Referencia_Externa"] = transaccion.ReferenciaExterna == null ? DBNull.Value : transaccion.ReferenciaExterna;
                 row["Id_Factura"] = transaccion.Factura.IdFactura;
             }
             catch (Exception)

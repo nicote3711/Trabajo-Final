@@ -15,7 +15,7 @@ namespace DAL
     public class ClienteDAL
     {
         
-        ClienteMap ClienteMap = new ClienteMap();
+        
         private  string rutaXml = HelperD.ObtenerConexionXMl();
 
         public void AltaCliente(Cliente cliente)

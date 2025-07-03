@@ -430,5 +430,80 @@ namespace UI
                 MessageBox.Show(ex.Message);
             }
         }
+
+        private void cobrarFacturaSolicitudToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                FormCobrarFacturaSolicitud formCobrarFacturaSolicitud = new FormCobrarFacturaSolicitud();
+                formCobrarFacturaSolicitud.MdiParent = this;
+                formCobrarFacturaSolicitud.Show();
+            }
+            catch (Exception ex)
+            {
+
+                MessageBox.Show(ex.Message);
+            }
+        }
+
+        private void pagarMantenimientoToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                FormPagarMantenimiento formPagarMantenimiento = new FormPagarMantenimiento();
+                formPagarMantenimiento.MdiParent = this;
+                formPagarMantenimiento.Show();
+            }
+            catch (Exception ex)
+            {
+
+                MessageBox.Show(ex.Message);
+            }
+        }
+
+        private void pagarDueñoToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                FormPagarDueno formPagarDueno = new FormPagarDueno();
+                formPagarDueno.MdiParent = this;
+                formPagarDueno.Show();
+            }
+            catch (Exception ex)
+            {
+
+                MessageBox.Show(ex.Message);
+            }
+        }
+
+        private void pagarInstructorToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                FormPagarInstructor formPagarInstructor = new FormPagarInstructor();
+                formPagarInstructor.MdiParent = this;
+                formPagarInstructor.Show();
+            }
+            catch (Exception ex)
+            {
+
+                MessageBox.Show(ex.Message);
+            }
+        }
+
+        private void pagarCombustibleToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                FormPagarCombustible formPagarCombustible = new FormPagarCombustible();
+                formPagarCombustible.MdiParent = this;
+                formPagarCombustible.Show();
+            }
+            catch (Exception ex)
+            {
+
+                MessageBox.Show(ex.Message) ;
+            }
+        }
     }
 }

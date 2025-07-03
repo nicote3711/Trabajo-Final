@@ -147,6 +147,7 @@
             cobrarFacturaSolicitudToolStripMenuItem.Name = "cobrarFacturaSolicitudToolStripMenuItem";
             cobrarFacturaSolicitudToolStripMenuItem.Size = new Size(201, 22);
             cobrarFacturaSolicitudToolStripMenuItem.Text = "Cobrar Factura Solicitud";
+            cobrarFacturaSolicitudToolStripMenuItem.Click += cobrarFacturaSolicitudToolStripMenuItem_Click;
             // 
             // toolStripMenuItem1
             // 
@@ -202,6 +203,7 @@
             pagarMantenimientoToolStripMenuItem.Name = "pagarMantenimientoToolStripMenuItem";
             pagarMantenimientoToolStripMenuItem.Size = new Size(205, 22);
             pagarMantenimientoToolStripMenuItem.Text = "Pagar Mantenimiento";
+            pagarMantenimientoToolStripMenuItem.Click += pagarMantenimientoToolStripMenuItem_Click;
             // 
             // liquidacionesToolStripMenuItem
             // 
@@ -214,7 +216,7 @@
             // 
             dueñosToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { liquidarDueñoToolStripMenuItem, pagarDueñoToolStripMenuItem });
             dueñosToolStripMenuItem.Name = "dueñosToolStripMenuItem";
-            dueñosToolStripMenuItem.Size = new Size(136, 22);
+            dueñosToolStripMenuItem.Size = new Size(180, 22);
             dueñosToolStripMenuItem.Text = "Dueños";
             // 
             // liquidarDueñoToolStripMenuItem
@@ -229,26 +231,28 @@
             pagarDueñoToolStripMenuItem.Name = "pagarDueñoToolStripMenuItem";
             pagarDueñoToolStripMenuItem.Size = new Size(155, 22);
             pagarDueñoToolStripMenuItem.Text = "Pagar Dueño";
+            pagarDueñoToolStripMenuItem.Click += pagarDueñoToolStripMenuItem_Click;
             // 
             // instructorToolStripMenuItem
             // 
             instructorToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { liquidarInstructorToolStripMenuItem, pagarInstructorToolStripMenuItem });
             instructorToolStripMenuItem.Name = "instructorToolStripMenuItem";
-            instructorToolStripMenuItem.Size = new Size(136, 22);
+            instructorToolStripMenuItem.Size = new Size(180, 22);
             instructorToolStripMenuItem.Text = "Instructores";
             // 
             // liquidarInstructorToolStripMenuItem
             // 
             liquidarInstructorToolStripMenuItem.Name = "liquidarInstructorToolStripMenuItem";
-            liquidarInstructorToolStripMenuItem.Size = new Size(171, 22);
+            liquidarInstructorToolStripMenuItem.Size = new Size(180, 22);
             liquidarInstructorToolStripMenuItem.Text = "Liquidar Instructor";
             liquidarInstructorToolStripMenuItem.Click += liquidarInstructorToolStripMenuItem_Click;
             // 
             // pagarInstructorToolStripMenuItem
             // 
             pagarInstructorToolStripMenuItem.Name = "pagarInstructorToolStripMenuItem";
-            pagarInstructorToolStripMenuItem.Size = new Size(171, 22);
+            pagarInstructorToolStripMenuItem.Size = new Size(180, 22);
             pagarInstructorToolStripMenuItem.Text = "Pagar Instructor";
+            pagarInstructorToolStripMenuItem.Click += pagarInstructorToolStripMenuItem_Click;
             // 
             // combustibleToolStripMenuItem
             // 
@@ -269,6 +273,7 @@
             pagarCombustibleToolStripMenuItem.Name = "pagarCombustibleToolStripMenuItem";
             pagarCombustibleToolStripMenuItem.Size = new Size(236, 22);
             pagarCombustibleToolStripMenuItem.Text = "Pagar Combustible";
+            pagarCombustibleToolStripMenuItem.Click += pagarCombustibleToolStripMenuItem_Click;
             // 
             // gestionAMBSToolStripMenuItem
             // 

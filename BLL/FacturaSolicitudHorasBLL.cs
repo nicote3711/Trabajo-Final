@@ -29,10 +29,12 @@ namespace BLL
                     if (solicitud == null) throw new Exception($"No se encontró la solicitud de horas con ID {factura.Solicitud.IdSolicitudHoras}.");
                     factura.Solicitud = solicitud; // Asignar la solicitud a la factura 
 
-                    //
-                    if (factura.Transaccion!=null)
+                    //Busco por id de factura la transaccion. Si existe devuelve el objeto sino devuelve null. La transaccion mapea forma pago y tipo transaccion pero no mapea factura para evitar ref circular
+                    TransaccionFinancieraBLL TransaccionFinancieraBLO = new TransaccionFinancieraBLL();
+                    TransaccionFinanciera transaccion = TransaccionFinancieraBLO.BuscarTransaccionPorIdFactura(factura.IdFactura);
+                    if (transaccion!=null)
                     {
-                        // aca busco la transaccion asociada a la factura por id transaccion si es necesario.
+                        factura.Transaccion = transaccion;
                     }
                 }   
                 return Lfacturas;
