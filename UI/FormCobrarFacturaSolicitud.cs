@@ -93,6 +93,7 @@ namespace UI
 
                 }
                 if (LFacturasSolicitud.Count > 0) dgv_FactSoliImp.DataSource = LFacturasSolicitud;
+                else { txt_Monto.Clear(); }
             }
             catch (Exception ex)
             {
@@ -225,7 +226,8 @@ namespace UI
         {
             try
             {
-                if (dgv_FactSoliImp.SelectedRows.Count <= 0) throw new Exception("Debe seleccionar una una factura de solicitud");
+                if (dgv_FactSoliImp.Rows.Count <= 0) throw new Exception("No hay facturas para cobrar");
+                if (dgv_FactSoliImp.SelectedRows.Count <= 0) throw new Exception("Debe seleccionar  una factura de solicitud");
                 FacturaSolicitudHoras factura = dgv_FactSoliImp.SelectedRows[0].DataBoundItem as FacturaSolicitudHoras;
                 if (factura == null) throw new Exception("error al obtener la factura de la grilla");
                 if (cmBox_FormaPago.SelectedIndex <= -1) throw new Exception("Debe seleccionar una forma de pago");
@@ -275,7 +277,7 @@ namespace UI
                 if (!(dgv_CobrosFactSolicitudes.SelectedRows[0].DataBoundItem is TransaccionFinanciera)) throw new Exception("error al obtener la transaccion financiera de la grilla");
 
                 TransaccionFinanciera transaccionFinanciera = dgv_CobrosFactSolicitudes.SelectedRows[0].DataBoundItem as TransaccionFinanciera;
-                if (transaccionFinanciera == null) throw new Exception("la transaccion obtenida de la grilal es nula");
+                if (transaccionFinanciera == null) throw new Exception("la transaccion obtenida de la grilla es nula");
 
                 TransaccionFinancieraBLO.EliminarCobroHoras(transaccionFinanciera);
                 CargarDgvFacturasSolicitud();

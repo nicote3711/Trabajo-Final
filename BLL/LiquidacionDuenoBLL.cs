@@ -44,7 +44,7 @@ namespace BLL
                 foreach (LiquidacionDueno liquidacion in LLiquidacionesD)
                 {
 
-                    Dueno dueno = DuenoBLO.BuscarDuenoPorIdPersona(liquidacion.Persona.IDPersona); // TO DO: Metodo
+                    Dueno dueno = DuenoBLO.BuscarDuenoPorIdPersona(liquidacion.Persona.IDPersona); // TODO: Metodo
                     if (dueno == null) throw new Exception("Error al obtener el dueño para la liquidacion");
                     liquidacion.Persona = dueno;
                     liquidacion.Servicio = servicioBLO.BuscarServicioPorID(liquidacion.Servicio.IdServicio);
@@ -71,7 +71,7 @@ namespace BLL
         }
 
 
-        internal void GenerarLiquidacion(LiquidacionDueno liquidacionD)
+        public void GenerarLiquidacion(LiquidacionDueno liquidacionD)
         {
 			
                // HelperTransaccion helperTransaccion = new HelperTransaccion();
@@ -128,6 +128,27 @@ namespace BLL
             try
             {
                 List<LiquidacionDueno> LLiquidaciones = LiquidacionDuenoDAO.BuscarLiquidacionesPorIdFacturacion(idFactura);
+
+                DuenoBLL DuenoBLO = new DuenoBLL();
+                VueloBLL VueloBLO = new VueloBLL();
+                ServicioBLL servicioBLO = new ServicioBLL();
+                foreach (LiquidacionDueno liquidacion in LLiquidaciones)
+                {
+                    Dueno dueno = DuenoBLO.BuscarDuenoPorIdPersona(liquidacion.Persona.IDPersona); // TODO: Metodo
+                    if (dueno == null) throw new Exception("Error al obtener el dueño para la liquidacion");
+                    liquidacion.Persona = dueno;
+                    liquidacion.Servicio = servicioBLO.BuscarServicioPorID(liquidacion.Servicio.IdServicio);
+
+                    List<Vuelo> vuelosCompletos = new List<Vuelo>();
+                    foreach (Vuelo vueloIncompleto in liquidacion.Vuelos) // ya lo inicie
+                    {
+                        Vuelo vueloCompleto = VueloBLO.BuscarVueloPorId(vueloIncompleto.IdVuelo);
+                        if (vueloCompleto == null) throw new Exception("Vuelo no encontrado");
+
+                        vuelosCompletos.Add(vueloCompleto);
+                    }
+                    liquidacion.Vuelos = vuelosCompletos;
+                }
 
                 return LLiquidaciones;
             }

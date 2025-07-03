@@ -21,13 +21,7 @@ namespace BLL
 			DataSet ds = helperTransaccion.DfParaTransaccion();
 			try
 			{
-				if (transaccionFinanciera.Factura == null || transaccionFinanciera.Factura.IdFactura <= 0) throw new Exception("la factura de la transaccion es nula o su id es invalido");
-				if (transaccionFinanciera.FechaTransaccion.Date < transaccionFinanciera.Factura.FechaFactura.Date) throw new Exception("la fecha de la transaccion no puede ser anterior a la factura");
-				if (transaccionFinanciera.MontoTransaccion <= 0) throw new Exception("el monto de la transaccion debe ser un monto valido");
-				if (transaccionFinanciera.ReferenciaExterna == null && transaccionFinanciera.FormaPago.IdFormaPago.Equals((int)EnumFormaPago.Transferencia)) throw new Exception("las transacciones por transferencia refquieren el numero de referencia externa");
-				if (transaccionFinanciera.ReferenciaExterna != null && transaccionFinanciera.FormaPago.IdFormaPago.Equals((int)EnumFormaPago.Efectivo)) throw new Exception("las opereciones en efectivo no poseen referencia externa");
-
-                
+				ValidarTransaccion(transaccionFinanciera);
 
 
                 TipoTransaccionBLL TipoTransaccionBLO = new TipoTransaccionBLL();
@@ -197,6 +191,64 @@ namespace BLL
 			{
 				helperTransaccion.RollbackDfParaTransaccion(ds);
 				throw new Exception("BLL TransaccionFinanciera error al eliminar cobro horas: "+ex.Message,ex);
+			}
+        }
+
+        public void RegistrarPagoDueno(TransaccionFinanciera transaccionFinanciera)
+        {
+			try
+            {
+                ValidarTransaccion(transaccionFinanciera);
+
+                TipoTransaccionBLL TipoTransaccionBLO = new TipoTransaccionBLL();
+                TipoTransaccion tipoTransaccion = TipoTransaccionBLO.BuscarPorId((int)EnumTipoTransaccion.PagoDueño);
+                if (tipoTransaccion == null) throw new Exception("no se encontro el tipo de transaccion para pago dueño");
+
+                transaccionFinanciera.TipoTransaccion = tipoTransaccion;
+                transaccionFinanciera.IdFactura = transaccionFinanciera.Factura.IdFactura;
+
+                TransaccionFinancieraDAO.RegistrarTransaccion(transaccionFinanciera);
+
+            }
+            catch (Exception ex)
+			{
+
+				throw new Exception("BLL TransaccionFinanciera error al regitrar paro dueño: "+ex.Message,ex);
+			}
+        }
+
+        private  void ValidarTransaccion(TransaccionFinanciera transaccionFinanciera)
+        {
+			try
+			{
+                if (transaccionFinanciera.Factura == null || transaccionFinanciera.Factura.IdFactura <= 0) throw new Exception("la factura de la transaccion es nula o su id es invalido");
+                if (transaccionFinanciera.FechaTransaccion.Date < transaccionFinanciera.Factura.FechaFactura.Date) throw new Exception("la fecha de la transaccion no puede ser anterior a la factura");
+                if (transaccionFinanciera.MontoTransaccion <= 0) throw new Exception("el monto de la transaccion debe ser un monto valido");
+                if (transaccionFinanciera.ReferenciaExterna == null && transaccionFinanciera.FormaPago.IdFormaPago.Equals((int)EnumFormaPago.Transferencia)) throw new Exception("las transacciones por transferencia refquieren el numero de referencia externa");
+                if (transaccionFinanciera.ReferenciaExterna != null && transaccionFinanciera.FormaPago.IdFormaPago.Equals((int)EnumFormaPago.Efectivo)) throw new Exception("las opereciones en efectivo no poseen referencia externa");
+            }
+			catch (Exception ex)
+			{
+
+				throw new Exception("erro al validar transaccion: "+ex.Message,ex);
+			}
+    
+        }
+
+        public void EliminarPagoDueno(TransaccionFinanciera transaccionFinanciera)
+        {
+			try
+			{
+                if (transaccionFinanciera == null || transaccionFinanciera.IdTransaccionFinanciera <= 0) throw new Exception("la transaccion que desea eliminar es nula o su id es invalido");
+                if (transaccionFinanciera.Factura == null || transaccionFinanciera.Factura.IdFactura != transaccionFinanciera.IdFactura || transaccionFinanciera.IdFactura <= 0) throw new Exception("error factura nula , o incongruencia de id factura con objeto id factura o id factura invalido");
+                if (!(transaccionFinanciera.Factura is FacturaDueno fd)) throw new Exception("la factura asociada ala transaccion no es del tipo correcto");
+
+                TransaccionFinancieraDAO.EliminarTransaccionPorId(transaccionFinanciera.IdTransaccionFinanciera);
+            }
+			catch (Exception ex)
+			{
+
+				throw new Exception("BLL TransaccionFinanciera error al eliminar pago dueño: "+ex.Message,ex);
 			}
         }
     }

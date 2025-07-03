@@ -93,5 +93,31 @@ namespace DAL
                 throw new Exception("DAL FacturaDueño error al eliminar factura: "+ex.Message,ex);
             }
         }
+
+        public FacturaDueno BuscarFacturaPorId(int idFactura)
+        {
+            try
+            {
+                if (!File.Exists(rutaXml)) throw new FileNotFoundException("No se encontró el archivo XML.");
+                DataSet ds = new DataSet();
+                ds.ReadXml(rutaXml, XmlReadMode.ReadSchema);
+                DataTable tablaFacturas = ds.Tables["Factura"];
+                if (tablaFacturas == null) throw new Exception("No se encontró la tabla Factura.");
+
+                DataRow row = tablaFacturas.AsEnumerable().FirstOrDefault(r => r["Id_Factura"].Equals(idFactura));
+                if (row == null) return null;
+
+                FacturaDueno facturaDueno = new FacturaDueno();
+                FacturaMAP.MapearDesdeDB(facturaDueno, row);
+
+                return facturaDueno;    
+
+            }
+            catch (Exception ex)
+            {
+
+                throw new Exception("DAL FacturaDueño error al buscar factura por id: "+ex.Message,ex);
+            }
+        }
     }
 }
