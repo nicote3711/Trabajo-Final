@@ -72,7 +72,7 @@ namespace UI
                     Instructor instructor = cmBox_Instructores.SelectedItem as Instructor;
                     if (instructor != null && instructor.IdInstructor != null)
                     {
-                        List<LiquidacionInstructor> ListaLiquidacionesInstructores = LiquidacionInstructorBLO.ObtenerLiquidacionesIPorIdPersonaDueño(instructor.IDPersona).Where(l => l.IdFactura == null || l.IdFactura <= 0).ToList();
+                        List<LiquidacionInstructor> ListaLiquidacionesInstructores = LiquidacionInstructorBLO.ObtenerLiquidacionesIPorIdPersonaInstructor(instructor.IDPersona).Where(l => l.IdFactura == null || l.IdFactura <= 0).ToList();
                         if (ListaLiquidacionesInstructores != null && ListaLiquidacionesInstructores.Count > 0)
                         {
                             dgv_LiquidacionesInstructor.DataSource = ListaLiquidacionesInstructores;

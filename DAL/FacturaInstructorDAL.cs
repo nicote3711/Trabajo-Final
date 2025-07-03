@@ -15,6 +15,32 @@ namespace DAL
     {
         private readonly string rutaXml = HelperD.ObtenerConexionXMl();
 
+        public FacturaInstructor BuscarFacturaPorId(int idFactura)
+        {
+            try
+            {
+                if (!File.Exists(rutaXml)) throw new FileNotFoundException("No se encontró el archivo XML.");
+                DataSet ds = new DataSet();
+                ds.ReadXml(rutaXml, XmlReadMode.ReadSchema);
+                DataTable tablaFacturas = ds.Tables["Factura"];
+                if (tablaFacturas == null) throw new Exception("No se encontró la tabla Factura.");
+
+                DataRow row = tablaFacturas.AsEnumerable().FirstOrDefault(r => r["Id_Factura"].Equals(idFactura));
+                if (row == null) return null;
+
+                FacturaInstructor facturaInstructor = new FacturaInstructor();
+                FacturaMAP.MapearDesdeDB(facturaInstructor, row);
+
+                return facturaInstructor;
+
+            }
+            catch (Exception ex)
+            {
+
+                throw new Exception("DAL FacturaInstructor error al buscar factura por id: "+ex.Message,ex);
+            }
+        }
+
         public void EliminarFactura(int idFactura)
         {
             try

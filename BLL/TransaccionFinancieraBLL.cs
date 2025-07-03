@@ -226,6 +226,9 @@ namespace BLL
                 if (transaccionFinanciera.MontoTransaccion <= 0) throw new Exception("el monto de la transaccion debe ser un monto valido");
                 if (transaccionFinanciera.ReferenciaExterna == null && transaccionFinanciera.FormaPago.IdFormaPago.Equals((int)EnumFormaPago.Transferencia)) throw new Exception("las transacciones por transferencia refquieren el numero de referencia externa");
                 if (transaccionFinanciera.ReferenciaExterna != null && transaccionFinanciera.FormaPago.IdFormaPago.Equals((int)EnumFormaPago.Efectivo)) throw new Exception("las opereciones en efectivo no poseen referencia externa");
+
+				TransaccionFinanciera trf = TransaccionFinancieraDAO.BuscarTransaccionPorIdFactura(transaccionFinanciera.Factura.IdFactura);
+				if (trf != null) throw new Exception($"ya existe una transaccion para el id de factura {transaccionFinanciera.Factura.IdFactura}");
             }
 			catch (Exception ex)
 			{
@@ -241,7 +244,7 @@ namespace BLL
 			{
                 if (transaccionFinanciera == null || transaccionFinanciera.IdTransaccionFinanciera <= 0) throw new Exception("la transaccion que desea eliminar es nula o su id es invalido");
                 if (transaccionFinanciera.Factura == null || transaccionFinanciera.Factura.IdFactura != transaccionFinanciera.IdFactura || transaccionFinanciera.IdFactura <= 0) throw new Exception("error factura nula , o incongruencia de id factura con objeto id factura o id factura invalido");
-                if (!(transaccionFinanciera.Factura is FacturaDueno fd)) throw new Exception("la factura asociada ala transaccion no es del tipo correcto");
+                if (!(transaccionFinanciera.Factura is FacturaDueno fd)) throw new Exception("la factura asociada a la transaccion no es del tipo correcto");
 
                 TransaccionFinancieraDAO.EliminarTransaccionPorId(transaccionFinanciera.IdTransaccionFinanciera);
             }
@@ -249,6 +252,45 @@ namespace BLL
 			{
 
 				throw new Exception("BLL TransaccionFinanciera error al eliminar pago dueño: "+ex.Message,ex);
+			}
+        }
+
+        public void RegistrarPagoInstructor(TransaccionFinanciera transaccionFinanciera)
+        {
+			try
+			{
+                ValidarTransaccion(transaccionFinanciera);
+
+                TipoTransaccionBLL TipoTransaccionBLO = new TipoTransaccionBLL();
+                TipoTransaccion tipoTransaccion = TipoTransaccionBLO.BuscarPorId((int)EnumTipoTransaccion.PagoInstructor);
+                if (tipoTransaccion == null) throw new Exception("no se encontro el tipo de transaccion para pago dueño");
+
+                transaccionFinanciera.TipoTransaccion = tipoTransaccion;
+                transaccionFinanciera.IdFactura = transaccionFinanciera.Factura.IdFactura;
+
+                TransaccionFinancieraDAO.RegistrarTransaccion(transaccionFinanciera);
+            }
+			catch (Exception ex)
+			{
+
+				throw new Exception("BLL TransaccionFinanciera error al registrar pago instructor: "+ex.Message,ex);
+			}
+        }
+
+        public void EliminarPagoInstructor(TransaccionFinanciera transaccionFinanciera)
+        {
+			try
+			{
+                if (transaccionFinanciera == null || transaccionFinanciera.IdTransaccionFinanciera <= 0) throw new Exception("la transaccion que desea eliminar es nula o su id es invalido");
+                if (transaccionFinanciera.Factura == null || transaccionFinanciera.Factura.IdFactura != transaccionFinanciera.IdFactura || transaccionFinanciera.IdFactura <= 0) throw new Exception("error factura nula , o incongruencia de id factura con objeto id factura o id factura invalido");
+                if (!(transaccionFinanciera.Factura is FacturaInstructor fi)) throw new Exception("la factura asociada a la transaccion no es del tipo correcto");
+
+                TransaccionFinancieraDAO.EliminarTransaccionPorId(transaccionFinanciera.IdTransaccionFinanciera);
+            }
+			catch (Exception ex)
+			{
+
+				throw new Exception("BLL TransaccionFinanciera error al eliminar pago instructor: "+ex.Message,ex);
 			}
         }
     }

@@ -46,7 +46,7 @@ namespace UI
                 {
                     Dueno dueno = cmBox_Dueno.SelectedItem as Dueno;
                     if (dueno == null) throw new Exception("error al obtener dueño del combo box");
-                    Ltransacciones = Ltransacciones.Where(tf => tf.Factura is FacturaDueno fsh && fsh.CuilEmisor.Equals(dueno.CuitCuil)).ToList();
+                    Ltransacciones = Ltransacciones.Where(tf => tf.Factura is FacturaDueno fd && fd.CuilEmisor.Equals(dueno.CuitCuil)).ToList();
                 }
 
                 if (Ltransacciones.Count > 0) { dgv_Pagos.DataSource = Ltransacciones; }
@@ -58,7 +58,6 @@ namespace UI
             }
         }
  
-  
         private void CargarDgvFacturasImp()
         {
             try
@@ -81,7 +80,23 @@ namespace UI
                 MessageBox.Show(ex.Message);
             }
         }
+        private void dgv_FacturasImpagas_SelectionChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                if (dgv_FacturasImpagas.SelectedRows.Count == 0) return;
+                if (dgv_FacturasImpagas.Rows.Count > 0 && dgv_FacturasImpagas.SelectedRows[0].DataBoundItem is FacturaDueno)
+                {
+                    CalcularMontoPago();
+                }
 
+            }
+            catch (Exception ex)
+            {
+
+                MessageBox.Show(ex.Message);
+            }
+        }
         private void CargarComboBoxDuenos()
         {
             try
@@ -263,22 +278,6 @@ namespace UI
 
 
 
-        private void dgv_FacturasImpagas_SelectionChanged(object sender, EventArgs e)
-        {
-            try
-            {
-                if (dgv_FacturasImpagas.SelectedRows.Count == 0) return;
-                if (dgv_FacturasImpagas.Rows.Count > 0 && dgv_FacturasImpagas.SelectedRows[0].DataBoundItem is FacturaDueno)
-                {
-                    CalcularMontoPago();
-                }
-                   
-            }
-            catch (Exception ex)
-            {
-
-                MessageBox.Show(ex.Message);
-            }
-        }
+ 
     }
 }

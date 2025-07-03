@@ -65,9 +65,9 @@
             label6.AutoSize = true;
             label6.Location = new Point(713, 57);
             label6.Name = "label6";
-            label6.Size = new Size(105, 15);
+            label6.Size = new Size(39, 15);
             label6.TabIndex = 16;
-            label6.Text = "Cobros Solicitudes";
+            label6.Text = "Pagos";
             // 
             // dgv_Pagos
             // 

@@ -45,17 +45,22 @@ namespace BLL
             {
                 List<FacturaInstructor> LFacturasInstructor = FacturaInstructorDAO.ObtenerFacturas();
                 LiquidacionInstructorBLL LiquidacionInstructorBLO = new LiquidacionInstructorBLL();
-
+                TransaccionFinancieraBLL TransaccionFinancieraBLO = new TransaccionFinancieraBLL();
                 foreach (FacturaInstructor factura in LFacturasInstructor)
                 {
                     factura.ListaLiquidaciones = LiquidacionInstructorBLO.ObtenerLiquidacionesPorIdFactura(factura.IdFactura);
+                    TransaccionFinanciera transaccionFinanciera = TransaccionFinancieraBLO.BuscarTransaccionPorIdFactura(factura.IdFactura);
+                    if( transaccionFinanciera != null )
+                    {
+                        factura.Transaccion = transaccionFinanciera;
+                    }
                 }
                 return LFacturasInstructor;
             }
             catch (Exception ex)
             {
 
-                throw new Exception("BLL FacturaInstructor error al obtener Facturas");
+                throw new Exception("BLL FacturaInstructor error al obtener Facturas: "+ex.Message,ex);
             }
         }
 
@@ -95,7 +100,21 @@ namespace BLL
 
         public FacturaInstructor BuscarFacturaInstructorPorIdParaTransaccion(int idFactura)
         {
-            throw new NotImplementedException();
+            try
+            {
+                if (idFactura <= 0) throw new Exception("id de factura invalido");
+                FacturaInstructor facturaInstructor = FacturaInstructorDAO.BuscarFacturaPorId(idFactura);
+                if (facturaInstructor == null) throw new Exception("error factura nula y debe existir para una transaccion");
+                LiquidacionInstructorBLL LiquidacionInstructorBLO = new LiquidacionInstructorBLL();
+                facturaInstructor.ListaLiquidaciones = LiquidacionInstructorBLO.ObtenerLiquidacionesPorIdFactura(facturaInstructor.IdFactura);
+
+                return facturaInstructor;
+            }
+            catch (Exception ex)
+            {
+
+                throw new Exception("BLL FacturaInstructor error al buscar factura para Instructor por Id para transaccion: "+ex.Message,ex);
+            }
         }
     }
 }
