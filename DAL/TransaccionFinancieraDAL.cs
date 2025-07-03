@@ -95,5 +95,33 @@ namespace DAL
                 throw new Exception("DAL Transaccion Financiera error al obtener todas: "+ex.Message,ex);
             }
         }
+
+        public void EliminarTransaccionPorId(int idTransaccionFinanciera)
+        {
+            try
+            {
+                if (!File.Exists(rutaXml)) throw new FileNotFoundException("No se encontró el archivo XML.");
+
+                DataSet ds = new DataSet();
+                ds.ReadXml(rutaXml, XmlReadMode.ReadSchema);
+
+                DataTable tabla = ds.Tables["Transaccion_Financiera"];
+                if (tabla == null) throw new Exception("No se encontró la tabla Transaccion_Financiera.");
+
+                DataRow row = tabla.AsEnumerable().FirstOrDefault(r => r["Id_Transaccion_Financiera"].Equals(idTransaccionFinanciera));
+
+                if (row == null) throw new Exception($"no se encotro la transaccion con id {idTransaccionFinanciera} en el archivo");
+
+                row.Delete();
+
+                ds.WriteXml(rutaXml,XmlWriteMode.WriteSchema);  
+
+            }
+            catch (Exception ex)
+            {
+
+                throw new Exception("DAL Transaccion Financiera error al eliminar transaccion por id: "+ex.Message,ex);
+            }
+        }
     }
 }

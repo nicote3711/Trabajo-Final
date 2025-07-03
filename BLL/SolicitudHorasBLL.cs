@@ -84,7 +84,7 @@ namespace BLL
 			}
         }
 
-        internal SolicitudHoras BuscarSolicitudPorIdFactura(int idFactura)
+        public SolicitudHoras BuscarSolicitudPorIdFactura(int idFactura)
         {
 			try
 			{

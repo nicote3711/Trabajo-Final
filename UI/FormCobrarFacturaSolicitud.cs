@@ -31,7 +31,7 @@ namespace UI
         }
         private void FormCobrarFacturaSolicitud_Load(object sender, EventArgs e)
         {
-    
+
         }
 
         #region Funciones Form
@@ -84,7 +84,7 @@ namespace UI
             try
             {
                 dgv_FactSoliImp.DataSource = null;
-                List<FacturaSolicitudHoras> LFacturasSolicitud = FacturaSolicitudHorasBLO.ObtenerFacturas().Where(f=>f.Transaccion==null).ToList();
+                List<FacturaSolicitudHoras> LFacturasSolicitud = FacturaSolicitudHorasBLO.ObtenerFacturas().Where(f => f.Transaccion == null).ToList();
                 if (cmBox_Cliente.SelectedIndex >= 0 && cmBox_Cliente.SelectedItem is Cliente)
                 {
                     Cliente cliente = cmBox_Cliente.SelectedItem as Cliente;
@@ -107,6 +107,7 @@ namespace UI
             try
             {
                 CargarDgvFacturasSolicitud();
+                CargarDgvTransaccionesCobroHoras();
             }
             catch (Exception ex)
             {
@@ -187,26 +188,51 @@ namespace UI
         }
 
 
+        private void CargarDgvTransaccionesCobroHoras()
+        {
+            try
+            {
+                dgv_CobrosFactSolicitudes.DataSource = null;
+                List<TransaccionFinanciera> Ltransacciones = TransaccionFinancieraBLO.ObtenerTodas().Where(t => t.TipoTransaccion.IdTipoTransaccion.Equals((int)EnumTipoTransaccion.CobroSolictudHoras)).ToList();
+
+
+                if (cmBox_Cliente.SelectedIndex >= 0 && cmBox_Cliente.SelectedItem is Cliente)
+                {
+                    Cliente cliente = cmBox_Cliente.SelectedItem as Cliente;
+                    if (cliente == null) throw new Exception("error al obtener cliente del combo box");
+                    Ltransacciones = Ltransacciones.Where(tf =>tf.Factura is FacturaSolicitudHoras fsh && fsh.Solicitud.Cliente.IDCliente.Equals(cliente.IDCliente)).ToList();
+                }
+
+                if (Ltransacciones.Count > 0){dgv_CobrosFactSolicitudes.DataSource = Ltransacciones;}
+            }
+            catch (Exception ex)
+            {
+
+                MessageBox.Show(ex.Message);
+            }
+        }
+
+
         #endregion Fin Funciones Form
 
 
 
 
         #region Botones Form
-      
+
 
         private void btn_ConfirmarCobro_Click(object sender, EventArgs e)
         {
             try
             {
-                if (dgv_FactSoliImp.SelectedRows.Count <=0) throw new Exception("Debe seleccionar una una factura de solicitud");
-                FacturaSolicitudHoras factura = dgv_FactSoliImp.SelectedRows[0].DataBoundItem as  FacturaSolicitudHoras;
+                if (dgv_FactSoliImp.SelectedRows.Count <= 0) throw new Exception("Debe seleccionar una una factura de solicitud");
+                FacturaSolicitudHoras factura = dgv_FactSoliImp.SelectedRows[0].DataBoundItem as FacturaSolicitudHoras;
                 if (factura == null) throw new Exception("error al obtener la factura de la grilla");
                 if (cmBox_FormaPago.SelectedIndex <= -1) throw new Exception("Debe seleccionar una forma de pago");
                 FormaPago formaPago = cmBox_FormaPago.SelectedItem as FormaPago;
                 if (formaPago == null) throw new Exception("error al obtener la forma de pago del combo box");
 
-               
+
 
                 TransaccionFinanciera transaccionFinanciera = new TransaccionFinanciera();
                 transaccionFinanciera.Factura = factura;
@@ -234,27 +260,35 @@ namespace UI
             }
         }
 
-        private void CargarDgvTransaccionesCobroHoras()
+
+
+        #endregion Fin Botones Form
+
+
+
+        private void btn_EliminarCobro_Click(object sender, EventArgs e)
         {
             try
             {
-                dgv_CobrosFactSolicitudes.DataSource = null;
-                List<TransaccionFinanciera> Ltransacciones = TransaccionFinancieraBLO.ObtenerTodas().Where(t => t.TipoTransaccion.IdTipoTransaccion.Equals((int)EnumTipoTransaccion.CobroSolictudHoras)).ToList();
-                if(Ltransacciones.Count > 0)
-                {
-                    dgv_CobrosFactSolicitudes.DataSource = Ltransacciones;
-                }
-            }
+                if (dgv_CobrosFactSolicitudes.Rows.Count <= 0) throw new Exception("no hay cobros de horas para eliminar");
+                if (dgv_CobrosFactSolicitudes.SelectedRows.Count <= 0) throw new Exception("debe seleccionar un cobro a eliminar");
+                if (!(dgv_CobrosFactSolicitudes.SelectedRows[0].DataBoundItem is TransaccionFinanciera)) throw new Exception("error al obtener la transaccion financiera de la grilla");
+
+                TransaccionFinanciera transaccionFinanciera = dgv_CobrosFactSolicitudes.SelectedRows[0].DataBoundItem as TransaccionFinanciera;
+                if (transaccionFinanciera == null) throw new Exception("la transaccion obtenida de la grilal es nula");
+
+                TransaccionFinancieraBLO.EliminarCobroHoras(transaccionFinanciera);
+                CargarDgvFacturasSolicitud();
+                CargarDgvTransaccionesCobroHoras();
+
+                MessageBox.Show("Cobro eliminado exitosamente");
+
+             }
             catch (Exception ex)
             {
 
                MessageBox.Show(ex.Message);
             }
         }
-
-        #endregion Fin Botones Form
-
-
-
     }
 }

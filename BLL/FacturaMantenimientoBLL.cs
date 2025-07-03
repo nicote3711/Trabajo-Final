@@ -124,5 +124,10 @@ namespace BLL
                 throw new Exception("BLL FacturaMantenimiento error al registrar la factura: "+ex.Message,ex);
             }
         }
+
+        public FacturaMantenimiento BuscarFacturaMantPorIdParaTransaccion(int idFactura)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

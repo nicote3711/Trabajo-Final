@@ -93,5 +93,10 @@ namespace BLL
                 throw new Exception("BLL FacturaDueño error al eliminar factura dueño: " + ex.Message, ex);
             }
         }
+
+        public FacturaDueno BuscarFacturaDuenoPorIdParaTransaccion(int idFactura)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

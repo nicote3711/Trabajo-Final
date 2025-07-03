@@ -92,5 +92,10 @@ namespace BLL
                 throw new Exception("BLL Factura Instructor error al registrar la factura: "+ex.Message,ex);
             }
         }
+
+        public FacturaInstructor BuscarFacturaInstructorPorIdParaTransaccion(int idFactura)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

@@ -89,6 +89,11 @@ namespace BLL
 			}
         }
 
+        public FacturaCombustible BuscarFacturaCombuPorIdParaTransaccion(int idFactura)
+        {
+            throw new NotImplementedException();
+        }
+
         private void CargarFacturaCombuConRecarga(FacturaCombustible facturaCombustible)
         {
 			try
