@@ -1,11 +1,14 @@
 ﻿using DAL;
 using ENTITY;
 using ENTITY.Enum;
+using Helper;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Transactions;
 
 namespace BLL
 {
@@ -14,6 +17,8 @@ namespace BLL
 		TransaccionFinancieraDAL TransaccionFinancieraDAO = new TransaccionFinancieraDAL();
         public void RegistrarCobroHoras(TransaccionFinanciera transaccionFinanciera)
         {
+			HelperTransaccion helperTransaccion = new HelperTransaccion();
+			DataSet ds = helperTransaccion.DfParaTransaccion();
 			try
 			{
 				if (transaccionFinanciera.Factura == null || transaccionFinanciera.Factura.IdFactura <= 0) throw new Exception("la factura de la transaccion es nula o su id es invalido");
@@ -22,19 +27,37 @@ namespace BLL
 				if (transaccionFinanciera.ReferenciaExterna == null && transaccionFinanciera.FormaPago.IdFormaPago.Equals((int)EnumFormaPago.Transferencia)) throw new Exception("las transacciones por transferencia refquieren el numero de referencia externa");
 				if (transaccionFinanciera.ReferenciaExterna != null && transaccionFinanciera.FormaPago.IdFormaPago.Equals((int)EnumFormaPago.Efectivo)) throw new Exception("las opereciones en efectivo no poseen referencia externa");
 
+                
 
-				TipoTransaccionBLL TipoTransaccionBLO = new TipoTransaccionBLL();
+
+                TipoTransaccionBLL TipoTransaccionBLO = new TipoTransaccionBLL();
 				TipoTransaccion tipoTransaccion = TipoTransaccionBLO.BuscarPorId((int)EnumTipoTransaccion.CobroSolictudHoras);
 				if (tipoTransaccion == null) throw new Exception("no se encontro el tipo de transaccion para cobro de horas");
 
 				transaccionFinanciera.TipoTransaccion = tipoTransaccion;
 				transaccionFinanciera.IdFactura = transaccionFinanciera.Factura.IdFactura;
-				TransaccionFinancieraDAO.RegistrarTransaccion(transaccionFinanciera);
+
+
+                FacturaSolicitudHoras facturaSolicitud = (FacturaSolicitudHoras)transaccionFinanciera.Factura; // se podria validar.
+				if (facturaSolicitud.Solicitud.Cliente==null || facturaSolicitud.Solicitud.Cliente.IDCliente<=0) throw new Exception("no se encontro al cliente para acreditar el saldo abonado");
+				ClienteBLL ClienteBLO = new ClienteBLL();
+				if(facturaSolicitud.Solicitud.CantidadHorasVuelo>0)
+				{
+                    ClienteBLO.AcreditarSaldoVuelo(facturaSolicitud.Solicitud.Cliente.IDCliente, facturaSolicitud.Solicitud.CantidadHorasVuelo);
+                }
+				if(facturaSolicitud.Solicitud.CantidadHorasSimulador>0)
+				{
+					ClienteBLO.AcreditarSaldoSimulador(facturaSolicitud.Solicitud.Cliente.IDCliente,facturaSolicitud.Solicitud.CantidadHorasSimulador);
+				}
+
+				
+
+                TransaccionFinancieraDAO.RegistrarTransaccion(transaccionFinanciera);
 
 			}
 			catch (Exception ex)
 			{
-
+				helperTransaccion.RollbackDfParaTransaccion(ds);
 				throw new Exception("BLL TransaccionFinanciera error al registrar cobro horas: "+ex.Message,ex);
 			}
         }
