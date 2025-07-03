@@ -565,7 +565,6 @@ namespace UI
             ClienteBLL clienteBLO = new ClienteBLL();
             DuenoBLL duenoBLO = new DuenoBLL();
 
-
             List<Cliente> listaPersonas = JsonConvert.DeserializeObject<List<Cliente>>(personasJson);
             List<Persona> personasNoInsertadas = new List<Persona>();
             try
@@ -1106,7 +1105,6 @@ namespace UI
         {
 
         }
-
         private void GenerarSolicitudes_Click(object sender, EventArgs e)
         {
 
