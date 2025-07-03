@@ -90,7 +90,14 @@ namespace BLL
 			{
 				if(idFactura <= 0) throw new Exception("El ID de solicitud debe ser un ID válido.");
                 //TODO: podria cargar el cliente de la solicitud si es necesario.
-                return SolicitudHorasDAO.BuscarSolicitudPorIdFactura(idFactura); // Buscar la solicitud de horas por ID en la base de datos o archivo XML
+				SolicitudHoras solicitud = SolicitudHorasDAO.BuscarSolicitudPorIdFactura(idFactura);
+				if (solicitud == null) throw new Exception($"no se encontro la solicitud para la factura id {idFactura}");
+
+                ClienteBLL ClienteBLO = new ClienteBLL();
+                solicitud.Cliente = ClienteBLO.BuscarClientePorID(solicitud.Cliente.IDCliente);
+				if (solicitud.Cliente == null) throw new Exception($"no se encontro al cliente con id {solicitud.Cliente.IDCliente}");
+
+				return solicitud; 
             }
 			catch (Exception ex)
 			{

@@ -98,7 +98,16 @@ namespace BLL
 
         public List<Cliente> ObtenerClientes()
         {
-           return clienteDAO.ObtenerClientes();
+            try
+            {
+                return clienteDAO.ObtenerClientes();
+
+            }
+            catch (Exception ex)
+            {
+
+                throw new Exception("BLL Cliente error al obtener los clientes: "+ex.Message,ex);
+            }
         }
 
         public void DescontarSaldoVuelo(int iDCliente, decimal tV)
