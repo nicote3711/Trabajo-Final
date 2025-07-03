@@ -103,7 +103,15 @@ namespace BLL
             try
             {
                 //busco para solicitud por tanto este no puede tenter todo cargado por ref circular
-                return FacturaSolicitudHorasDAO.BuscarFacturaPorId(idFactura);
+                FacturaSolicitudHoras facturaSolicitudHoras = FacturaSolicitudHorasDAO.BuscarFacturaPorId(idFactura);
+                TransaccionFinancieraBLL TransaccionFinancieraBLO = new TransaccionFinancieraBLL();
+                TransaccionFinanciera transaccion = TransaccionFinancieraBLO.BuscarTransaccionPorIdFactura(idFactura);
+                if (transaccion != null)
+                {
+                    facturaSolicitudHoras.Transaccion = transaccion;
+                }
+
+                return  facturaSolicitudHoras;
             }
             catch (Exception ex)
             {
