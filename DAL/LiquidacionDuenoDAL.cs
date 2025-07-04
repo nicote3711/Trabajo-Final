@@ -51,12 +51,24 @@ namespace DAL
                 DataTable tabla = ds.Tables["Liquidacion_Servicio"];
                 if (tabla == null) throw new Exception("No se encontró la tabla Liquidacion Servicio.");
 
+                DataTable tablaRelacion = ds.Tables["Liquidacion_Servicio_Vuelo"];
+                if (tablaRelacion == null) throw new Exception("No se encontro la tabla de vuelos-liquidaciones");
+
                 List<DataRow> rowsLiquidaciones = tabla.AsEnumerable().Where(r => r["Id_Factura"].Equals(idFactura)).ToList();
                 List<LiquidacionDueno> LLiquidacion = new List<LiquidacionDueno>();
                 foreach(DataRow row in rowsLiquidaciones)
                 {
                     LiquidacionDueno liquidacion = new LiquidacionDueno();
                     LiquidacionServicioMAP.MapearDesdeDB(liquidacion, row);
+                    liquidacion.Vuelos = new List<Vuelo>();
+
+                    List<DataRow> rowsVuelos = tablaRelacion.AsEnumerable().Where(rv => rv.Field<int>("Id_Liquidacion_Servicio").Equals(liquidacion.IdLiquidacionServicio)).ToList();
+                    if (rowsVuelos.Count <= 0) throw new Exception("La liquidacion no encontro sus vuelos asosciados");
+                    foreach (DataRow rowVuelo in rowsVuelos)
+                    {
+                        Vuelo vuelo = new Vuelo() { IdVuelo = Convert.ToInt32(rowVuelo["Id_Vuelo"]) };
+                        liquidacion.Vuelos.Add(vuelo);
+                    }
                     LLiquidacion.Add(liquidacion);  
                 }
                 return LLiquidacion;    

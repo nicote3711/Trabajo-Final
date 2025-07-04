@@ -209,6 +209,7 @@
             btn_EliminarCobro.TabIndex = 9;
             btn_EliminarCobro.Text = "Eliminar Cobro";
             btn_EliminarCobro.UseVisualStyleBackColor = true;
+            btn_EliminarCobro.Click += btn_EliminarCobro_Click;
             // 
             // FormCobrarFacturaSolicitud
             // 

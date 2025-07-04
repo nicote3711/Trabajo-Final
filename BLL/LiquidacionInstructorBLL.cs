@@ -100,7 +100,7 @@ namespace BLL
             liquidacionI.MontoTotal = liquidacionI.CantHoras * liquidacionI.Servicio.Precio;
         }
 
-        public List<LiquidacionInstructor> ObtenerLiquidacionesIPorIdPersonaDueño(int iDPersona)
+        public List<LiquidacionInstructor> ObtenerLiquidacionesIPorIdPersonaInstructor(int iDPersona)
         {
             ServicioBLL ServicioBLO = new ServicioBLL();
             try
@@ -144,13 +144,36 @@ namespace BLL
             try
             {
                 List<LiquidacionInstructor> LLiquidacionesI = LiquidacionInstructorDAO.BuscarLiquidacionesPorIdFactura(idFactura);
+
+                InstructorBLL InstructorBLO = new InstructorBLL();
+                VueloBLL VueloBLO = new VueloBLL();
+                SimuladorBLL SimuladorBLO = new SimuladorBLL();
+                ServicioBLL ServicioBLO = new ServicioBLL();
+                foreach (LiquidacionInstructor liquidacionInstructor in LLiquidacionesI)
+                {
+                    Instructor instructor = InstructorBLO.BuscarInstructorPorID(liquidacionInstructor.Persona.IDPersona);
+                    if (instructor == null) throw new Exception("Error al obtener el instructor para la liquidacion");
+                    liquidacionInstructor.Persona = instructor;
+                    List<Vuelo> LvuelosCompletos = new List<Vuelo>();
+                    foreach (Vuelo vuelo in liquidacionInstructor.Vuelos)
+                    {
+                        Vuelo vueloCompleto = VueloBLO.BuscarVueloPorId(vuelo.IdVuelo);
+                        LvuelosCompletos.Add(vueloCompleto);
+                    }
+
+                    List<Simulador> Lsimuladores = SimuladorBLO.ObtenerSimuladoresPorIdLiquidacion(liquidacionInstructor.IdLiquidacionServicio);
+                    if (Lsimuladores.Count <= 0 && LvuelosCompletos.Count <= 0) throw new Exception($"Error al obtener los vuelos y liquidaciones. Ambas no pueden estar vacias. Liquidacion id {liquidacionInstructor.IdLiquidacionServicio}");
+                    liquidacionInstructor.Vuelos = LvuelosCompletos;
+                    liquidacionInstructor.Simuladores = Lsimuladores;
+                    liquidacionInstructor.Servicio = ServicioBLO.BuscarServicioPorID(liquidacionInstructor.Servicio.IdServicio);
+                }
                 return LLiquidacionesI;
 
             }
             catch (Exception ex)
             {
 
-                throw new Exception("BLL LiquidacionInstructor error al ObtenerLiquidacionesPorIdFactura");
+                throw new Exception("BLL LiquidacionInstructor error al ObtenerLiquidacionesPorIdFactura: " +ex.Message,ex);
             }
         }
 

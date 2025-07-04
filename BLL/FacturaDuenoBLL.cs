@@ -53,11 +53,19 @@ namespace BLL
 			{
 				List<FacturaDueno> LFacturasDueno = FacturaDuenoDAO.ObtenerFacturas();
 
+				TransaccionFinancieraBLL TransaccionFinancieraBLO = new TransaccionFinancieraBLL();
 				LiquidacionDuenoBLL LiquidacionDuenoBLO = new LiquidacionDuenoBLL();
 				foreach(FacturaDueno factura in LFacturasDueno)
 				{
 					factura.ListaLiquidaciones = LiquidacionDuenoBLO.BuscarLiquidacionesPorIdFactura(factura.IdFactura);
+					TransaccionFinanciera transaccionFinanciera = TransaccionFinancieraBLO.BuscarTransaccionPorIdFactura(factura.IdFactura);
+					if(transaccionFinanciera != null)
+					{
+						factura.Transaccion = transaccionFinanciera;
+					}
 				}
+				
+
 				//Aca completar objetos si quisera como por ejemplo la lista de liquidaciones, con metodo de buscar liquidacion por Id. O lo que haga falta
 				return LFacturasDueno; 
 			}
@@ -92,6 +100,26 @@ namespace BLL
                 helperTransaccion.RollbackDfParaTransaccion(ds);
                 throw new Exception("BLL FacturaDueño error al eliminar factura dueño: " + ex.Message, ex);
             }
+        }
+
+        public FacturaDueno BuscarFacturaDuenoPorIdParaTransaccion(int idFactura)
+        {
+			try
+			{
+				if (idFactura <= 0) throw new Exception("id de factura invalido");
+				FacturaDueno facturaDueno = FacturaDuenoDAO.BuscarFacturaPorId(idFactura);
+				if (facturaDueno == null) throw new Exception("error factura nula y esta debe existir para una transaccion");
+
+                LiquidacionDuenoBLL LiquidacionDuenoBLO = new LiquidacionDuenoBLL();
+                facturaDueno.ListaLiquidaciones = LiquidacionDuenoBLO.BuscarLiquidacionesPorIdFactura(facturaDueno.IdFactura);
+
+                return facturaDueno;
+			}
+			catch (Exception ex)
+			{
+
+				throw new Exception("BLL FacturaDueño error al buscar factura por id para transaccion: "+ex.Message,ex);
+			}
         }
     }
 }

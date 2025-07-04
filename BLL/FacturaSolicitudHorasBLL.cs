@@ -102,7 +102,16 @@ namespace BLL
         {
             try
             {
-                return FacturaSolicitudHorasDAO.BuscarFacturaPorId(idFactura);
+                //busco para solicitud por tanto este no puede tenter todo cargado por ref circular
+                FacturaSolicitudHoras facturaSolicitudHoras = FacturaSolicitudHorasDAO.BuscarFacturaPorId(idFactura);
+                TransaccionFinancieraBLL TransaccionFinancieraBLO = new TransaccionFinancieraBLL();
+                TransaccionFinanciera transaccion = TransaccionFinancieraBLO.BuscarTransaccionPorIdFactura(idFactura);
+                if (transaccion != null)
+                {
+                    facturaSolicitudHoras.Transaccion = transaccion;
+                }
+
+                return  facturaSolicitudHoras;
             }
             catch (Exception ex)
             {
@@ -121,6 +130,30 @@ namespace BLL
             {
 
                 throw new Exception("BLL FacturaSolicitudHoras error al eliminar Factura por ID: " +ex.Message,ex);
+            }
+        }
+
+        public FacturaSolicitudHoras BuscarFacturaSolicitudPorIdParaTransaccion(int idFactura)
+        {
+            try
+            {
+                if (idFactura <= 0) throw new Exception("id Factura invalido");
+                FacturaSolicitudHoras facturaSolicitudHoras = FacturaSolicitudHorasDAO.BuscarFacturaPorId(idFactura);
+
+                // Cargar el cliente asociado a la solicitud de horas
+                SolicitudHoras solicitud = SolicitudHorasBLO.BuscarSolicitudPorIdFactura(facturaSolicitudHoras.IdFactura);
+                if (solicitud == null) throw new Exception($"No se encontró la solicitud de horas con ID {facturaSolicitudHoras.Solicitud.IdSolicitudHoras}.");
+                facturaSolicitudHoras.Solicitud = solicitud; // Asignar la solicitud a la factura 
+
+               // Aca NO busco la transaccion porque sino hago referencia ciruclar. Con tener el id en la propiedad es suficiente.
+
+                return facturaSolicitudHoras;
+
+            }
+            catch (Exception ex)
+            {
+
+                throw new Exception("BLL FacturaSolicitudHoras error al  buscar factura por id para solicitud: "+ex.Message,ex);
             }
         }
     }
