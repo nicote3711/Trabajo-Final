@@ -42,6 +42,8 @@
             dgv_SolicitudHoras = new DataGridView();
             dgv_FacturaSolicitudHoras = new DataGridView();
             btn_EliminarSolicitud = new Button();
+            label7 = new Label();
+            label6 = new Label();
             ((System.ComponentModel.ISupportInitialize)dgv_SolicitudHoras).BeginInit();
             ((System.ComponentModel.ISupportInitialize)dgv_FacturaSolicitudHoras).BeginInit();
             SuspendLayout();
@@ -148,14 +150,14 @@
             // dgv_FacturaSolicitudHoras
             // 
             dgv_FacturaSolicitudHoras.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dgv_FacturaSolicitudHoras.Location = new Point(598, 302);
+            dgv_FacturaSolicitudHoras.Location = new Point(598, 308);
             dgv_FacturaSolicitudHoras.Name = "dgv_FacturaSolicitudHoras";
             dgv_FacturaSolicitudHoras.Size = new Size(620, 228);
             dgv_FacturaSolicitudHoras.TabIndex = 19;
             // 
             // btn_EliminarSolicitud
             // 
-            btn_EliminarSolicitud.Location = new Point(614, 265);
+            btn_EliminarSolicitud.Location = new Point(1141, 255);
             btn_EliminarSolicitud.Name = "btn_EliminarSolicitud";
             btn_EliminarSolicitud.Size = new Size(75, 23);
             btn_EliminarSolicitud.TabIndex = 20;
@@ -163,11 +165,31 @@
             btn_EliminarSolicitud.UseVisualStyleBackColor = true;
             btn_EliminarSolicitud.Click += btn_EliminarSolicitud_Click;
             // 
+            // label7
+            // 
+            label7.AutoSize = true;
+            label7.Location = new Point(598, 290);
+            label7.Name = "label7";
+            label7.Size = new Size(95, 15);
+            label7.TabIndex = 38;
+            label7.Text = "Factura Solicitud";
+            // 
+            // label6
+            // 
+            label6.AutoSize = true;
+            label6.Location = new Point(594, 14);
+            label6.Name = "label6";
+            label6.Size = new Size(87, 15);
+            label6.TabIndex = 37;
+            label6.Text = "Solicitud Horas";
+            // 
             // FormSolicitudHoras
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1289, 572);
+            Controls.Add(label7);
+            Controls.Add(label6);
             Controls.Add(btn_EliminarSolicitud);
             Controls.Add(dgv_FacturaSolicitudHoras);
             Controls.Add(dgv_SolicitudHoras);
@@ -207,5 +229,7 @@
         private DataGridView dgv_SolicitudHoras;
         private DataGridView dgv_FacturaSolicitudHoras;
         private Button btn_EliminarSolicitud;
+        private Label label7;
+        private Label label6;
     }
 }

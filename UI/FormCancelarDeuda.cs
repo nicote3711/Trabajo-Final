@@ -12,19 +12,20 @@ using System.Windows.Forms;
 
 namespace UI
 {
-    public partial class FormSolicitudHoras : Form
+
+    public partial class FormCancelarDeuda : Form
     {
+
         FacturaSolicitudHorasBLL FacturaSolicitudHorasBLO = new FacturaSolicitudHorasBLL();
         ClienteBLL ClienteBLO = new ClienteBLL();
         SolicitudHorasBLL SolicitudHorasBLO = new SolicitudHorasBLL();
-        public FormSolicitudHoras()
+
+        public FormCancelarDeuda()
         {
             InitializeComponent();
-
-
         }
 
-        private void FormSolicitudHoras_Load(object sender, EventArgs e)
+        private void FormCancelarDeuda_Load(object sender, EventArgs e)
         {
             CargarComboBoxCliente();
             CargarDgvFacturaSolicitud();
@@ -32,19 +33,100 @@ namespace UI
         }
 
 
-        #region Funciones Formulario
+
+
+        #region Funciones Form
+
+
+        private void CargarDgvSolicitud()
+        {
+            try
+            {
+                dgv_SolicitudHoras.DataSource = null;
+                if (cmBox_Cliente.SelectedIndex >= 0 && cmBox_Cliente.SelectedItem is Cliente cli)
+                {
+                    if (cli == null || cli.IDCliente <= 0) throw new Exception("error al obtener cliente del combo box");
+                    List<SolicitudHoras> LSolicitudes = SolicitudHorasBLO.ObtenerSolicitudesHoras().Where(s => s.Factura.Transaccion == null && s.Cliente.IDCliente.Equals(cli.IDCliente)).ToList();
+
+                    if (LSolicitudes.Count > 0) { dgv_SolicitudHoras.DataSource = LSolicitudes; }
+
+                }
+
+
+            }
+            catch (Exception ex)
+            {
+
+                MessageBox.Show(ex.Message);
+            }
+        }
+
+        private void CargarDgvFacturaSolicitud()
+        {
+            try
+            {
+                dgv_FacturaSolicitudHoras.DataSource = null;
+                if (cmBox_Cliente.SelectedIndex >= 0 && cmBox_Cliente.SelectedItem is Cliente cli)
+                {
+                    if (cli == null || cli.CuitCuil == string.Empty) throw new Exception("error al obtener cliente del combo box");
+                    List<FacturaSolicitudHoras> LFacturasSolicitudes = FacturaSolicitudHorasBLO.ObtenerFacturas().Where(f => f.Transaccion == null && f.CuilEmisor.Equals(cli.CuitCuil)).ToList();
+
+                    if (LFacturasSolicitudes.Count > 0) { dgv_FacturaSolicitudHoras.DataSource = LFacturasSolicitudes; }
+
+                }
+            }
+            catch (Exception ex)
+            {
+
+                MessageBox.Show(ex.Message);
+            }
+        }
+
         private void CargarComboBoxCliente()
         {
             try
             {
-                List<Cliente> LClientes = ClienteBLO.ObtenerClientes().Where(c => c.Activo && c.SaldoHorasSimulador>-10 && c.SaldoHorasVuelo>-10).ToList();
+                cmBox_Cliente.DataSource = null;
+                List<Cliente> LClientes = ClienteBLO.ObtenerClientes().Where(c => c.Activo && (c.SaldoHorasSimulador <= -10 || c.SaldoHorasVuelo <= -10)).ToList();
                 if (LClientes != null && LClientes.Count > 0)
                 {
                     cmBox_Cliente.DataSource = LClientes;
-                    cmBox_Cliente.DisplayMember = "Identificar"; 
-                    cmBox_Cliente.ValueMember = "IDCliente"; 
+                    cmBox_Cliente.DisplayMember = "Identificar";
+                    cmBox_Cliente.ValueMember = "IDCliente";
                     cmBox_Cliente.SelectedIndex = -1; // Para que no seleccione nada por defecto
                     cmBox_Cliente.Text = "Seleccione un cliente";
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+
+        }
+
+
+
+
+
+        private void cmBox_Cliente_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                if (cmBox_Cliente.DataSource != null && cmBox_Cliente.SelectedIndex >= 0 && cmBox_Cliente.SelectedItem is Cliente cliente)
+                {
+                    // Cargar grillas
+                    CargarDgvSolicitud();
+                    CargarDgvFacturaSolicitud();
+
+                    if (cliente.SaldoHorasSimulador > -10 && cliente.SaldoHorasVuelo > -10) throw new Exception("error el cliente deberia tener alguno de los 2 saldos inferiores a -10");
+
+                    txt_CantHoraVuelo.Text = cliente.SaldoHorasVuelo < 0 ? Math.Abs(cliente.SaldoHorasVuelo).ToString() : 0.ToString();
+                    txt_CantHoraSimu.Text = cliente.SaldoHorasSimulador < 0 ? Math.Abs(cliente.SaldoHorasSimulador).ToString() : 0.ToString();
+
+                }
+                else
+                {
+                    LimpiarCampos();
                 }
             }
             catch (Exception ex)
@@ -58,8 +140,6 @@ namespace UI
         {
             try
             {
-                cmBox_Cliente.SelectedIndex = -1; // Para que no seleccione nada por defecto
-                cmBox_Cliente.Text = "Seleccione un cliente";
                 txt_CantHoraVuelo.Clear();
                 txt_CantHoraSimu.Clear();
                 txt_PrecioHoraSimu.Clear();
@@ -72,55 +152,34 @@ namespace UI
             }
         }
 
-        private void CargarDgvFacturaSolicitud()
+
+
+
+
+        #endregion Fin Funciones Form
+
+
+        #region Botones Form
+
+
+
+
+
+
+
+
+
+
+
+
+
+        #endregion Fin Botones Form
+
+
+        private void btn_SolicitudDeuda_Click(object sender, EventArgs e)
         {
             try
             {
-                List<FacturaSolicitudHoras> Lfacturas = FacturaSolicitudHorasBLO.ObtenerFacturas();
-                if (Lfacturas != null && Lfacturas.Count > 0)
-                {
-                    dgv_FacturaSolicitudHoras.DataSource = null;
-                    dgv_FacturaSolicitudHoras.DataSource = Lfacturas;
-                }
-                else
-                {
-                   dgv_FacturaSolicitudHoras.DataSource = null; // Limpiar el DataGridView si no hay facturas
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
-            }
-        }
-        private void CargarDgvSolicitud()
-        {
-            try
-            {
-                List<SolicitudHoras> LSolicitudes = SolicitudHorasBLO.ObtenerSolicitudesHoras();
-                if (LSolicitudes != null && LSolicitudes.Count > 0)
-                {
-                    dgv_SolicitudHoras.DataSource = null;
-                    dgv_SolicitudHoras.DataSource = LSolicitudes;
-                }
-                else
-                {
-                     dgv_SolicitudHoras.DataSource = null; // Limpiar el DataGridView si no hay solicitudes
-                }
-            }
-            catch (Exception ex)
-            {
-
-                MessageBox.Show(ex.Message);
-            }
-        }
-        #endregion Fin Funciones Formulario 
-
-        #region Botones Formulario
-        private void btnSolicitadHoras_Click(object sender, EventArgs e)
-        {
-            try
-            {
-
                 SolicitudHoras solicitudHoras = new SolicitudHoras();
 
                 if (!decimal.TryParse(txt_CantHoraVuelo.Text, out decimal cantidadHorasVuelo)) throw new ArgumentException("La cantidad de horas de vuelo debe ser un número válido.");
@@ -147,6 +206,7 @@ namespace UI
                 facturaHoras.Solicitud = solicitudHoras;
                 FacturaSolicitudHorasBLO.RegistrarFactura(facturaHoras);
 
+               
                 CargarDgvSolicitud();
                 CargarDgvFacturaSolicitud();
 
@@ -160,7 +220,6 @@ namespace UI
             }
         }
 
-
         private void btn_EliminarSolicitud_Click(object sender, EventArgs e)
         {
             try
@@ -168,7 +227,7 @@ namespace UI
                 if (dgv_SolicitudHoras.Rows.Count <= 0) throw new Exception("No hay solictudes para eliminar");
                 if (dgv_SolicitudHoras.SelectedRows.Count <= 0) throw new Exception("Debe seleccionar una solicitud para eliminar.");
                 SolicitudHoras solicitudSeleccionada = dgv_SolicitudHoras.SelectedRows[0].DataBoundItem as SolicitudHoras;
-                if (solicitudSeleccionada == null) throw new Exception("No se puede pudo seleccion la solicitud.");
+                if (solicitudSeleccionada == null) throw new Exception("la solicitud obtenida de la grilla es nula la solicitud.");
 
                 SolicitudHorasBLO.EliminarSolicitudHoras(solicitudSeleccionada);
                 CargarDgvSolicitud();
@@ -181,10 +240,5 @@ namespace UI
                 MessageBox.Show(ex.Message);
             }
         }
-
-        #endregion Fin Botones Formulario
-
-
-
     }
 }

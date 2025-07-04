@@ -90,7 +90,7 @@
             // logOutToolStripMenuItem
             // 
             logOutToolStripMenuItem.Name = "logOutToolStripMenuItem";
-            logOutToolStripMenuItem.Size = new Size(117, 22);
+            logOutToolStripMenuItem.Size = new Size(180, 22);
             logOutToolStripMenuItem.Text = "Log Out";
             logOutToolStripMenuItem.Click += LogOut_ToolStripMenuItem_Click;
             // 
@@ -141,6 +141,7 @@
             cancelarDeudaToolStripMenuItem.Name = "cancelarDeudaToolStripMenuItem";
             cancelarDeudaToolStripMenuItem.Size = new Size(201, 22);
             cancelarDeudaToolStripMenuItem.Text = "Cancelar Deuda";
+            cancelarDeudaToolStripMenuItem.Click += cancelarDeudaToolStripMenuItem_Click;
             // 
             // cobrarFacturaSolicitudToolStripMenuItem
             // 
@@ -243,14 +244,14 @@
             // liquidarInstructorToolStripMenuItem
             // 
             liquidarInstructorToolStripMenuItem.Name = "liquidarInstructorToolStripMenuItem";
-            liquidarInstructorToolStripMenuItem.Size = new Size(180, 22);
+            liquidarInstructorToolStripMenuItem.Size = new Size(171, 22);
             liquidarInstructorToolStripMenuItem.Text = "Liquidar Instructor";
             liquidarInstructorToolStripMenuItem.Click += liquidarInstructorToolStripMenuItem_Click;
             // 
             // pagarInstructorToolStripMenuItem
             // 
             pagarInstructorToolStripMenuItem.Name = "pagarInstructorToolStripMenuItem";
-            pagarInstructorToolStripMenuItem.Size = new Size(180, 22);
+            pagarInstructorToolStripMenuItem.Size = new Size(171, 22);
             pagarInstructorToolStripMenuItem.Text = "Pagar Instructor";
             pagarInstructorToolStripMenuItem.Click += pagarInstructorToolStripMenuItem_Click;
             // 
@@ -285,35 +286,35 @@
             // aeronaveToolStripMenuItem
             // 
             aeronaveToolStripMenuItem.Name = "aeronaveToolStripMenuItem";
-            aeronaveToolStripMenuItem.Size = new Size(155, 22);
+            aeronaveToolStripMenuItem.Size = new Size(180, 22);
             aeronaveToolStripMenuItem.Text = "Aeronave ABM";
             aeronaveToolStripMenuItem.Click += aeronaveToolStripMenuItem_Click;
             // 
             // mecanicoToolStripMenuItem
             // 
             mecanicoToolStripMenuItem.Name = "mecanicoToolStripMenuItem";
-            mecanicoToolStripMenuItem.Size = new Size(155, 22);
+            mecanicoToolStripMenuItem.Size = new Size(180, 22);
             mecanicoToolStripMenuItem.Text = "Mecanico ABM";
             mecanicoToolStripMenuItem.Click += mecanicoToolStripMenuItem_Click;
             // 
             // instuctorToolStripMenuItem
             // 
             instuctorToolStripMenuItem.Name = "instuctorToolStripMenuItem";
-            instuctorToolStripMenuItem.Size = new Size(155, 22);
+            instuctorToolStripMenuItem.Size = new Size(180, 22);
             instuctorToolStripMenuItem.Text = "Instructor ABM";
             instuctorToolStripMenuItem.Click += instuctorToolStripMenuItem_Click;
             // 
             // clienteToolStripMenuItem
             // 
             clienteToolStripMenuItem.Name = "clienteToolStripMenuItem";
-            clienteToolStripMenuItem.Size = new Size(155, 22);
+            clienteToolStripMenuItem.Size = new Size(180, 22);
             clienteToolStripMenuItem.Text = "Clientes ABM";
             clienteToolStripMenuItem.Click += clienteToolStripMenuItem_Click;
             // 
             // dueñoToolStripMenuItem
             // 
             dueñoToolStripMenuItem.Name = "dueñoToolStripMenuItem";
-            dueñoToolStripMenuItem.Size = new Size(155, 22);
+            dueñoToolStripMenuItem.Size = new Size(180, 22);
             dueñoToolStripMenuItem.Text = "Dueño ABM";
             dueñoToolStripMenuItem.Click += dueñoToolStripMenuItem_Click_1;
             // 
@@ -341,14 +342,14 @@
             // registrarUsuariosToolStripMenuItem
             // 
             registrarUsuariosToolStripMenuItem.Name = "registrarUsuariosToolStripMenuItem";
-            registrarUsuariosToolStripMenuItem.Size = new Size(162, 22);
+            registrarUsuariosToolStripMenuItem.Size = new Size(180, 22);
             registrarUsuariosToolStripMenuItem.Text = "Usuarios ABM";
             registrarUsuariosToolStripMenuItem.Click += registrarUsuariosToolStripMenuItem_Click;
             // 
             // rolesYPermisosToolStripMenuItem
             // 
             rolesYPermisosToolStripMenuItem.Name = "rolesYPermisosToolStripMenuItem";
-            rolesYPermisosToolStripMenuItem.Size = new Size(162, 22);
+            rolesYPermisosToolStripMenuItem.Size = new Size(180, 22);
             rolesYPermisosToolStripMenuItem.Text = "Roles y Permisos";
             rolesYPermisosToolStripMenuItem.Click += RolesYPermisos_ToolStripMenuItem_Click;
             // 
