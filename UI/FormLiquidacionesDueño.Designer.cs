@@ -132,7 +132,7 @@
             label4.AutoSize = true;
             label4.Location = new Point(371, 484);
             label4.Name = "label4";
-            label4.Size = new Size(72, 15);
+            label4.Size = new Size(71, 15);
             label4.TabIndex = 9;
             label4.Text = "Monto Total";
             // 

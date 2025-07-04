@@ -55,6 +55,7 @@ namespace BLL
 
 				TransaccionFinancieraBLL TransaccionFinancieraBLO = new TransaccionFinancieraBLL();
 				LiquidacionDuenoBLL LiquidacionDuenoBLO = new LiquidacionDuenoBLL();
+				
 				foreach(FacturaDueno factura in LFacturasDueno)
 				{
 					factura.ListaLiquidaciones = LiquidacionDuenoBLO.BuscarLiquidacionesPorIdFactura(factura.IdFactura);

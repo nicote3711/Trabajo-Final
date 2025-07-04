@@ -132,6 +132,7 @@ namespace BLL
                 DuenoBLL DuenoBLO = new DuenoBLL();
                 VueloBLL VueloBLO = new VueloBLL();
                 ServicioBLL servicioBLO = new ServicioBLL();
+
                 foreach (LiquidacionDueno liquidacion in LLiquidaciones)
                 {
                     Dueno dueno = DuenoBLO.BuscarDuenoPorIdPersona(liquidacion.Persona.IDPersona); // TODO: Metodo

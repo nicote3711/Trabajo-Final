@@ -1,5 +1,6 @@
 ﻿using BLL;
 using ENTITY;
+using iText.Kernel.Pdf.Navigation;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -27,7 +28,6 @@ namespace UI
         private void FormLiquidacionesDueño_Load(object sender, EventArgs e)
         {
             CargarComboDueños();
-
             CargarGrillaLiquidacionesDueno();
             CargarGrillaFacturasDueno();
         }
@@ -47,8 +47,6 @@ namespace UI
                     if (ListaLiquidacionesDuenos != null && ListaLiquidacionesDuenos.Count > 0)
                     {
                         dgv_LiquidacionesDueño.DataSource = ListaLiquidacionesDuenos;
-                        // dgv_LiquidacionesDueño.Columns["IdLiquidacionServicio"].Visible = false; // Ocultar columna de ID si no es necesaria
-                        // dgv_LiquidacionesDueño.Columns["IdPersona"].Visible = false; // Ocultar columna de ID de persona si no es necesaria
                     }
                     else
                     {
@@ -155,17 +153,15 @@ namespace UI
 
         private void btn_GenerarLiquidaciones_Click(object sender, EventArgs e)
         {
-            try
-            {
-                LiquidacionServicioBLO.GenerarLiquidaciones();
-                CargarGrillaLiquidacionesDueno();
-                CargarGrillaFacturasDueno();
-            }
-            catch (Exception ex)
-            {
+                try
+                {
+                    LiquidacionServicioBLO.GenerarLiquidaciones();
+                }
+                catch (Exception ex)
+                {
 
-                MessageBox.Show(ex.Message);
-            }
+                    MessageBox.Show(ex.Message);
+                }
         }
 
         private void btn_RegistrarFactura_Click(object sender, EventArgs e)

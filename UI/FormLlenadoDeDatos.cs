@@ -21,6 +21,7 @@ namespace UI
     public partial class FormLlenadoDeDatos : Form
     {
         List<string> MesesDelAnio = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
+        //List<string> MesesDelAnio = ["Mayo", "Junio", "Julio"];
 
         public FormLlenadoDeDatos()
         {
@@ -46,7 +47,7 @@ namespace UI
             List<Cliente> clientes = clienteBLO.ObtenerClientes();
             List<Finalidad> finalidades = finalidadBLO.ObtenerTodas();
 
-            List<int> anios = [2024,2025];
+            List<int> anios = [2025];
             List<Instructor> instructoresActivos = new List<Instructor>();
             List<Aeronave> aeronavesActivas = new List<Aeronave>();
             List<Cliente> clientesHabilitados = new List<Cliente>();
@@ -58,37 +59,40 @@ namespace UI
 
                 foreach (string mes in MesesDelAnio)
                 {
-                    for (int i = 0; i < 10; i++) //Inserto 5 vuelos por mes
+                    if (MesesDelAnio.IndexOf(mes) > 2 && MesesDelAnio.IndexOf(mes) < 6)
                     {
-
-                        instructores = instructorBLO.ObtenerInstructores();
-                        aeronaves = aeronaveBLO.ObtenerTodas();
-                        clientes = clienteBLO.ObtenerClientes();
-
-                        instructoresActivos = instructores.Where(i => i.Activo.Equals(true)).ToList();
-                        aeronavesActivas = aeronaves.Where(a => a.Estado.IdEstadoAeronave.Equals((int)EnumEstadoEaronave.Activo)).ToList();
-                        clientesHabilitados = clientes.Where(c => c.Activo.Equals(true) && c.SaldoHorasVuelo > -10).ToList();
-
-                        if (instructoresActivos.Count > 0 && aeronavesActivas.Count > 0 && clientesHabilitados.Count > 0)
+                        for (int i = 0; i < 10; i++) //Inserto 10 vuelos por mes
                         {
-                            vuelo.Fecha = new DateTime(anio, MesesDelAnio.IndexOf(mes) + 1, random.Next(1, 29));
-                            vuelo.Instructor = instructoresActivos[random.Next(0, instructoresActivos.Count())];
-                            vuelo.Aeronave = aeronavesActivas[random.Next(0, aeronavesActivas.Count())];
-                            vuelo.Cliente = clientesHabilitados[random.Next(0, clientesHabilitados.Count())];
 
-                            vuelo.Finalidad = finalidades[random.Next(0, finalidades.Count())];
-                            vuelo.HoraPM = TimeOnly.FromDateTime(ObtenerFechaAleatoria());
-                            vuelo.HoraCorte = vuelo.HoraPM.AddHours(2);
-                            vuelo.Origen = "Cañuelas";
-                            vuelo.Destino = "Cañuelas";
-                            vuelo.HubInicial = 0;
-                            vuelo.HubFinal = 1;
-                            vuelosBLO.RegistrarVuelo(vuelo);
-                        }
-                        else
-                        {
-                            MessageBox.Show("No hay instructores activos o aeronaves disponibles");
-                            return;
+                            instructores = instructorBLO.ObtenerInstructores();
+                            aeronaves = aeronaveBLO.ObtenerTodas();
+                            clientes = clienteBLO.ObtenerClientes();
+
+                            instructoresActivos = instructores.Where(i => i.Activo.Equals(true)).ToList();
+                            aeronavesActivas = aeronaves.Where(a => a.Estado.IdEstadoAeronave.Equals((int)EnumEstadoEaronave.Activo)).ToList();
+                            clientesHabilitados = clientes.Where(c => c.Activo.Equals(true) && c.SaldoHorasVuelo > -10).ToList();
+
+                            if (instructoresActivos.Count > 0 && aeronavesActivas.Count > 0 && clientesHabilitados.Count > 0)
+                            {
+                                vuelo.Fecha = new DateTime(anio, random.Next(5, 8), random.Next(1, 29));
+                                vuelo.Instructor = instructoresActivos[random.Next(0, instructoresActivos.Count())];
+                                vuelo.Aeronave = aeronavesActivas[random.Next(0, aeronavesActivas.Count())];
+                                vuelo.Cliente = clientesHabilitados[random.Next(0, clientesHabilitados.Count())];
+
+                                vuelo.Finalidad = finalidades[random.Next(0, finalidades.Count())];
+                                vuelo.HoraPM = TimeOnly.FromDateTime(ObtenerFechaAleatoria());
+                                vuelo.HoraCorte = vuelo.HoraPM.AddHours(2);
+                                vuelo.Origen = "Cañuelas";
+                                vuelo.Destino = "Cañuelas";
+                                vuelo.HubInicial = 0;
+                                vuelo.HubFinal = 1;
+                                vuelosBLO.RegistrarVuelo(vuelo);
+                            }
+                            else
+                            {
+                                MessageBox.Show("No hay instructores activos o aeronaves disponibles");
+                                return;
+                            }
                         }
                     }
                 }
@@ -861,6 +865,7 @@ namespace UI
                 ""Email"": ""clara.nunez@example.com"",
                 ""Telefono"": ""+5491155551313""
               },
+/*
               {
                 ""Nombre"": ""Ezequiel"",
                 ""Apellido"": ""Ortiz"",
@@ -923,7 +928,7 @@ namespace UI
                 ""FechaNacimiento"": ""1998-05-29"",
                 ""Email"": ""maximo.gil@example.com"",
                 ""Telefono"": ""+5491155558080""
-              }
+              }*/
             ]";
             List<Dueno> listaPersonas = JsonConvert.DeserializeObject<List<Dueno>>(personasJson);
             List<Persona> personasNoInsertadas = new List<Persona>();
