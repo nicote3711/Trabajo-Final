@@ -66,15 +66,20 @@ namespace BLL
             try
             {
                 List<FacturaMantenimiento> LFacturas = FacturaMantenimientoDAO.ObtenerTodos();
-
+                MantenimientoBLL MantenimientoBLO = new MantenimientoBLL();
+                TransaccionFinancieraBLL TransaccionFinancieraBLO = new TransaccionFinancieraBLL();
                 foreach (FacturaMantenimiento factura in LFacturas)
                 {
-                   MantenimientoBLL MantenimientoBLO = new MantenimientoBLL(); 
+                    
                    Mantenimiento mantenimiento =  MantenimientoBLO.BuscarMantenimientoPorIdFactura(factura.IdFactura);
                    if (mantenimiento == null) throw new Exception("no se encontro el mantenimiento asociado a la factura");
                    factura.Mantenimiento = mantenimiento;
+                    TransaccionFinanciera transaccionFinanciera = TransaccionFinancieraBLO.BuscarTransaccionPorIdFactura(factura.IdFactura);
+                    if(transaccionFinanciera != null)
+                    {
+                        factura.Transaccion = transaccionFinanciera;
+                    }
                 }
-
                 return LFacturas;
             }
             catch (Exception ex)
@@ -84,7 +89,6 @@ namespace BLL
             }
            
         }
-
 
         public void RegistrarFactura(FacturaMantenimiento facturaMantenimiento)
         {
@@ -127,7 +131,22 @@ namespace BLL
 
         public FacturaMantenimiento BuscarFacturaMantPorIdParaTransaccion(int idFactura)
         {
-            throw new NotImplementedException();
+            try
+            {
+                if (idFactura <= 0) throw new Exception("id factura invalido");
+                FacturaMantenimiento factura = FacturaMantenimientoDAO.BuscarFacturaMPorId(idFactura);
+                MantenimientoBLL MantenimientoBLL = new MantenimientoBLL();
+                Mantenimiento mantenimiento = MantenimientoBLL.BuscarMantenimientoPorIdFactura(idFactura);
+                if (mantenimiento == null || mantenimiento.IdMantenimiento <= 0) throw new Exception(" no se encontro el mantenimiento asociado a la factura");
+                factura.Mantenimiento = mantenimiento;
+
+                return factura;
+            }
+            catch (Exception ex)
+            {
+
+                throw new Exception("BLL Factura Mantenimiento error al buscar factura mantenimiento para transaccion: "+ex.Message,ex);
+            }
         }
     }
 }

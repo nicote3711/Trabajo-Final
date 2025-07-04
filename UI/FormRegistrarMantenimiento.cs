@@ -143,7 +143,11 @@ namespace UI
                 facturaMantenimiento.MontoTotal = montoTotal;
                  
                 FacturaMantenimientoBLO.RegistrarFactura(facturaMantenimiento);
-                
+                CargarComboAeronaves();
+                CargarDgvFacturaMantenimientso();
+                CargarDgvMantenimientos();
+                MessageBox.Show("Mantenimiento registrado exitosamente");
+
             }
             catch (Exception ex)
             {

@@ -293,5 +293,44 @@ namespace BLL
 				throw new Exception("BLL TransaccionFinanciera error al eliminar pago instructor: "+ex.Message,ex);
 			}
         }
+
+        public void RegistrarPagoMecanico(TransaccionFinanciera transaccionFinanciera)
+        {
+			try
+			{
+                ValidarTransaccion(transaccionFinanciera);
+
+                TipoTransaccionBLL TipoTransaccionBLO = new TipoTransaccionBLL();
+                TipoTransaccion tipoTransaccion = TipoTransaccionBLO.BuscarPorId((int)EnumTipoTransaccion.PagoMantenimientoMecanico);
+                if (tipoTransaccion == null) throw new Exception("no se encontro el tipo de transaccion para pago dueño");
+
+                transaccionFinanciera.TipoTransaccion = tipoTransaccion;
+                transaccionFinanciera.IdFactura = transaccionFinanciera.Factura.IdFactura;
+			
+                TransaccionFinancieraDAO.RegistrarTransaccion(transaccionFinanciera);
+            }
+			catch (Exception ex)
+			{
+
+				throw new Exception("BLL TransaccionFinanciera error al registrar pago mecanico: "+ex.Message,ex);
+			}
+        }
+
+        public void EliminarPagoMecanico(TransaccionFinanciera transaccionFinanciera)
+        {
+			try
+			{
+                if (transaccionFinanciera == null || transaccionFinanciera.IdTransaccionFinanciera <= 0) throw new Exception("la transaccion que desea eliminar es nula o su id es invalido");
+                if (transaccionFinanciera.Factura == null || transaccionFinanciera.Factura.IdFactura != transaccionFinanciera.IdFactura || transaccionFinanciera.IdFactura <= 0) throw new Exception("error factura nula , o incongruencia de id factura con objeto id factura o id factura invalido");
+                if (!(transaccionFinanciera.Factura is FacturaMantenimiento fi)) throw new Exception("la factura asociada a la transaccion no es del tipo correcto");
+
+                TransaccionFinancieraDAO.EliminarTransaccionPorId(transaccionFinanciera.IdTransaccionFinanciera);
+            }
+			catch (Exception ex)
+			{
+
+				throw new Exception("BLL TransaccionFinanciera error al eliminar pago mecanico: "+ex.Message,ex);
+			}
+        }
     }
 }
