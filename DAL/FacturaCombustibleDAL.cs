@@ -15,6 +15,34 @@ namespace DAL
     {
         private readonly string rutaXml = HelperD.ObtenerConexionXMl();
 
+        public FacturaCombustible BuscarFacturaCombuPorId(int idFactura)
+        {
+            try
+            {
+                if (!File.Exists(rutaXml)) throw new FileNotFoundException("No se encontró el archivo XML.");
+                DataSet ds = new DataSet();
+                ds.ReadXml(rutaXml, XmlReadMode.ReadSchema);
+
+                DataTable tabla = ds.Tables["Factura"];
+                if (tabla == null) throw new Exception("No se encontró la tabla Factura.");
+
+
+                DataRow row = tabla.AsEnumerable().FirstOrDefault(r => r["Id_Factura"].Equals(idFactura));
+                if (row == null) return null;
+
+                FacturaCombustible facturaCombustible = new FacturaCombustible();
+                FacturaMAP.MapearDesdeDB(facturaCombustible, row);
+
+                return facturaCombustible;  
+
+            }
+            catch (Exception ex)
+            {
+
+                throw new Exception("DAL FacturaCombustible error al buscar factura por id: "+ex.Message,ex);
+            }
+        }
+
         public void EliminarFacturaPorId(int idFactura)
         {
             try
