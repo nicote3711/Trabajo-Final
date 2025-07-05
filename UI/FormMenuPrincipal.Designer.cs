@@ -68,12 +68,13 @@
             gestioDeUsuariosToolStripMenuItem = new ToolStripMenuItem();
             registrarUsuariosToolStripMenuItem = new ToolStripMenuItem();
             rolesYPermisosToolStripMenuItem = new ToolStripMenuItem();
+            dashBoardGeneralToolStripMenuItem = new ToolStripMenuItem();
             menuStrip1.SuspendLayout();
             SuspendLayout();
             // 
             // menuStrip1
             // 
-            menuStrip1.Items.AddRange(new ToolStripItem[] { inicioToolStripMenuItem, actividadesDeVueloToolStripMenuItem, toolStripMenuItem1, liquidacionesToolStripMenuItem, combustibleToolStripMenuItem, gestionAMBSToolStripMenuItem, BackUP_RestoretoolStripMenuItem, gestioDeUsuariosToolStripMenuItem });
+            menuStrip1.Items.AddRange(new ToolStripItem[] { inicioToolStripMenuItem, actividadesDeVueloToolStripMenuItem, toolStripMenuItem1, liquidacionesToolStripMenuItem, combustibleToolStripMenuItem, gestionAMBSToolStripMenuItem, BackUP_RestoretoolStripMenuItem, gestioDeUsuariosToolStripMenuItem, dashBoardGeneralToolStripMenuItem });
             menuStrip1.Location = new Point(0, 0);
             menuStrip1.Name = "menuStrip1";
             menuStrip1.Size = new Size(1370, 24);
@@ -90,7 +91,7 @@
             // logOutToolStripMenuItem
             // 
             logOutToolStripMenuItem.Name = "logOutToolStripMenuItem";
-            logOutToolStripMenuItem.Size = new Size(180, 22);
+            logOutToolStripMenuItem.Size = new Size(117, 22);
             logOutToolStripMenuItem.Text = "Log Out";
             logOutToolStripMenuItem.Click += LogOut_ToolStripMenuItem_Click;
             // 
@@ -217,7 +218,7 @@
             // 
             dueñosToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { liquidarDueñoToolStripMenuItem, pagarDueñoToolStripMenuItem });
             dueñosToolStripMenuItem.Name = "dueñosToolStripMenuItem";
-            dueñosToolStripMenuItem.Size = new Size(180, 22);
+            dueñosToolStripMenuItem.Size = new Size(136, 22);
             dueñosToolStripMenuItem.Text = "Dueños";
             // 
             // liquidarDueñoToolStripMenuItem
@@ -238,7 +239,7 @@
             // 
             instructorToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { liquidarInstructorToolStripMenuItem, pagarInstructorToolStripMenuItem });
             instructorToolStripMenuItem.Name = "instructorToolStripMenuItem";
-            instructorToolStripMenuItem.Size = new Size(180, 22);
+            instructorToolStripMenuItem.Size = new Size(136, 22);
             instructorToolStripMenuItem.Text = "Instructores";
             // 
             // liquidarInstructorToolStripMenuItem
@@ -286,35 +287,35 @@
             // aeronaveToolStripMenuItem
             // 
             aeronaveToolStripMenuItem.Name = "aeronaveToolStripMenuItem";
-            aeronaveToolStripMenuItem.Size = new Size(180, 22);
+            aeronaveToolStripMenuItem.Size = new Size(155, 22);
             aeronaveToolStripMenuItem.Text = "Aeronave ABM";
             aeronaveToolStripMenuItem.Click += aeronaveToolStripMenuItem_Click;
             // 
             // mecanicoToolStripMenuItem
             // 
             mecanicoToolStripMenuItem.Name = "mecanicoToolStripMenuItem";
-            mecanicoToolStripMenuItem.Size = new Size(180, 22);
+            mecanicoToolStripMenuItem.Size = new Size(155, 22);
             mecanicoToolStripMenuItem.Text = "Mecanico ABM";
             mecanicoToolStripMenuItem.Click += mecanicoToolStripMenuItem_Click;
             // 
             // instuctorToolStripMenuItem
             // 
             instuctorToolStripMenuItem.Name = "instuctorToolStripMenuItem";
-            instuctorToolStripMenuItem.Size = new Size(180, 22);
+            instuctorToolStripMenuItem.Size = new Size(155, 22);
             instuctorToolStripMenuItem.Text = "Instructor ABM";
             instuctorToolStripMenuItem.Click += instuctorToolStripMenuItem_Click;
             // 
             // clienteToolStripMenuItem
             // 
             clienteToolStripMenuItem.Name = "clienteToolStripMenuItem";
-            clienteToolStripMenuItem.Size = new Size(180, 22);
+            clienteToolStripMenuItem.Size = new Size(155, 22);
             clienteToolStripMenuItem.Text = "Clientes ABM";
             clienteToolStripMenuItem.Click += clienteToolStripMenuItem_Click;
             // 
             // dueñoToolStripMenuItem
             // 
             dueñoToolStripMenuItem.Name = "dueñoToolStripMenuItem";
-            dueñoToolStripMenuItem.Size = new Size(180, 22);
+            dueñoToolStripMenuItem.Size = new Size(155, 22);
             dueñoToolStripMenuItem.Text = "Dueño ABM";
             dueñoToolStripMenuItem.Click += dueñoToolStripMenuItem_Click_1;
             // 
@@ -342,16 +343,23 @@
             // registrarUsuariosToolStripMenuItem
             // 
             registrarUsuariosToolStripMenuItem.Name = "registrarUsuariosToolStripMenuItem";
-            registrarUsuariosToolStripMenuItem.Size = new Size(180, 22);
+            registrarUsuariosToolStripMenuItem.Size = new Size(162, 22);
             registrarUsuariosToolStripMenuItem.Text = "Usuarios ABM";
             registrarUsuariosToolStripMenuItem.Click += registrarUsuariosToolStripMenuItem_Click;
             // 
             // rolesYPermisosToolStripMenuItem
             // 
             rolesYPermisosToolStripMenuItem.Name = "rolesYPermisosToolStripMenuItem";
-            rolesYPermisosToolStripMenuItem.Size = new Size(180, 22);
+            rolesYPermisosToolStripMenuItem.Size = new Size(162, 22);
             rolesYPermisosToolStripMenuItem.Text = "Roles y Permisos";
             rolesYPermisosToolStripMenuItem.Click += RolesYPermisos_ToolStripMenuItem_Click;
+            // 
+            // dashBoardGeneralToolStripMenuItem
+            // 
+            dashBoardGeneralToolStripMenuItem.Name = "dashBoardGeneralToolStripMenuItem";
+            dashBoardGeneralToolStripMenuItem.Size = new Size(119, 20);
+            dashBoardGeneralToolStripMenuItem.Text = "DashBoard General";
+            dashBoardGeneralToolStripMenuItem.Click += dashBoardGeneralToolStripMenuItem_Click;
             // 
             // FormMenuPrincipal
             // 
@@ -413,5 +421,6 @@
         private ToolStripMenuItem gestioDeUsuariosToolStripMenuItem;
         private ToolStripMenuItem registrarUsuariosToolStripMenuItem;
         private ToolStripMenuItem rolesYPermisosToolStripMenuItem;
+        private ToolStripMenuItem dashBoardGeneralToolStripMenuItem;
     }
 }

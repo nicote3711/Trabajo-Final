@@ -1,5 +1,6 @@
 ﻿using DAL.Composite;
 using ENTITY.Composite;
+using ENTITY.Enum;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,7 +22,7 @@ namespace BLL.Composite
             }
             catch (Exception ex)
             {
-                throw new Exception("Error al obtener todos los roles", ex);
+                throw new Exception("BLL Rol error al obtener todos los roles"+ex.Message, ex);
             }
         }
 
@@ -33,7 +34,7 @@ namespace BLL.Composite
             }
             catch (Exception ex)
             {
-                throw new Exception($"Error al buscar el rol con ID {idRol}", ex);
+                throw new Exception($"BLL Rol error al buscar el rol con ID {idRol}"+ex.Message, ex);
             }
         }
 
@@ -42,16 +43,16 @@ namespace BLL.Composite
             try
             {
                 if (rol == null) throw new ArgumentNullException(nameof(rol), "El rol no puede ser nulo.");
-                if(RolDAO.ObtenerTodos().Any(r => r.NombreComponente == rol.NombreComponente)) 
+                if(RolDAO.ObtenerTodos().Any(r => r.NombreComponente.Equals(rol.NombreComponente)))  // se puede llevar a metodo en la dal para no obtener todos. 
                 {
                     throw new InvalidOperationException($"Ya existe un rol con el nombre {rol.NombreComponente}.");
                 }
-                //TODO :esto deberia ser un metodo buscar por Nombre en la Dal. En vez de todos
+                
                 RolDAO.Alta(rol);
             }
             catch (Exception ex)
             {
-                throw new Exception("Error al dar de alta el rol", ex);
+                throw new Exception("BLL Rol error al dar de alta el rol"+ex.Message, ex);
             }
         }
 
@@ -59,39 +60,18 @@ namespace BLL.Composite
         {
             try
             {
+                Rol rol = RolDAO.BuscarPorId(idRol);
+                if (rol == null) throw new Exception("no se encontro el rol a eliminar");
+                if (rol.IdComponente.Equals((int)EnumRolesPermanentes.Administrador)) throw new Exception("no se puede eliminar el rol admin");
                 RolDAO.Baja(idRol);
             }
             catch (Exception ex)
             {
-                throw new Exception($"Error al dar de baja el rol con ID {idRol}", ex);
+                throw new Exception($"BLL Rol error al dar de baja el rol con ID {idRol}" + ex.Message, ex);
             }
         }
-
-        public void AgregarPermiso(int idRol, int idPermiso)
-        {
-            try
-            {
-               
-                RolDAO.AgregarPermisoALRol(idRol, idPermiso);
-            }
-            catch (Exception ex)
-            {
-                throw new Exception($"Error al agregar el permiso ID {idPermiso} al rol ID {idRol}", ex);
-            }
-        }
-
-        public void QuitarPermiso(int idRol, int idPermiso)
-        {
-            try
-            {
-                RolDAO.QuitarPermiso(idRol, idPermiso);
-            }
-            catch (Exception ex)
-            {
-                throw new Exception($"Error al quitar el permiso ID {idPermiso} del rol ID {idRol}", ex);
-            }
-        }
-
+        
+      
         public List<Componente> ObtenerPermisosDeRol(int idRol)
         {
             try
@@ -101,7 +81,7 @@ namespace BLL.Composite
             }
             catch (Exception ex)
             {
-                throw new Exception($"Error al obtener permisos del rol con ID {idRol}", ex);
+                throw new Exception($"BLL rol error al obtener permisos del rol con ID {idRol}" + ex.Message, ex);
             }
         }
 
@@ -109,6 +89,8 @@ namespace BLL.Composite
         {
             try
             {
+
+                if (RolDAO.ExistePermisoEnRol(idRol, idPermiso)) throw new Exception("el permiso que intenta agregar ya existe en el rol");
                 List<int> IdAncestros = PermisoBLO.ObtenerIdAncestros(idPermiso);
                 if (IdAncestros.Count > 0)
                 {
@@ -119,10 +101,10 @@ namespace BLL.Composite
                 }
                 RolDAO.AgregarPermisoALRol(idRol,idPermiso);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
 
-                throw;
+                throw new Exception("BLL Rol error al agregar permiso a rol: " + ex.Message,ex);
             }
         }
 
@@ -130,6 +112,8 @@ namespace BLL.Composite
         {
             try
             {
+                if (IdRol.Equals((int)EnumRolesPermanentes.Administrador)) throw new Exception("no se puede quitar permisos del rol admin");
+                if (!RolDAO.ExistePermisoEnRol(IdRol,IdPermiso)) throw new Exception("el permiso que intenta quitar no existe en el rol"); // no pincha porque borro de los seleccionados pero no esta demas
                 Componente permiso=PermisoBLO.BuscarPorId(IdPermiso); // Verifica que el permiso exista
                 if(permiso==null) throw new ArgumentException($"El permiso con ID {IdPermiso} no existe.");
                              
@@ -147,10 +131,10 @@ namespace BLL.Composite
 
                 RolDAO.QuitarPermiso(IdRol, IdPermiso);
             }
-            catch (Exception )
+            catch (Exception ex )
             {
 
-                throw;
+                throw new Exception("BLL Rol error al quitar permiso a rol: " + ex.Message, ex);
             }
         }
     }

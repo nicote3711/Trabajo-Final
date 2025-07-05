@@ -21,9 +21,9 @@ namespace BLL
             {
                 return UsuarioDAO.ObtenerTodos();
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                throw;
+                throw new Exception("BLL Usuario error al obtener todos: "+ex.Message,ex);
             }
         }
         public void AltaUsuario(Usuario usuario)
@@ -44,7 +44,7 @@ namespace BLL
             }
             catch (Exception ex)
             {
-                throw new Exception ("BLL error en alta de usuario: " + ex.Message,ex );
+                throw new Exception ("BLL Usuario error en alta de usuario: " + ex.Message,ex );
             }
         }
 
@@ -58,7 +58,7 @@ namespace BLL
             }
             catch (Exception ex)
             {
-                throw new Exception("BLL error en baja de usuario: " + ex.Message, ex);
+                throw new Exception("BLL Usuario error en baja de usuario: " + ex.Message, ex);
             }          
         }
 
@@ -74,12 +74,12 @@ namespace BLL
                 string passDesencriptada = Encriptador.Desencriptar(usuario.Contrasena);
 
                 if (passDesencriptada != passPlano) return null;
-
+                // aca podria manejarse encryptado tambien, pero lo paso plano del form. A cambiar segun criterio profersor
                 return usuario;
             }
-            catch
+            catch (Exception ex)
             {
-                throw;
+                throw new Exception("BLL Usuario error al valida log in:" + ex.Message, ex);
             }
         }
 
@@ -87,13 +87,13 @@ namespace BLL
         {
             try
             {
-
+                if (UsuarioDAO.ExisteRolEnUsuario(idUsuario, idRol)) throw new Exception("El usuario ya tiene asignado el rol");
                 UsuarioDAO.AsociarRolAUsuario(idUsuario, idRol);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
 
-                throw;
+                throw new Exception("BLL Usuario error al asociar un rol a usuario: "+ex.Message,ex);
             }
         }
 
@@ -101,13 +101,14 @@ namespace BLL
         {
             try
             {
+                if(!UsuarioDAO.ExisteRolEnUsuario(idUsuario, idRol)) throw new Exception("ese rol no esta asociado al usuario");
                 UsuarioDAO.DesasociarRolDeUsuario(idUsuario, idRol);
 
             }
-            catch (Exception)
+            catch (Exception ex)
             {
 
-                throw;
+                throw new Exception("BLL Usuario error al des-asociar un rolo a usuario: "+ex.Message,ex);
             }
         }
 
@@ -122,17 +123,13 @@ namespace BLL
                 
                 
                 usuarioAux = UsuarioDAO.BuscarPorNombreUsuario(usuario.NombreUsuario);
-                if(usuarioAux != null)
-                {
-                    if (usuarioAux.IdUsuario != usuario.IdUsuario) throw new Exception("Ya existe otro usuario con ese NombreUsuario");
-                }
+                if(usuarioAux != null && usuarioAux.IdUsuario != usuario.IdUsuario) throw new Exception("Ya existe otro usuario con ese NombreUsuario");
+               
                 
-          
+
                 usuarioAux = UsuarioDAO.BuscarPorDNI(usuario.DNI);
-                if(usuarioAux!=null)
-                {
-                    if (usuarioAux.IdUsuario != usuario.IdUsuario) throw new Exception("Ya existe otro usuario con ese DNI.");
-                }
+                if(usuarioAux!=null && usuarioAux.IdUsuario != usuario.IdUsuario) throw new Exception("Ya existe otro usuario con ese DNI.");
+               
                 
                 usuario.Contrasena = Encriptador.Encriptar(usuario.Contrasena); // Encriptamos la contraseña antes de guardar
 
@@ -154,7 +151,7 @@ namespace BLL
             catch (Exception ex)
             {
 
-                throw new Exception("BLL error al modificar Usuario: " + ex.Message, ex);
+                throw new Exception("BLL error al buscar Usuario por id: " + ex.Message, ex);
             }
         }
     }

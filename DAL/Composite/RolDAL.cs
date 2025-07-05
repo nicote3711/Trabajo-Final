@@ -14,7 +14,7 @@ namespace DAL.Composite
     {
         private static string rutaXML = HelperD.ObtenerConexionXMl();
 
-        public List<Rol> ObtenerTodos()
+        public List<Rol> ObtenerTodos()       // agrega permisos pero con jerarquia de arbol
         {
             try
             {
@@ -71,11 +71,11 @@ namespace DAL.Composite
             }
             catch (Exception ex)
             {
-                throw new Exception("Error al obtener todos los roles", ex);
+                throw new Exception("DAL Rol error al obtener todos los roles" + ex.Message, ex);
             }
         }
 
-        public Rol BuscarPorId(int idRol)
+        public Rol BuscarPorId(int idRol) // agrega permisos planos. sin jerarquia de arbol
         {
             try
             {
@@ -108,7 +108,7 @@ namespace DAL.Composite
             }
             catch (Exception ex)
             {
-                throw new Exception($"Error al buscar el rol con ID {idRol}", ex);
+                throw new Exception($"DAL Rol error al buscar el rol con ID {idRol}"+ex.Message, ex);
             }
         }
 
@@ -129,7 +129,7 @@ namespace DAL.Composite
                 RolMAP.MapearHaciaDB(rol, row);
                 tablaRol.Rows.Add(row);
 
-                // Agregar relaciones a Rol_Permiso
+                // Agregar relaciones a Rol_Permiso 
                 foreach (var permiso in rol.ObtenerHijos())
                 {
                     DataRow rel = tablaRP.NewRow();
@@ -142,7 +142,7 @@ namespace DAL.Composite
             }
             catch (Exception ex)
             {
-                throw new Exception("Error al dar de alta el rol", ex);
+                throw new Exception("DAL Rol error al dar de alta el rol"+ex.Message, ex);
             }
         }
 
@@ -173,7 +173,7 @@ namespace DAL.Composite
             }
             catch (Exception ex)
             {
-                throw new Exception($"Error al eliminar el rol con ID {idRol}", ex);
+                throw new Exception($"DAL Rol error al eliminar el rol con ID {idRol}"+ex.Message, ex);
             }
         }
 
@@ -201,7 +201,7 @@ namespace DAL.Composite
             }
             catch (Exception ex)
             {
-                throw new Exception($"Error al agregar el permiso ID {idPermiso} al rol ID {idRol}", ex);
+                throw new Exception($"DAL Rol error al agregar el permiso ID {idPermiso} al rol ID {idRol}"+ ex.Message,ex);
             }
         }
 
@@ -223,7 +223,28 @@ namespace DAL.Composite
             }
             catch (Exception ex)
             {
-                throw new Exception($"Error al quitar el permiso ID {idPermiso} del rol ID {idRol}", ex);
+                throw new Exception($"DAL Rol error al quitar el permiso ID {idPermiso} del rol ID {idRol}" + ex.Message, ex);
+            }
+        }
+
+        public bool ExistePermisoEnRol(int idRol, int idPermiso)
+        {
+            try
+            {
+                DataSet ds = new DataSet();
+                ds.ReadXml(rutaXML, XmlReadMode.ReadSchema);
+
+                DataTable tablaRP = ds.Tables["Rol_Permiso"];
+
+                
+                bool yaExiste = tablaRP.AsEnumerable().Any(r => Convert.ToInt32(r["Id_Rol"]) == idRol && Convert.ToInt32(r["Id_Permiso"]) == idPermiso);
+
+                return yaExiste;
+            }
+            catch (Exception ex)
+            {
+
+                throw new Exception("DAL Rol error al ver si existe permiso en rol: "+ex.Message,ex);
             }
         }
     }

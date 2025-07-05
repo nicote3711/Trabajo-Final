@@ -520,5 +520,20 @@ namespace UI
                 MessageBox.Show(ex.Message);
             }
         }
+
+        private void dashBoardGeneralToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                FormDashboardGeneral formDashboardGeneral = new FormDashboardGeneral();
+                formDashboardGeneral.MdiParent = this;
+                formDashboardGeneral.Show();
+            }
+            catch (Exception ex)
+            {
+
+                MessageBox.Show(ex.Message);
+            }
+        }
     }
 }
