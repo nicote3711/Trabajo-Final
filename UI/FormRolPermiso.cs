@@ -22,6 +22,8 @@ namespace UI
         private PermisoBLL PermisoBLO = new PermisoBLL();
         private TreeNode nodoUsuarioSeleccionado;
         private TreeNode nodoRolSeleccionado;
+        private TreeNode nodoPermisoSleccionado;
+        private TreeNode nodoPermisoRolSeleccionado;
         public FormRolPermiso()
         {
             InitializeComponent();
@@ -76,7 +78,7 @@ namespace UI
 
                 foreach (Rol rol in roles)
                 {
-                    var nodo = new TreeNode(rol.NombreComponente) { Tag = rol };
+                    TreeNode nodo = new TreeNode(rol.NombreComponente) { Tag = rol };
                     tv_Roles.Nodes.Add(nodo);
                 }
             }
@@ -102,7 +104,7 @@ namespace UI
                 MessageBox.Show($"Error al cargar permisos: {ex.Message}");
             }
         }
-        private TreeNode CrearNodoPermiso(Componente comp)
+        private TreeNode CrearNodoPermiso(Componente comp)  //arma no solo el nodo sino el de cada uno de sus hijos recursivo
         {
             TreeNode nodo = new TreeNode(comp.NombreComponente) { Tag = comp };
 
@@ -215,11 +217,10 @@ namespace UI
         {
             try
             {
-                if (nodoUsuarioSeleccionado != null)
-                    nodoUsuarioSeleccionado.BackColor = Color.White;
+                if (nodoUsuarioSeleccionado != null)nodoUsuarioSeleccionado.BackColor = Color.White;
 
                 nodoUsuarioSeleccionado = e.Node;
-                nodoUsuarioSeleccionado.BackColor = Color.LightBlue;
+                nodoUsuarioSeleccionado.BackColor = Color.LightGreen;
 
                 if (e.Node?.Tag is Usuario usuario)
                 {
@@ -240,8 +241,7 @@ namespace UI
         {
             try
             {
-                if (nodoRolSeleccionado != null)
-                    nodoRolSeleccionado.BackColor = Color.White;
+                if (nodoRolSeleccionado != null)nodoRolSeleccionado.BackColor = Color.White;
 
                 nodoRolSeleccionado = e.Node;
                 nodoRolSeleccionado.BackColor = Color.LightGreen;
@@ -276,7 +276,7 @@ namespace UI
 
                 tv_PermisoUsuario.Nodes.Clear();
 
-                foreach (Componente permiso in DicPermisosUnicos.Values.Where(p => !TienePadre(p, DicPermisosUnicos)))
+                foreach (Componente permiso in DicPermisosUnicos.Values.Where(p => !TienePadre(p, DicPermisosUnicos))) // aca los permisos de usuario no viene con lista de hijos, vienen planos entonces no hace falta esto
                 {
                     tv_PermisoUsuario.Nodes.Add(CrearNodoPermiso(permiso));
                 }
@@ -292,9 +292,13 @@ namespace UI
             try
             {
                 tv_PermisosRol.Nodes.Clear();
-                foreach (Componente permiso in rol.ObtenerHijos())
+                Dictionary<int, Componente> DicPermisosUnicos = new Dictionary<int, Componente>();
+
+              
+                foreach (Componente permiso in rol.ObtenerHijos())  
                 {
-                    tv_PermisosRol.Nodes.Add(CrearNodoPermiso(permiso));
+                    TreeNode nodo = new TreeNode(permiso.NombreComponente) { Tag = permiso };
+                    tv_PermisosRol.Nodes.Add(nodo);
                 }
             }
             catch (Exception ex)
@@ -332,8 +336,7 @@ namespace UI
         {
             try
             {
-                if (tv_Roles.SelectedNode == null || tv_Permisos.SelectedNode == null)
-                    throw new InvalidOperationException("Debe seleccionar un rol y un permiso.");
+                if (tv_Roles.SelectedNode == null || tv_Permisos.SelectedNode == null) throw new InvalidOperationException("Debe seleccionar un rol y un permiso.");
 
                 Rol rol = tv_Roles.SelectedNode.Tag as Rol;
                 Componente permiso = tv_Permisos.SelectedNode.Tag as Componente;
@@ -344,6 +347,7 @@ namespace UI
                 RolBLO.AgregarPermisoARol(rol.IdComponente, permiso.IdComponente);
 
                 CargarRoles();  // Para reflejar cambios si se desea
+                CargarUsuarios();
                 CargarPermisosRol(rol);  // Actualiza árbol de permisos del rol
                 MessageBox.Show($"Permiso '{permiso.NombreComponente}' asignado al rol '{rol.NombreComponente}'.");
             }
@@ -369,6 +373,8 @@ namespace UI
 
                 RolBLO.QuitarPermisoARol(rol.IdComponente, permiso.IdComponente);
 
+                CargarRoles();  // Para reflejar cambios si se desea
+                CargarUsuarios();
                 CargarPermisosRol(rol); // Recargar permisos del rol
                 MessageBox.Show($"Permiso '{permiso.NombreComponente}' quitado del rol '{rol.NombreComponente}'.");
             }
@@ -382,6 +388,11 @@ namespace UI
         {
             try
             {
+                if (nodoPermisoSleccionado != null) nodoPermisoSleccionado.BackColor = Color.White;
+
+                nodoPermisoSleccionado = e.Node;
+                nodoPermisoSleccionado.BackColor = Color.LightGreen;
+
                 if (e.Node?.Tag is Componente permiso)
                 {
                     txt_IdPermiso.Text = permiso.IdComponente.ToString();
@@ -400,6 +411,11 @@ namespace UI
             try
             {
 
+                if (nodoPermisoRolSeleccionado != null) nodoPermisoRolSeleccionado.BackColor = Color.White;
+
+                nodoPermisoRolSeleccionado = e.Node;
+                nodoPermisoRolSeleccionado.BackColor = Color.LightGreen;
+                
             }
             catch (Exception)
             {

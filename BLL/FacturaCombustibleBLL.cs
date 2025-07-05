@@ -45,11 +45,17 @@ namespace BLL
 				List<FacturaCombustible> LFacturasCombustible = FacturaCombustibleDAO.ObtenerTodos();
 				
 				RecargaCombustibleBLL RecargaCombustibleBLO = new RecargaCombustibleBLL();
+				TransaccionFinancieraBLL TransaccionFinancieraBLO = new TransaccionFinancieraBLL();
  				foreach(FacturaCombustible factura in LFacturasCombustible)
 				{
 					RecargaCombustible recarga = RecargaCombustibleBLO.BuscarRecargaPorIdFacturaCombustible(factura.IdFactura);
 					if (recarga == null) throw new Exception("La recarga de combustible de una factura no puede ser nula");
 					factura.RecargaCombu = recarga;
+					TransaccionFinanciera transaccion = TransaccionFinancieraBLO.BuscarTransaccionPorIdFactura(factura.IdFactura);
+					if(transaccion != null)
+					{
+						factura.Transaccion = transaccion;
+					}
 				}
 
 				return LFacturasCombustible;	
@@ -91,7 +97,22 @@ namespace BLL
 
         public FacturaCombustible BuscarFacturaCombuPorIdParaTransaccion(int idFactura)
         {
-            throw new NotImplementedException();
+			try
+			{
+				FacturaCombustible factura = FacturaCombustibleDAO.BuscarFacturaCombuPorId(idFactura);
+				if (factura == null) throw new Exception("no se encontro la factura asociada a la transaccion y esta no puede ser nula");
+                RecargaCombustibleBLL RecargaCombustibleBLO = new RecargaCombustibleBLL();
+                RecargaCombustible recarga = RecargaCombustibleBLO.BuscarRecargaPorIdFacturaCombustible(factura.IdFactura);
+                if (recarga == null) throw new Exception("La recarga de combustible de una factura no puede ser nula");
+                factura.RecargaCombu = recarga;
+
+                return factura;
+			}
+			catch (Exception ex)
+			{
+
+				throw new Exception("BLL FacturaCombustible error al buscar factura para transaccion: "+ex.Message,ex);
+			}
         }
 
         private void CargarFacturaCombuConRecarga(FacturaCombustible facturaCombustible)

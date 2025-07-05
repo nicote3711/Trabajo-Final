@@ -179,42 +179,58 @@ namespace DAL
         }
         public void AsociarRolAUsuario(int idUsuario, int idRol)
         {
-            DataSet ds = new DataSet();
-            ds.ReadXml(rutaXml, XmlReadMode.ReadSchema);
-
-            DataTable tabla = ds.Tables["Usuario_Rol"];
-            if (tabla == null) throw new Exception("No se encontró la tabla Usuario_Rol.");
-
-            bool yaExiste = tabla.AsEnumerable().Any(r =>
-                Convert.ToInt32(r["Id_Usuario"]) == idUsuario &&
-                Convert.ToInt32(r["Id_Rol"]) == idRol);
-
-            if (!yaExiste)
+            try
             {
-                DataRow row = tabla.NewRow();
-                row["Id_Usuario"] = idUsuario;
-                row["Id_Rol"] = idRol;
-                tabla.Rows.Add(row);
+                DataSet ds = new DataSet();
+                ds.ReadXml(rutaXml, XmlReadMode.ReadSchema);
 
-                ds.WriteXml(rutaXml, XmlWriteMode.WriteSchema);
+                DataTable tabla = ds.Tables["Usuario_Rol"];
+                if (tabla == null) throw new Exception("No se encontró la tabla Usuario_Rol.");
+
+                bool yaExiste = tabla.AsEnumerable().Any(r => Convert.ToInt32(r["Id_Usuario"]) == idUsuario && Convert.ToInt32(r["Id_Rol"]) == idRol);
+
+                if (!yaExiste)
+                {
+                    DataRow row = tabla.NewRow();
+                    row["Id_Usuario"] = idUsuario;
+                    row["Id_Rol"] = idRol;
+                    tabla.Rows.Add(row);
+
+                    ds.WriteXml(rutaXml, XmlWriteMode.WriteSchema);
+                }
             }
+            catch (Exception ex)
+            {
+
+                throw new Exception("DAL Usuario error al asociar Rol a usuario: "+ex.Message,ex);
+            }
+         
         }
 
         public void DesasociarRolDeUsuario(int idUsuario, int idRol)
         {
-            DataSet ds = new DataSet();
-            ds.ReadXml(rutaXml, XmlReadMode.ReadSchema);
-
-            DataTable tabla = ds.Tables["Usuario_Rol"];
-            if (tabla == null) throw new Exception("No se encontró la tabla Usuario_Rol.");
-
-            DataRow row = tabla.AsEnumerable().FirstOrDefault(r =>Convert.ToInt32(r["Id_Usuario"]) == idUsuario && Convert.ToInt32(r["Id_Rol"]) == idRol);
-
-            if (row != null)
+            try
             {
-                row.Delete();
-                ds.WriteXml(rutaXml, XmlWriteMode.WriteSchema);
+                DataSet ds = new DataSet();
+                ds.ReadXml(rutaXml, XmlReadMode.ReadSchema);
+
+                DataTable tabla = ds.Tables["Usuario_Rol"];
+                if (tabla == null) throw new Exception("No se encontró la tabla Usuario_Rol.");
+
+                DataRow row = tabla.AsEnumerable().FirstOrDefault(r => Convert.ToInt32(r["Id_Usuario"]) == idUsuario && Convert.ToInt32(r["Id_Rol"]) == idRol);
+
+                if (row != null)
+                {
+                    row.Delete();
+                    ds.WriteXml(rutaXml, XmlWriteMode.WriteSchema);
+                }
             }
+            catch (Exception ex)
+            {
+
+                throw new Exception("DAL Usuario error al des-asociar rol de usuario: "+ex.Message,ex);
+            }
+          
         }
 
         public Usuario BuscarPorDNI(long dNI)
@@ -266,6 +282,26 @@ namespace DAL
             catch (Exception ex)
             {
                 throw new Exception("DAL - Error al modificar el usuario: " + ex.Message, ex);
+            }
+        }
+
+        public bool ExisteRolEnUsuario(int idUsuario, int idRol)
+        {
+            try
+            {
+                DataSet ds = new DataSet();
+                ds.ReadXml(rutaXml, XmlReadMode.ReadSchema);
+
+                DataTable tabla = ds.Tables["Usuario_Rol"];
+                if (tabla == null) throw new Exception("No se encontró la tabla Usuario_Rol.");
+
+                bool yaExiste = tabla.AsEnumerable().Any(r => Convert.ToInt32(r["Id_Usuario"]) == idUsuario && Convert.ToInt32(r["Id_Rol"]) == idRol);
+                return yaExiste;
+            }
+            catch (Exception ex)
+            {
+
+                throw new Exception("DAL Usuario error al ver si existe rol en usuario: "+ex.Message,ex);
             }
         }
     }

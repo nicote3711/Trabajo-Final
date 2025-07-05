@@ -68,12 +68,13 @@
             gestioDeUsuariosToolStripMenuItem = new ToolStripMenuItem();
             registrarUsuariosToolStripMenuItem = new ToolStripMenuItem();
             rolesYPermisosToolStripMenuItem = new ToolStripMenuItem();
+            dashBoardGeneralToolStripMenuItem = new ToolStripMenuItem();
             menuStrip1.SuspendLayout();
             SuspendLayout();
             // 
             // menuStrip1
             // 
-            menuStrip1.Items.AddRange(new ToolStripItem[] { inicioToolStripMenuItem, actividadesDeVueloToolStripMenuItem, toolStripMenuItem1, liquidacionesToolStripMenuItem, combustibleToolStripMenuItem, gestionAMBSToolStripMenuItem, BackUP_RestoretoolStripMenuItem, gestioDeUsuariosToolStripMenuItem });
+            menuStrip1.Items.AddRange(new ToolStripItem[] { inicioToolStripMenuItem, actividadesDeVueloToolStripMenuItem, toolStripMenuItem1, liquidacionesToolStripMenuItem, combustibleToolStripMenuItem, gestionAMBSToolStripMenuItem, BackUP_RestoretoolStripMenuItem, gestioDeUsuariosToolStripMenuItem, dashBoardGeneralToolStripMenuItem });
             menuStrip1.Location = new Point(0, 0);
             menuStrip1.Name = "menuStrip1";
             menuStrip1.Size = new Size(1370, 24);
@@ -141,6 +142,7 @@
             cancelarDeudaToolStripMenuItem.Name = "cancelarDeudaToolStripMenuItem";
             cancelarDeudaToolStripMenuItem.Size = new Size(201, 22);
             cancelarDeudaToolStripMenuItem.Text = "Cancelar Deuda";
+            cancelarDeudaToolStripMenuItem.Click += cancelarDeudaToolStripMenuItem_Click;
             // 
             // cobrarFacturaSolicitudToolStripMenuItem
             // 
@@ -216,7 +218,7 @@
             // 
             dueñosToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { liquidarDueñoToolStripMenuItem, pagarDueñoToolStripMenuItem });
             dueñosToolStripMenuItem.Name = "dueñosToolStripMenuItem";
-            dueñosToolStripMenuItem.Size = new Size(180, 22);
+            dueñosToolStripMenuItem.Size = new Size(136, 22);
             dueñosToolStripMenuItem.Text = "Dueños";
             // 
             // liquidarDueñoToolStripMenuItem
@@ -237,20 +239,20 @@
             // 
             instructorToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { liquidarInstructorToolStripMenuItem, pagarInstructorToolStripMenuItem });
             instructorToolStripMenuItem.Name = "instructorToolStripMenuItem";
-            instructorToolStripMenuItem.Size = new Size(180, 22);
+            instructorToolStripMenuItem.Size = new Size(136, 22);
             instructorToolStripMenuItem.Text = "Instructores";
             // 
             // liquidarInstructorToolStripMenuItem
             // 
             liquidarInstructorToolStripMenuItem.Name = "liquidarInstructorToolStripMenuItem";
-            liquidarInstructorToolStripMenuItem.Size = new Size(180, 22);
+            liquidarInstructorToolStripMenuItem.Size = new Size(171, 22);
             liquidarInstructorToolStripMenuItem.Text = "Liquidar Instructor";
             liquidarInstructorToolStripMenuItem.Click += liquidarInstructorToolStripMenuItem_Click;
             // 
             // pagarInstructorToolStripMenuItem
             // 
             pagarInstructorToolStripMenuItem.Name = "pagarInstructorToolStripMenuItem";
-            pagarInstructorToolStripMenuItem.Size = new Size(180, 22);
+            pagarInstructorToolStripMenuItem.Size = new Size(171, 22);
             pagarInstructorToolStripMenuItem.Text = "Pagar Instructor";
             pagarInstructorToolStripMenuItem.Click += pagarInstructorToolStripMenuItem_Click;
             // 
@@ -352,6 +354,13 @@
             rolesYPermisosToolStripMenuItem.Text = "Roles y Permisos";
             rolesYPermisosToolStripMenuItem.Click += RolesYPermisos_ToolStripMenuItem_Click;
             // 
+            // dashBoardGeneralToolStripMenuItem
+            // 
+            dashBoardGeneralToolStripMenuItem.Name = "dashBoardGeneralToolStripMenuItem";
+            dashBoardGeneralToolStripMenuItem.Size = new Size(119, 20);
+            dashBoardGeneralToolStripMenuItem.Text = "DashBoard General";
+            dashBoardGeneralToolStripMenuItem.Click += dashBoardGeneralToolStripMenuItem_Click;
+            // 
             // FormMenuPrincipal
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -412,5 +421,6 @@
         private ToolStripMenuItem gestioDeUsuariosToolStripMenuItem;
         private ToolStripMenuItem registrarUsuariosToolStripMenuItem;
         private ToolStripMenuItem rolesYPermisosToolStripMenuItem;
+        private ToolStripMenuItem dashBoardGeneralToolStripMenuItem;
     }
 }

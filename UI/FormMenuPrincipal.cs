@@ -502,7 +502,37 @@ namespace UI
             catch (Exception ex)
             {
 
-                MessageBox.Show(ex.Message) ;
+                MessageBox.Show(ex.Message);
+            }
+        }
+
+        private void cancelarDeudaToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                FormCancelarDeuda formCancelarDeuda = new FormCancelarDeuda();
+                formCancelarDeuda.MdiParent = this;
+                formCancelarDeuda.Show();
+            }
+            catch (Exception ex)
+            {
+
+                MessageBox.Show(ex.Message);
+            }
+        }
+
+        private void dashBoardGeneralToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                FormDashboardGeneral formDashboardGeneral = new FormDashboardGeneral();
+                formDashboardGeneral.MdiParent = this;
+                formDashboardGeneral.Show();
+            }
+            catch (Exception ex)
+            {
+
+                MessageBox.Show(ex.Message);
             }
         }
     }

@@ -114,7 +114,7 @@ namespace BLL
 			{
 				if(solicitudHoras.Factura== null) throw new Exception("La solicitud de horas debe tener una factura asociada.");
 				if(solicitudHoras.Factura.IdFactura ==null) throw new Exception("La solicitud de horas debe tener un ID de factura válido.");
-				if(solicitudHoras.Factura.Transaccion!=null) throw new Exception("La solicitud de horas debe tener una transacción asociada a la factura.");
+				if(solicitudHoras.Factura.Transaccion!=null) throw new Exception("La factura de la solicitud ya fue cobrada y no puede darse de baja.");
 
                 FacturaSolicitudHorasBLL FacturaSolicitudHorasBLO = new FacturaSolicitudHorasBLL(); // Instancia de FacturaSolicitudHorasBLL para manejar facturas asociadas a solicitudes
 				FacturaSolicitudHorasBLO.EliminarFacturaPorId(solicitudHoras.Factura.IdFactura); // Eliminar la factura asociada a la solicitud de horas
