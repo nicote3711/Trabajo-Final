@@ -279,6 +279,18 @@ namespace BLL
             }
         }
 
+        public bool ExisteMantenimeintoNoFinalizadoAeronave(int idAeronave)
+        {
+            try
+            {
+               return MantenimientoDAO.ExisteMantenimeintoNoFinalizadoAeronave(idAeronave);
+            }
+            catch (Exception ex)
+            {
+
+                throw new Exception("BLL Mantenimiento error al verificar si existe un mantenimiento no finalizado: "+ex.Message,ex);
+            }
+        }
         public void EliminarFacturaDeMantenimiento(Mantenimiento mantenimiento)
         {
             HelperTransaccion helperTransaccion = new HelperTransaccion();

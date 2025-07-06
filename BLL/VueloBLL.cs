@@ -57,6 +57,19 @@ namespace BLL
                throw new Exception("BLL Error al obtener vuelos: " + ex.Message, ex);   
             }
         }
+        private bool HorasSeSuperponen(TimeOnly inicio1, TimeOnly fin1, TimeOnly inicio2, TimeOnly fin2)
+        {
+            try
+            {
+                return inicio1 < fin2 && inicio2 < fin1;
+            }
+            catch (Exception ex)
+            {
+
+                throw new Exception("BLL Vuelo error al ver si se superponen las horas: "+ex.Message,ex);
+            }
+            
+        }
         public void RegistrarVuelo(Vuelo vuelo)
         {
             HelperTransaccion helperTransaccion = new HelperTransaccion();
@@ -65,15 +78,36 @@ namespace BLL
             try
             {
                 if (vuelo == null) throw new ArgumentNullException(nameof(vuelo), "El vuelo no puede ser nulo.");
+                if (vuelo.Fecha > DateTime.Now.Date) throw new Exception("La fecha del vuelo no puede ser posterior al dia de hoy");
                 if (vuelo.Cliente == null) throw new ArgumentNullException(nameof(vuelo.Cliente), "El cliente del vuelo no puede ser nulo.");
                 if (vuelo.Aeronave == null) throw new ArgumentNullException(nameof(vuelo.Aeronave), "La aeronave del vuelo no puede ser nula.");
                 if(vuelo.Finalidad == null) throw new ArgumentNullException(nameof(vuelo.Finalidad), "La finalidad del vuelo no puede ser nula.");  
                 if(vuelo.Instructor == null &&  string.IsNullOrEmpty(vuelo.Cliente.Licencia)) throw new Exception( "El instructor del vuelo no puede ser nulo si el Cliente no posee Licencia.");
                 if (vuelo.Cliente.SaldoHorasVuelo<=-10 || vuelo.Cliente.SaldoHorasSimulador<=-10 ) throw new Exception("El cliente debe mas de 10 horas y debe cancelar la deuda primero.");
                 if(vuelo.HubInicial >= vuelo.HubFinal) throw new Exception("El Hub inicial debe ser menor que el Hub final.");
+                if (vuelo.HoraCorte.Equals(vuelo.HoraPM)) throw new Exception("Las horas de paro motor y corte no puede ser la misma");
 
-              
-                if(vuelo.Instructor==null && vuelo.Aeronave.Dueno==null)
+                List<Vuelo> LVuelosEnFecha = VueloDAO.BuscarVuelosEnFecha(vuelo.Fecha);
+                if(LVuelosEnFecha !=null && LVuelosEnFecha.Count>0)
+                {
+                    foreach (Vuelo otroVuelo in LVuelosEnFecha)
+                    {
+                        // Validación por cliente
+                        if (vuelo.Cliente.IDCliente.Equals(otroVuelo.Cliente.IDCliente) && HorasSeSuperponen(vuelo.HoraPM, vuelo.HoraCorte, otroVuelo.HoraPM, otroVuelo.HoraCorte)) throw new Exception("Ya existe un vuelo para este cliente en el horario especificado.");
+                        
+
+                        // Validación por instructor (ambos deben no ser null)
+                        if (vuelo.Instructor != null && otroVuelo.Instructor != null &&vuelo.Instructor.IdInstructor.Equals(otroVuelo.Instructor.IdInstructor) && HorasSeSuperponen(vuelo.HoraPM, vuelo.HoraCorte, otroVuelo.HoraPM, otroVuelo.HoraCorte))throw new Exception("Ya existe un vuelo para este instructor en el horario especificado.");
+                        
+
+                        // Validación por aeronave
+                        if (vuelo.Aeronave.IdAeronave.Equals(otroVuelo.Aeronave.IdAeronave) && HorasSeSuperponen(vuelo.HoraPM, vuelo.HoraCorte, otroVuelo.HoraPM, otroVuelo.HoraCorte)) throw new Exception("Ya existe un vuelo para esta aeronave en el horario especificado.");
+                        
+                    }
+                }    
+                    
+
+                if (vuelo.Instructor==null && vuelo.Aeronave.Dueno==null)
                 {
                     vuelo.Liquidado = true; // Si no hay instructor ni dueño, se marca como liquidado
                 }
@@ -81,7 +115,7 @@ namespace BLL
                 {
                     vuelo.Liquidado = false; // Si hay instructor o dueño, no se marca como liquidado
                 }
-                if (vuelo == null) throw new ArgumentNullException(nameof(vuelo));
+               
                 VueloDAO.RegistrarVuelo(vuelo);
                 ClienteBLO.DescontarSaldoVuelo(vuelo.Cliente.IDCliente, vuelo.TV);
                 AeronaveBLO.ActualizarHorasAeronave(vuelo.Aeronave.IdAeronave, vuelo.TV);
@@ -173,12 +207,14 @@ namespace BLL
             {
                 if (vuelo == null) throw new ArgumentNullException(nameof(vuelo), "El vuelo no puede ser nulo.");
                 if (vuelo.Liquidado) throw new Exception("No se puede eliminar un vuelo ya liquidado.");
+                
+                MantenimientoBLL MantenimientoBLO = new MantenimientoBLL();
+                if(MantenimientoBLO.ExisteMantenimeintoNoFinalizadoAeronave(vuelo.Aeronave.IdAeronave)) throw new Exception("no se puede eliminar un vuelo de una aeronave mientras esta en mantenimiento");
+
+
                 VueloDAO.EliminarVuelo(vuelo);
                 ClienteBLO.AcreditarSaldoVuelo(vuelo.Cliente.IDCliente, vuelo.TV); // Se resta el saldo del cliente por el vuelo eliminado
                 AeronaveBLO.ActualizarHorasAeronave(vuelo.Aeronave.IdAeronave, -vuelo.TV); // Se resta las horas de la aeronave por el vuelo eliminado
-
-
-                //Falta retrotraer mantenimiento 100Hs en caso de que el vuelo lo haya provocado. Ej si aernova hs- hs vuelo <100 Mantenimiento 100hs delete. Y mantenimiento en pediente porque si se asigno mecanico no se puede volver atras.
 
             }
             catch (Exception ex)

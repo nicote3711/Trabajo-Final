@@ -345,6 +345,39 @@ namespace DAL
             }
         }
 
-      
+        public List<Vuelo> BuscarVuelosEnFecha(DateTime fecha)
+        {
+            try
+            {
+                if (!File.Exists(archivoXml)) throw new FileNotFoundException("No se encontró el archivo XML.");
+
+                DataSet ds = new DataSet();
+                ds.ReadXml(archivoXml, XmlReadMode.ReadSchema);
+
+                DataTable tabla = ds.Tables["Vuelo"];
+                if (tabla == null) throw new Exception("No se encontró la tabla Vuelo en el archivo XML.");
+
+                List<Vuelo> LVuelosEnFecha = new List<Vuelo>();
+
+                foreach (DataRow row in tabla.Rows)
+                {
+                    DateTime fechaVuelo = Convert.ToDateTime(row["Fecha"]);
+
+                    if (fechaVuelo.Date == fecha.Date) // Comparación solo por fecha, sin hora
+                    {
+                        Vuelo vuelo = new Vuelo();
+                        VueloMAP.MapearDesdeDB(vuelo, row);
+                        LVuelosEnFecha.Add(vuelo);
+                    }
+                }
+
+                return LVuelosEnFecha;
+            }
+            catch (Exception ex)
+            {
+
+                throw new Exception("DAL Vuelo error al buscar vuelos en fecha: "+ex.Message,ex);
+            }
+        }
     }
 }

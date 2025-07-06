@@ -45,9 +45,9 @@ namespace DAL
 
                 return lista;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                throw;
+                throw new Exception("DAL Dueño error al obtener dueños: "+ex.Message,ex);
             }
         }
 
@@ -91,9 +91,9 @@ namespace DAL
 
                 ds.WriteXml(rutaXml, XmlWriteMode.WriteSchema);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                throw;
+                throw new Exception("DAL Dueño error al dar alta dueño: "+ex.Message,ex);
             }
         }
 
@@ -121,9 +121,9 @@ namespace DAL
                 PersonaMap.MapearPesonaDesdeDB(dueno, personaRow);
                 return dueno;
             }
-            catch (Exception)
+            catch (Exception ex) 
             {
-                throw;
+                throw new Exception("DAL Dueño error al buscar dueño por dni: "+ex.Message);
             }
         }
 
@@ -149,9 +149,9 @@ namespace DAL
                 PersonaMap.MapearPesonaDesdeDB(dueno, personaRow);
                 return dueno;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                throw;
+                throw new Exception("DAL Dueño error al buscar dueño por id: "+ex.Message,ex);
             }
         }
 
@@ -175,9 +175,9 @@ namespace DAL
 
                 ds.WriteXml(rutaXml, XmlWriteMode.WriteSchema);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                throw;
+                throw new Exception("DAL Dueño error al modificar dueño: "+ex.Message,ex);
             }
         }
 
@@ -189,8 +189,7 @@ namespace DAL
                 ds.ReadXml(rutaXml, XmlReadMode.ReadSchema);
 
                 var tablaDuenos = ds.Tables["Dueno"];
-                var rowDueno = tablaDuenos.AsEnumerable()
-                    .FirstOrDefault(d => d.Field<int>("Id_Dueno") == idDueno);
+                var rowDueno = tablaDuenos.AsEnumerable().FirstOrDefault(d => d.Field<int>("Id_Dueno") == idDueno);
 
                 if (rowDueno == null)
                     throw new Exception("No se encontró el dueño a dar de baja.");
@@ -199,37 +198,55 @@ namespace DAL
 
                 ds.WriteXml(rutaXml, XmlWriteMode.WriteSchema);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                throw;
+                throw new Exception("DAL Dueño error al dar baja dueño: "+ex.Message,ex);
             }
         }
 
         public void ModificarPersonaExistente(Persona persona)
         {
-            DataSet ds = new DataSet();
-            ds.ReadXml(rutaXml, XmlReadMode.ReadSchema);
-            var tabla = ds.Tables["Persona"];
-            var row = tabla.Select($"Id_Persona = {persona.IDPersona}").FirstOrDefault();
-            if (row == null) throw new Exception("No se encontró la persona a modificar.");
-            PersonaMap.MapearPersonaHaciaDB(persona, row);
-            ds.WriteXml(rutaXml, XmlWriteMode.WriteSchema);
+            try
+            {
+                DataSet ds = new DataSet();
+                ds.ReadXml(rutaXml, XmlReadMode.ReadSchema);
+                var tabla = ds.Tables["Persona"];
+                var row = tabla.Select($"Id_Persona = {persona.IDPersona}").FirstOrDefault();
+                if (row == null) throw new Exception("No se encontró la persona a modificar.");
+                PersonaMap.MapearPersonaHaciaDB(persona, row);
+                ds.WriteXml(rutaXml, XmlWriteMode.WriteSchema);
+            }
+            catch (Exception ex)
+            {
+
+                throw new Exception("DAL Dueño error al modificar persona existente: "+ex.Message,ex);
+            }
+
         }
 
         public Dueno BuscarPersonaPorDNI(long dni)
         {
-            if (!File.Exists(rutaXml)) throw new FileNotFoundException("Archivo XML no encontrado");
+            try
+            {
+                if (!File.Exists(rutaXml)) throw new FileNotFoundException("Archivo XML no encontrado");
 
-            DataSet ds = new DataSet();
-            ds.ReadXml(rutaXml, XmlReadMode.ReadSchema);
+                DataSet ds = new DataSet();
+                ds.ReadXml(rutaXml, XmlReadMode.ReadSchema);
 
-            var tablaPersonas = ds.Tables["Persona"];
-            var row = tablaPersonas?.AsEnumerable().FirstOrDefault(p => Convert.ToInt64(p["Dni"]) == dni);
-            if (row == null) return null;
+                var tablaPersonas = ds.Tables["Persona"];
+                var row = tablaPersonas?.AsEnumerable().FirstOrDefault(p => Convert.ToInt64(p["Dni"]) == dni);
+                if (row == null) return null;
 
-            Dueno persona = new Dueno();
-            PersonaMap.MapearPesonaDesdeDB(persona, row);
-            return persona;
+                Dueno persona = new Dueno();
+                PersonaMap.MapearPesonaDesdeDB(persona, row);
+                return persona;
+            }
+            catch (Exception ex)
+            {
+
+                throw new Exception("DAL Dueño error al buscar persona por dni: "+ex.Message,ex);
+            }
+           
         }
 
         public Dueno BuscarDuenoPorIdPersona(int iDPersona)
@@ -286,7 +303,7 @@ namespace DAL
             catch (Exception ex)
             {
 
-                throw new Exception("DAL Dueno error al buscar dueño por Id Persona:" + ex.Message, ex);
+                throw new Exception("DAL Dueno error al buscar dueño por cuit: " + ex.Message, ex);
             }
         }
     }
