@@ -20,12 +20,13 @@ namespace BLL
         {
             try
             {
+                if (dNI <= 0) throw new Exception("valor de dni invalido");
                 return MecanicoDAO.BuscarPersonaPorDNI(dNI);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
 
-                throw;
+                throw new Exception("BLL Mecanico error al buscar persona por dni: "+ex.Message,ex);
             }
         }
 
@@ -33,12 +34,13 @@ namespace BLL
         {
             try
             {
+                if (mecanicoAlta == null) throw new Exception("La persona no puede ser nula");
                 MecanicoDAO.ModificarPersonaExistente(mecanicoAlta);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
 
-                throw;
+                throw new Exception("BLL Mecanico error al modoficar persona existente: "+ex.Message,ex);
             }
         }
 
@@ -48,10 +50,10 @@ namespace BLL
 			{
 				return  MecanicoDAO.ObtenerMecanicos();
             }
-			catch (Exception)
+			catch (Exception ex)
 			{
 
-				throw;
+				throw new Exception("BLL Mecanico error al obtener todos: "+ex.Message,ex);
 			}
         }
 
@@ -86,6 +88,7 @@ namespace BLL
                 if (mecanicoAlta.TiposDeMantenimiento == null || !mecanicoAlta.TiposDeMantenimiento.Any()) throw new ArgumentException("Debe seleccionar al menos un tipo de mantenimiento.");
 
                 //Persona
+                if (mecanicoAlta.DNI <= 0) throw new ArgumentException("valor de dni invalido");
                 if (string.IsNullOrEmpty(mecanicoAlta.Nombre) || !mecanicoAlta.Nombre.All(char.IsLetter)) throw new ArgumentException("El nombre es obligatorio y solo puede contener letras.");
                 if (string.IsNullOrEmpty(mecanicoAlta.Apellido) || !mecanicoAlta.Apellido.All(char.IsLetter)) throw new ArgumentException("El apellido es obligatorio y solo puede contener letras.");
                 if (string.IsNullOrEmpty(mecanicoAlta.CuitCuil)) throw new ArgumentException("El CUIT/CUIL es obligatorio.");
@@ -128,9 +131,9 @@ namespace BLL
                 if (mecanico == null) throw new Exception("No se encontró el mecánico con el ID especificado.");    
                 MecanicoDAO.BajaMecanico(idMecanico);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                throw;
+                throw new Exception("BLL Mecanico error al dar baja mecanico: "+ex.Message,ex);
             }
         }
 

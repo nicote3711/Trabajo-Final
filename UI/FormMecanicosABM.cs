@@ -253,6 +253,10 @@ namespace UI
 
                 MessageBox.Show(ex.Message);
             }
+            finally
+            {
+                CargarMecanicos();
+            }
         }
 
         private void btn_BajaMecanico_Click(object sender, EventArgs e)
