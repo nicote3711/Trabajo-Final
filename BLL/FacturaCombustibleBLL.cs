@@ -75,13 +75,17 @@ namespace BLL
 
 			try
 			{
+				if (facturaCombustible.RecargaCombu == null) throw new Exception("la recarga de la factura no puede ser nula");
+				RecargaCombustibleBLL RecargaCombustibleBLO = new RecargaCombustibleBLL();
+				RecargaCombustibleBLO.ValidarRecarga(facturaCombustible.RecargaCombu);
 				CargarFacturaCombuConRecarga(facturaCombustible);
 
+				if (FacturaCombustibleDAO.ExisteFacturaConCuilYNro(facturaCombustible.CuilEmisor, facturaCombustible.NroFactura)) throw new Exception("ya existe una factura con el numero ese numero para el cuil");
 				FacturaCombustibleDAO.RegistrarFacturaCombustible(facturaCombustible);
 				if (facturaCombustible.IdFactura <= 0) throw new Exception("error al obtener el id de la factura");
 				facturaCombustible.RecargaCombu.FacturaCombu = new FacturaCombustible();
 				facturaCombustible.RecargaCombu.FacturaCombu.IdFactura = facturaCombustible.IdFactura;	
-				RecargaCombustibleBLL RecargaCombustibleBLO = new RecargaCombustibleBLL();
+				
 				RecargaCombustibleBLO.RegistrarRecargaCombustible(facturaCombustible.RecargaCombu);
 
 				Resultado resultado = HelperFacturas.GenerarFacturaPDF(facturaCombustible);
@@ -118,12 +122,12 @@ namespace BLL
         private void CargarFacturaCombuConRecarga(FacturaCombustible facturaCombustible)
         {
 			try
-			{
+			{  
 				facturaCombustible.FechaFactura = facturaCombustible.RecargaCombu.Fecha;
 				facturaCombustible.CuilEmisor = facturaCombustible.RecargaCombu.ProveedorCombu.Cuit;
 				decimal diff = facturaCombustible.MontoTotal- facturaCombustible.RecargaCombu.CantidadLitros * facturaCombustible.RecargaCombu.PrecioLitros;
 
-                if (diff>0.01M) throw new Exception("inconsistencias entre litros,cantidad y precio de la factura");
+                if (diff>0.0001M) throw new Exception("inconsistencias entre litros,cantidad y precio de la factura");
 				if(facturaCombustible.FechaFactura.Date > DateTime.Now.Date) throw new Exception("la factura tiene una fecha invalida superior al dia de hoy");
 				if(facturaCombustible.NroFactura <= 0) throw new Exception("numero de factura invalido");
 			}

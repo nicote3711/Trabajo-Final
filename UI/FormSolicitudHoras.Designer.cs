@@ -65,6 +65,7 @@
             cmBox_Cliente.Name = "cmBox_Cliente";
             cmBox_Cliente.Size = new Size(144, 23);
             cmBox_Cliente.TabIndex = 9;
+            cmBox_Cliente.SelectedIndexChanged += cmBox_Cliente_SelectedIndexChanged;
             // 
             // label3
             // 

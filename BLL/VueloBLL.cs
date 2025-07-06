@@ -39,13 +39,7 @@ namespace BLL
                     vuelo.Aeronave = AeronaveBLO.ObtenerAeronavePorId(vuelo.Aeronave.IdAeronave);
                     vuelo.Finalidad = FinalidadBLO.ObtenerPorId(vuelo.Finalidad.IdFinalidad);
 
-                 /*  if (vuelo == null) throw new ArgumentNullException(nameof(vuelo), "El vuelo no puede ser nulo.");
-                    if (vuelo.Cliente == null) throw new ArgumentNullException(nameof(vuelo.Cliente), "El cliente del vuelo no puede ser nulo.");
-                    if (vuelo.Aeronave == null) throw new ArgumentNullException(nameof(vuelo.Aeronave), "La aeronave del vuelo no puede ser nula.");
-                    if (vuelo.Finalidad == null) throw new ArgumentNullException(nameof(vuelo.Finalidad), "La finalidad del vuelo no puede ser nula.");
-                    if (vuelo.Instructor == null && string.IsNullOrEmpty(vuelo.Cliente.Licencia)) throw new Exception("El instructor del vuelo no puede ser nulo si el Cliente no posee Licencia.");
-                    if (vuelo.Cliente.SaldoHorasVuelo <= -10 || vuelo.Cliente.SaldoHorasSimulador <= -10) throw new Exception("El cliente debe mas de 10 horas y debe cancelar la deuda primero.");
-                    if (vuelo.HubInicial >= vuelo.HubFinal) throw new Exception("El Hub inicial debe ser menor que el Hub final.");*/
+           
                 }
 
 
@@ -78,14 +72,14 @@ namespace BLL
             try
             {
                 if (vuelo == null) throw new ArgumentNullException(nameof(vuelo), "El vuelo no puede ser nulo.");
-                if (vuelo.Fecha > DateTime.Now.Date) throw new Exception("La fecha del vuelo no puede ser posterior al dia de hoy");
+                if (vuelo.Fecha.Date > DateTime.Now.Date) throw new Exception("La fecha del vuelo no puede ser posterior al dia de hoy");
                 if (vuelo.Cliente == null) throw new ArgumentNullException(nameof(vuelo.Cliente), "El cliente del vuelo no puede ser nulo.");
                 if (vuelo.Aeronave == null) throw new ArgumentNullException(nameof(vuelo.Aeronave), "La aeronave del vuelo no puede ser nula.");
                 if(vuelo.Finalidad == null) throw new ArgumentNullException(nameof(vuelo.Finalidad), "La finalidad del vuelo no puede ser nula.");  
                 if(vuelo.Instructor == null &&  string.IsNullOrEmpty(vuelo.Cliente.Licencia)) throw new Exception( "El instructor del vuelo no puede ser nulo si el Cliente no posee Licencia.");
                 if (vuelo.Cliente.SaldoHorasVuelo<=-10 || vuelo.Cliente.SaldoHorasSimulador<=-10 ) throw new Exception("El cliente debe mas de 10 horas y debe cancelar la deuda primero.");
                 if(vuelo.HubInicial >= vuelo.HubFinal) throw new Exception("El Hub inicial debe ser menor que el Hub final.");
-                if (vuelo.HoraCorte.Equals(vuelo.HoraPM)) throw new Exception("Las horas de paro motor y corte no puede ser la misma");
+                if (vuelo.HoraCorte.Hour.Equals(vuelo.HoraPM.Hour)&& vuelo.HoraCorte.Minute.Equals(vuelo.HoraPM.Minute)) throw new Exception("Las horas y minutos de paro motor y corte no puede ser la misma");
 
                 List<Vuelo> LVuelosEnFecha = VueloDAO.BuscarVuelosEnFecha(vuelo.Fecha);
                 if(LVuelosEnFecha !=null && LVuelosEnFecha.Count>0)
@@ -104,8 +98,7 @@ namespace BLL
                         if (vuelo.Aeronave.IdAeronave.Equals(otroVuelo.Aeronave.IdAeronave) && HorasSeSuperponen(vuelo.HoraPM, vuelo.HoraCorte, otroVuelo.HoraPM, otroVuelo.HoraCorte)) throw new Exception("Ya existe un vuelo para esta aeronave en el horario especificado.");
                         
                     }
-                }    
-                    
+                }       
 
                 if (vuelo.Instructor==null && vuelo.Aeronave.Dueno==null)
                 {
@@ -197,7 +190,7 @@ namespace BLL
             {
                 throw new Exception("BLL Error al buscar vuelos por cliente: " + ex.Message, ex);
             }
-        }
+        } //No lo uso de momento
 
         public void EliminarVuelo(Vuelo vuelo)
         {
@@ -224,8 +217,6 @@ namespace BLL
             }
         }
 
-        //TODO: Implementar BuscarVueloPorId en BLL vuelo para devolverlo full mappear si es necesario.
-
         public void LiquidarVuelo(Vuelo vuelo)
         {
             try
@@ -243,7 +234,7 @@ namespace BLL
             }
         }
 
-        internal Vuelo BuscarVueloPorId(int idVuelo)
+        public Vuelo BuscarVueloPorId(int idVuelo)
         {
             try
             {

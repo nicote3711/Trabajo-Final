@@ -37,12 +37,12 @@ namespace UI
         {
             try
             {
-                List<Cliente> LClientes = ClienteBLO.ObtenerClientes().Where(c => c.Activo && c.SaldoHorasSimulador>-10 && c.SaldoHorasVuelo>-10).ToList();
+                List<Cliente> LClientes = ClienteBLO.ObtenerClientes().Where(c => c.Activo && c.SaldoHorasSimulador > -10 && c.SaldoHorasVuelo > -10).ToList();
                 if (LClientes != null && LClientes.Count > 0)
                 {
                     cmBox_Cliente.DataSource = LClientes;
-                    cmBox_Cliente.DisplayMember = "Identificar"; 
-                    cmBox_Cliente.ValueMember = "IDCliente"; 
+                    cmBox_Cliente.DisplayMember = "Identificar";
+                    cmBox_Cliente.ValueMember = "IDCliente";
                     cmBox_Cliente.SelectedIndex = -1; // Para que no seleccione nada por defecto
                     cmBox_Cliente.Text = "Seleccione un cliente";
                 }
@@ -77,15 +77,12 @@ namespace UI
             try
             {
                 List<FacturaSolicitudHoras> Lfacturas = FacturaSolicitudHorasBLO.ObtenerFacturas();
-                if (Lfacturas != null && Lfacturas.Count > 0)
+                dgv_FacturaSolicitudHoras.DataSource = null;
+                if (cmBox_Cliente.SelectedIndex >= 0 && cmBox_Cliente.SelectedItem is Cliente clienteSeleccionado)
                 {
-                    dgv_FacturaSolicitudHoras.DataSource = null;
-                    dgv_FacturaSolicitudHoras.DataSource = Lfacturas;
+                    Lfacturas = Lfacturas.Where(f => f.CuilEmisor.Equals(clienteSeleccionado.CuitCuil)).ToList();
                 }
-                else
-                {
-                   dgv_FacturaSolicitudHoras.DataSource = null; // Limpiar el DataGridView si no hay facturas
-                }
+                if (Lfacturas.Count > 0) { dgv_FacturaSolicitudHoras.DataSource = Lfacturas; }
             }
             catch (Exception ex)
             {
@@ -97,15 +94,12 @@ namespace UI
             try
             {
                 List<SolicitudHoras> LSolicitudes = SolicitudHorasBLO.ObtenerSolicitudesHoras();
-                if (LSolicitudes != null && LSolicitudes.Count > 0)
+                dgv_SolicitudHoras.DataSource = null;
+                if (cmBox_Cliente.SelectedIndex >= 0 && cmBox_Cliente.SelectedItem is Cliente clienteSeleccionado)
                 {
-                    dgv_SolicitudHoras.DataSource = null;
-                    dgv_SolicitudHoras.DataSource = LSolicitudes;
+                    LSolicitudes = LSolicitudes.Where(s => s.Cliente.IDCliente.Equals(clienteSeleccionado.IDCliente)).ToList();
                 }
-                else
-                {
-                     dgv_SolicitudHoras.DataSource = null; // Limpiar el DataGridView si no hay solicitudes
-                }
+                if (LSolicitudes.Count > 0) { dgv_SolicitudHoras.DataSource = LSolicitudes; }
             }
             catch (Exception ex)
             {
@@ -113,6 +107,21 @@ namespace UI
                 MessageBox.Show(ex.Message);
             }
         }
+
+        private void cmBox_Cliente_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                CargarDgvFacturaSolicitud();
+                CargarDgvSolicitud();
+            }
+            catch (Exception ex)
+            {
+
+                MessageBox.Show(ex.Message);
+            }
+        }
+
         #endregion Fin Funciones Formulario 
 
         #region Botones Formulario
@@ -186,5 +195,6 @@ namespace UI
 
 
 
+     
     }
 }

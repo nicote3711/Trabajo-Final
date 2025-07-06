@@ -111,6 +111,7 @@ namespace BLL
                 if (facturaMantenimiento.Mantenimiento.Mecanico == null || string.IsNullOrEmpty(facturaMantenimiento.Mantenimiento.Mecanico.CuitCuil)) throw new Exception("El mecanico del mantenimiento es nulo o no tiene Cuit");
                 facturaMantenimiento.CuilEmisor = facturaMantenimiento.Mantenimiento.Mecanico.CuitCuil;
 
+                if (FacturaMantenimientoDAO.ExisteFacturaConCuilYNro(facturaMantenimiento.CuilEmisor, facturaMantenimiento.NroFactura)) throw new Exception("ya existe una factura con ese numero de ese cuit");
                 FacturaMantenimientoDAO.RegistrarFactura(facturaMantenimiento);
 
                 if (facturaMantenimiento.IdFactura <= 0) throw new Exception("error al obtener el id de la factura");

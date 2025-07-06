@@ -108,6 +108,7 @@
             // 
             // txt_CantHoraSimu
             // 
+            txt_CantHoraSimu.Enabled = false;
             txt_CantHoraSimu.Location = new Point(246, 180);
             txt_CantHoraSimu.Name = "txt_CantHoraSimu";
             txt_CantHoraSimu.Size = new Size(111, 23);
@@ -124,6 +125,7 @@
             // 
             // txt_CantHoraVuelo
             // 
+            txt_CantHoraVuelo.Enabled = false;
             txt_CantHoraVuelo.Location = new Point(246, 125);
             txt_CantHoraVuelo.Name = "txt_CantHoraVuelo";
             txt_CantHoraVuelo.Size = new Size(111, 23);
