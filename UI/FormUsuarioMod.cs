@@ -24,7 +24,7 @@ namespace UI
             txt_Dni.Text = usuario.DNI.ToString();
             txt_Apellido.Text = usuario.Apellido;
             txt_Nombre.Text = usuario.Nombre;
-            txt_Contrasena.Text = Encriptador.Desencriptar(usuario.Contrasena);
+            txt_Contrasena.Text = Encriptador.Desencriptar(usuario.Contrasena); // contraseña desencriptada
             checkBox_Activo.Checked = usuario.Activo;
             formPpal = formPadre;
             usuarioModificado = usuario;
@@ -39,6 +39,7 @@ namespace UI
         {
             try
             {
+                if (string.IsNullOrEmpty(txt_NombreUsuario.Text)) throw new Exception("El nombre de usuario es obligatorio");
                 if (string.IsNullOrEmpty(txt_Dni.Text.Trim())) throw new Exception("El DNI es obligatorio.");
                 if (string.IsNullOrEmpty(txt_Nombre.Text.Trim())) throw new Exception("El nombre es obligatorio.");
                 if (string.IsNullOrEmpty(txt_Apellido.Text.Trim())) throw new Exception("El apellido es obligatorio.");

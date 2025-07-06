@@ -44,17 +44,26 @@ namespace UI
             catch (Exception ex)
             {
 
-                throw;
+                MessageBox.Show(ex.Message);   
             }
         }
 
         private void LimpiarCampos()
         {
-            txt_Dni.Clear();
-            txt_Nombre.Clear();
-            txt_Apellido.Clear();
-            txt_Contrasena.Clear();
-            txt_NombreUsuario.Clear();
+            try
+            {
+                txt_Dni.Clear();
+                txt_Nombre.Clear();
+                txt_Apellido.Clear();
+                txt_Contrasena.Clear();
+                txt_NombreUsuario.Clear();
+            }
+            catch (Exception ex)
+            {
+
+                MessageBox.Show(ex.Message);
+            }
+           
         }
 
         #endregion Fin Funciones Form   
@@ -65,14 +74,16 @@ namespace UI
         {
             try
             {
-                Usuario usuario = new Usuario();
-                usuario.NombreUsuario = txt_NombreUsuario.Text.Trim();
+               
+                if (string.IsNullOrEmpty(txt_NombreUsuario.Text)) throw new Exception("El nombre de usuario es obligatorio");   
                 if (string.IsNullOrEmpty(txt_Dni.Text.Trim())) throw new Exception("El DNI es obligatorio.");
                 if (string.IsNullOrEmpty(txt_Nombre.Text.Trim())) throw new Exception("El nombre es obligatorio.");
                 if (string.IsNullOrEmpty(txt_Apellido.Text.Trim())) throw new Exception("El apellido es obligatorio.");
                 if (string.IsNullOrEmpty(txt_Contrasena.Text.Trim())) throw new Exception("La contraseña es obligatoria.");
                 if (!long.TryParse(txt_Dni.Text, out long dni)) throw new Exception("El DNI debe ser un número válido.");
 
+                Usuario usuario = new Usuario();
+                usuario.NombreUsuario = txt_NombreUsuario.Text.Trim();
                 usuario.DNI = dni;
                 usuario.Nombre = txt_Nombre.Text.Trim();
                 usuario.Apellido = txt_Apellido.Text.Trim();

@@ -194,6 +194,7 @@
             // 
             // txt_Password
             // 
+            txt_Password.Enabled = false;
             txt_Password.Location = new Point(86, 98);
             txt_Password.Name = "txt_Password";
             txt_Password.Size = new Size(100, 23);
@@ -201,6 +202,7 @@
             // 
             // txt_Nombre
             // 
+            txt_Nombre.Enabled = false;
             txt_Nombre.Location = new Point(86, 57);
             txt_Nombre.Name = "txt_Nombre";
             txt_Nombre.Size = new Size(100, 23);
@@ -226,6 +228,7 @@
             // 
             // txt_IdUsuario
             // 
+            txt_IdUsuario.Enabled = false;
             txt_IdUsuario.Location = new Point(143, 28);
             txt_IdUsuario.Name = "txt_IdUsuario";
             txt_IdUsuario.Size = new Size(33, 23);
@@ -275,6 +278,7 @@
             // 
             // txt_NombreRol
             // 
+            txt_NombreRol.Enabled = false;
             txt_NombreRol.Location = new Point(96, 71);
             txt_NombreRol.Name = "txt_NombreRol";
             txt_NombreRol.Size = new Size(87, 23);
@@ -282,6 +286,7 @@
             // 
             // txt_IdRol
             // 
+            txt_IdRol.Enabled = false;
             txt_IdRol.Location = new Point(144, 25);
             txt_IdRol.Name = "txt_IdRol";
             txt_IdRol.Size = new Size(39, 23);
@@ -331,6 +336,7 @@
             // checkBox_EsHoja
             // 
             checkBox_EsHoja.AutoSize = true;
+            checkBox_EsHoja.Enabled = false;
             checkBox_EsHoja.Location = new Point(115, 138);
             checkBox_EsHoja.Name = "checkBox_EsHoja";
             checkBox_EsHoja.Size = new Size(63, 19);
@@ -340,6 +346,7 @@
             // 
             // txt_NombrePermiso
             // 
+            txt_NombrePermiso.Enabled = false;
             txt_NombrePermiso.Location = new Point(97, 77);
             txt_NombrePermiso.Name = "txt_NombrePermiso";
             txt_NombrePermiso.Size = new Size(100, 23);
@@ -347,6 +354,7 @@
             // 
             // txt_IdPermiso
             // 
+            txt_IdPermiso.Enabled = false;
             txt_IdPermiso.Location = new Point(169, 39);
             txt_IdPermiso.Name = "txt_IdPermiso";
             txt_IdPermiso.Size = new Size(28, 23);
@@ -411,7 +419,7 @@
             groupBox1.Size = new Size(189, 87);
             groupBox1.TabIndex = 24;
             groupBox1.TabStop = false;
-            groupBox1.Text = "groupBox1";
+            groupBox1.Text = "Alta Roles";
             // 
             // txt_NombreRolAlta
             // 

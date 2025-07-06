@@ -43,10 +43,8 @@ namespace BLL.Composite
             try
             {
                 if (rol == null) throw new ArgumentNullException(nameof(rol), "El rol no puede ser nulo.");
-                if(RolDAO.ObtenerTodos().Any(r => r.NombreComponente.Equals(rol.NombreComponente)))  // se puede llevar a metodo en la dal para no obtener todos. 
-                {
-                    throw new InvalidOperationException($"Ya existe un rol con el nombre {rol.NombreComponente}.");
-                }
+                if(RolDAO.ObtenerTodos().Any(r => r.NombreComponente.Equals(rol.NombreComponente)))throw new InvalidOperationException($"Ya existe un rol con el nombre {rol.NombreComponente}.");  // se puede llevar a metodo en la dal para no obtener todos. 
+
                 
                 RolDAO.Alta(rol);
             }
@@ -133,7 +131,6 @@ namespace BLL.Composite
             }
             catch (Exception ex )
             {
-
                 throw new Exception("BLL Rol error al quitar permiso a rol: " + ex.Message, ex);
             }
         }

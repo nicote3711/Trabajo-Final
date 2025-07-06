@@ -106,14 +106,26 @@ namespace UI
         }
         private TreeNode CrearNodoPermiso(Componente comp)  //arma no solo el nodo sino el de cada uno de sus hijos recursivo
         {
-            TreeNode nodo = new TreeNode(comp.NombreComponente) { Tag = comp };
-
-            foreach (var hijo in comp.ObtenerHijos())
+            try
             {
-                nodo.Nodes.Add(CrearNodoPermiso(hijo));
-            }
 
-            return nodo;
+                TreeNode nodo = new TreeNode(comp.NombreComponente) { Tag = comp };
+
+                foreach (var hijo in comp.ObtenerHijos())
+                {
+                    nodo.Nodes.Add(CrearNodoPermiso(hijo));
+                }
+
+                return nodo;
+
+
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+          
         }
 
         private void btn_AltaRol_Click(object sender, EventArgs e)

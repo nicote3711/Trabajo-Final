@@ -184,6 +184,7 @@
             // 
             // txt_IdAeronave
             // 
+            txt_IdAeronave.Enabled = false;
             txt_IdAeronave.Location = new Point(144, 14);
             txt_IdAeronave.Name = "txt_IdAeronave";
             txt_IdAeronave.Size = new Size(138, 23);
