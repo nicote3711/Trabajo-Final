@@ -26,9 +26,10 @@ namespace DAL
                 if (!File.Exists(rutaXml)) throw new Exception("El archivo no existe");
                 DataSet ds = new DataSet();
                 ds.ReadXml(rutaXml, XmlReadMode.ReadSchema);
-                var personas = ds.Tables["Persona"];
-                var clientes = ds.Tables["Cliente"];
-                
+                DataTable personas = ds.Tables["Persona"];
+                DataTable clientes = ds.Tables["Cliente"];
+                if (personas == null || clientes == null) throw new Exception("no se encontraron las tablas necesarias");
+
                 DataRow personaEistente = personas.AsEnumerable().FirstOrDefault(row=> row.Field<long>("DNI")==cliente.DNI);
                 if(personaEistente != null)
                 {
@@ -53,20 +54,12 @@ namespace DAL
                 
                 ds.WriteXml(rutaXml,XmlWriteMode.WriteSchema);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
 
-                throw;
+                throw new Exception("DAL Cliente error al dar alta cliente: "+ex.Message,ex);
             }
         }
-
-       /* private int ObtenerProximoId(DataTable? tablaObjetivo, string nombreColumna)
-        {
-            if (tablaObjetivo == null || tablaObjetivo.Rows.Count == 0)
-                return 1;
-            return tablaObjetivo.AsEnumerable().Max(r => r.Field<int>(nombreColumna)) + 1;
-        }*/
-
 
         public List<Cliente> ObtenerClientes()
         {
@@ -99,10 +92,10 @@ namespace DAL
                 return lista;
                 
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 
-                throw;
+                throw new Exception("DAL CLiente error al obtener clientes: "+ex.Message,ex);
             }
        
         }
@@ -135,10 +128,10 @@ namespace DAL
 
                 return cliente;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
 
-                throw;
+                throw new Exception("DAL Cliente error al buscar cliente por DNI: "+ex.Message,ex);
             }
 
         }
@@ -165,79 +158,115 @@ namespace DAL
                 ClienteMap.MapearClienteDesdeDB(cliente, clienteRow);
                 return cliente;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                throw;
+                throw new Exception("DAL Cliente error al buscar cliente por id:"+ex.Message,ex);
             }
         }
         public void ModificarCliente(Cliente cliente)
         {
-            if (cliente == null) throw new ArgumentNullException(nameof(cliente));
-            if (!File.Exists(rutaXml)) throw new FileNotFoundException("Archivo XML no encontrado");
+            try
+            {
+                if (cliente == null) throw new ArgumentNullException(nameof(cliente));
+                if (!File.Exists(rutaXml)) throw new FileNotFoundException("Archivo XML no encontrado");
 
-            DataSet ds = new DataSet();
-            ds.ReadXml(rutaXml, XmlReadMode.ReadSchema);
+                DataSet ds = new DataSet();
+                ds.ReadXml(rutaXml, XmlReadMode.ReadSchema);
 
-            var tablaPersonas = ds.Tables["Persona"];
-            var tablaClientes = ds.Tables["Cliente"];
+                var tablaPersonas = ds.Tables["Persona"];
+                var tablaClientes = ds.Tables["Cliente"];
 
-            var rowPersona = tablaPersonas.Select($"Id_Persona = {cliente.IDPersona}").FirstOrDefault();
-            var rowCliente = tablaClientes.Select($"Id_Cliente = {cliente.IDCliente}").FirstOrDefault();
+                var rowPersona = tablaPersonas.Select($"Id_Persona = {cliente.IDPersona}").FirstOrDefault();
+                var rowCliente = tablaClientes.Select($"Id_Cliente = {cliente.IDCliente}").FirstOrDefault();
 
-            if (rowPersona == null || rowCliente == null)
-                throw new Exception("No se encontró el cliente o la persona a modificar.");
+                if (rowPersona == null || rowCliente == null)
+                    throw new Exception("No se encontró el cliente o la persona a modificar.");
 
-            // Mapear datos actualizados
-            PersonaMap.MapearPersonaHaciaDB(cliente, rowPersona);
-            ClienteMap.MapearClienteHaciaDB(cliente, rowCliente);
+                // Mapear datos actualizados
+                PersonaMap.MapearPersonaHaciaDB(cliente, rowPersona);
+                ClienteMap.MapearClienteHaciaDB(cliente, rowCliente);
 
-            ds.WriteXml(rutaXml, XmlWriteMode.WriteSchema);
+                ds.WriteXml(rutaXml, XmlWriteMode.WriteSchema);
+            }
+            catch (Exception ex)
+            {
+
+                throw new Exception("DAL Cliente error al modificar cliente: "+ex.Message,ex);
+            }
+         
         }
 
         
         public void BajaCliente(int idCliente)
         {
-            if (!File.Exists(rutaXml)) throw new FileNotFoundException("Archivo XML no encontrado");
+            try
+            {
+                if (!File.Exists(rutaXml)) throw new FileNotFoundException("Archivo XML no encontrado");
 
-            DataSet ds = new DataSet();
-            ds.ReadXml(rutaXml, XmlReadMode.ReadSchema);
+                DataSet ds = new DataSet();
+                ds.ReadXml(rutaXml, XmlReadMode.ReadSchema);
 
-            var tablaClientes = ds.Tables["Cliente"];
-            var rowCliente = tablaClientes.Select($"Id_Cliente = {idCliente}").FirstOrDefault();
+                DataTable tablaClientes = ds.Tables["Cliente"];
+                if (tablaClientes == null) throw new Exception("no se encontro la tabla cliente");
+                DataRow rowCliente = tablaClientes.Select($"Id_Cliente = {idCliente}").FirstOrDefault();
 
-            if (rowCliente == null)
-                throw new Exception("No se encontró el cliente a dar de baja.");
+                if (rowCliente == null)throw new Exception("No se encontró el cliente a dar de baja.");
 
-            rowCliente["Activo"] = false;
+                rowCliente["Activo"] = false;
 
-            ds.WriteXml(rutaXml, XmlWriteMode.WriteSchema);
+                ds.WriteXml(rutaXml, XmlWriteMode.WriteSchema);
+            }
+            catch (Exception ex)
+            {
+
+                throw new Exception("DAL Cliente error al dar baja cliente: "+ex.Message,ex);
+            }
+ 
         }
 
         public Cliente BuscarPersonaPorDNI(long dni)
         {
-            if (!File.Exists(rutaXml)) throw new FileNotFoundException("Archivo XML no encontrado");
+            try
+            {
+                if (!File.Exists(rutaXml)) throw new FileNotFoundException("Archivo XML no encontrado");
 
-            DataSet ds = new DataSet();
-            ds.ReadXml(rutaXml, XmlReadMode.ReadSchema);
+                DataSet ds = new DataSet();
+                ds.ReadXml(rutaXml, XmlReadMode.ReadSchema);
 
-            var tablaPersonas = ds.Tables["Persona"];
-            var row = tablaPersonas?.AsEnumerable().FirstOrDefault(p => Convert.ToInt64(p["Dni"]) == dni);
-            if (row == null) return null;
+                var tablaPersonas = ds.Tables["Persona"];
+                var row = tablaPersonas?.AsEnumerable().FirstOrDefault(p => Convert.ToInt64(p["Dni"]) == dni);
+                if (row == null) return null;
 
-            Cliente persona = new Cliente();
-            PersonaMap.MapearPesonaDesdeDB(persona, row);
-            return persona;
+                Cliente persona = new Cliente();
+                PersonaMap.MapearPesonaDesdeDB(persona, row);
+                return persona;
+            }
+            catch (Exception ex)
+            {
+
+                throw new Exception("DAL Cliente error al buscar persona por dni: "+ex.Message,ex);
+            }
+
         }
 
         public void ModificarPersonaExistente(Persona persona)
         {
-            DataSet ds = new DataSet();
-            ds.ReadXml(rutaXml, XmlReadMode.ReadSchema);
-            var tabla = ds.Tables["Persona"];
-            var row = tabla.Select($"Id_Persona = {persona.IDPersona}").FirstOrDefault();
-            if (row == null) throw new Exception("No se encontró la persona a modificar.");
-            PersonaMap.MapearPersonaHaciaDB(persona, row);
-            ds.WriteXml(rutaXml, XmlWriteMode.WriteSchema);
+            try
+            {
+                DataSet ds = new DataSet();
+                ds.ReadXml(rutaXml, XmlReadMode.ReadSchema);
+                DataTable tabla = ds.Tables["Persona"];
+                if (tabla == null) throw new Exception("no se encontro la tabla persona");
+                DataRow row = tabla.Select($"Id_Persona = {persona.IDPersona}").FirstOrDefault();
+                if (row == null) throw new Exception("No se encontró la persona a modificar.");
+                PersonaMap.MapearPersonaHaciaDB(persona, row);
+                ds.WriteXml(rutaXml, XmlWriteMode.WriteSchema);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("DAL Cliente error al modificar persona existente: "+ex.Message,ex) ;
+            }
+       
         }
     }
 }

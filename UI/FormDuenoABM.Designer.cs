@@ -167,7 +167,7 @@
             // 
             // btn_BajaDueno
             // 
-            btn_BajaDueno.Location = new Point(480, 227);
+            btn_BajaDueno.Location = new Point(922, 227);
             btn_BajaDueno.Name = "btn_BajaDueno";
             btn_BajaDueno.Size = new Size(75, 23);
             btn_BajaDueno.TabIndex = 55;
@@ -216,7 +216,7 @@
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(1254, 371);
+            ClientSize = new Size(1228, 393);
             Controls.Add(dtp_FechaNacimiento);
             Controls.Add(checkBox_VerInactivos);
             Controls.Add(btn_BajaDueno);

@@ -20,33 +20,55 @@ namespace UI
             InitializeComponent();
             CargarDgvDuenos();
         }
-
+        #region Funciones Form
         private void CargarDgvDuenos()
         {
-
-            List<Dueno> LDuenos = DuenoBLO.ObtenerDuenos();
-            dgv_DuenoAMB.DataSource = null;
-            if (checkBox_VerInactivos.Checked )
+            try
             {
-                LDuenos = LDuenos.Where(d => d.Activo).ToList();
-            }
-            if(LDuenos != null && LDuenos.Count > 0)
-            {
-                
-                dgv_DuenoAMB.DataSource = LDuenos;
+                List<Dueno> LDuenos = DuenoBLO.ObtenerDuenos();
+                dgv_DuenoAMB.DataSource = null;
+                if (!checkBox_VerInactivos.Checked)
+                {
+                    LDuenos = LDuenos.Where(d => d.Activo).ToList();
+                }
+                if (LDuenos != null && LDuenos.Count > 0)
+                {
 
+                    dgv_DuenoAMB.DataSource = LDuenos;
+
+                }
             }
-           
-           
-           
+            catch (Exception ex)
+            {
+
+                MessageBox.Show(ex.Message);
+            }                   
         }
 
+        private void checkBox_VerInactivos_CheckedChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                CargarDgvDuenos();
+            }
+            catch (Exception ex)
+            {
+
+                MessageBox.Show(ex.Message);
+            }
+        }
+
+
+        #endregion Fin Funciones Form
+
+        #region Botones Form
         private void btn_AltaDueno_Click(object sender, EventArgs e)
         {
             try
             {
+                if (!long.TryParse(txt_Dni.Text, out long dni)) throw new Exception("dni invalido este debe ser numerico");
                 Dueno duenoAlta = new Dueno();
-                duenoAlta.DNI = long.Parse(txt_Dni.Text);
+                duenoAlta.DNI = dni;
                 duenoAlta.Nombre = txt_Nombre.Text;
                 duenoAlta.Apellido = txt_Apellido.Text;
                 duenoAlta.CuitCuil = txt_Cuil.Text;
@@ -93,11 +115,12 @@ namespace UI
         {
             try
             {
-                if (dgv_DuenoAMB.SelectedRows.Count == 0) throw new Exception("Debe seleccionar un dueño para modificar.");
                 if (dgv_DuenoAMB.Rows.Count <= 0) throw new Exception("No hay dueños para modificar.");
-                Dueno duenoMod = new Dueno();
-                duenoMod = dgv_DuenoAMB.SelectedRows[0].DataBoundItem as Dueno;
-                if (dgv_DuenoAMB == null) throw new Exception("Error al obtener Dueño de grilla");
+                if (dgv_DuenoAMB.SelectedRows.Count == 0) throw new Exception("Debe seleccionar un dueño para modificar.");
+
+                if (!(dgv_DuenoAMB.SelectedRows[0].DataBoundItem is Dueno duenoMod)) throw new Exception("error al obtener el objeto de la grilla");
+                
+                if (duenoMod == null) throw new Exception("Error al obtener Dueño de grilla"); // esta denas
            
                 FormDuenoMod formModDueno = new FormDuenoMod(duenoMod, this);
                 if (formModDueno.ShowDialog() == DialogResult.OK)
@@ -111,6 +134,10 @@ namespace UI
             {
 
                 MessageBox.Show(ex.Message);
+            }
+            finally
+            {
+                CargarDgvDuenos();
             }
         }
 
@@ -132,17 +159,7 @@ namespace UI
             }
         }
 
-        private void checkBox_VerInactivos_CheckedChanged(object sender, EventArgs e)
-        {
-            try
-            {
-                CargarDgvDuenos();
-            }
-            catch (Exception ex)
-            {
+        #endregion Fin Botones Form
 
-                MessageBox.Show(ex.Message);
-            }
-        }
     }
 }

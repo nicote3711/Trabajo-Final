@@ -77,10 +77,11 @@ namespace UI
         {
             try
             {
+                if (!long.TryParse(txt_Dni.Text, out long dni)) throw new Exception("dni invalido este debe ser numerico");
                 mecanicoModificado.Apellido = txt_Apellido.Text;
                 mecanicoModificado.Nombre = txt_Nombre.Text;
                 mecanicoModificado.CuitCuil = txt_Cuil.Text;
-                mecanicoModificado.DNI = long.Parse(txt_Dni.Text);
+                mecanicoModificado.DNI = dni;
                 mecanicoModificado.Email = txt_Email.Text;
                 mecanicoModificado.FechaNacimiento = dtp_FechaNacimiento.Value.Date;
                 mecanicoModificado.Telefono = txt_Telefono.Text;

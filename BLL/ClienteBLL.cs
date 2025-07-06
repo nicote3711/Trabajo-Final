@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace BLL
@@ -15,12 +16,9 @@ namespace BLL
         {
             try
             {
-                if (cliente == null) throw new ArgumentNullException(nameof(cliente), "El cliente no puede ser nulo.");
+
+                ValidarDatosCliente(cliente);
                 if (clienteDAO.BuscarClientePorDNI(cliente.DNI) != null) throw new Exception("El cliente con ese DNI ya existe.");
-                if (string.IsNullOrWhiteSpace(cliente.Nombre)) throw new ArgumentException("El nombre del cliente no puede estar vacío.", nameof(cliente.Nombre));
-                if (string.IsNullOrWhiteSpace(cliente.Apellido)) throw new ArgumentException("El apellido del cliente no puede estar vacío.", nameof(cliente.Apellido));
-                if (cliente.DNI <= 0) throw new ArgumentException("El DNI del cliente debe ser un número positivo.", nameof(cliente.DNI));
-                if (string.IsNullOrWhiteSpace(cliente.CuitCuil)) throw new ArgumentException("El CUIT/CUIL del cliente no puede estar vacío.", nameof(cliente.CuitCuil));
                 cliente.SaldoHorasSimulador = 0;
                 cliente.SaldoHorasVuelo = 0;
                 cliente.Activo = true;
@@ -33,10 +31,36 @@ namespace BLL
             }
         }
 
+        private void ValidarDatosCliente(Cliente cliente)
+        {
+            try
+            {
+                //Cliente
+                if (cliente == null) throw new ArgumentNullException(nameof(cliente), "El cliente no puede ser nulo.");
+
+                // Persona
+                if (cliente.DNI <= 0) throw new ArgumentException("Valor de DNI inválido.");
+                if (string.IsNullOrEmpty(cliente.Nombre) || !cliente.Nombre.All(char.IsLetter)) throw new ArgumentException("El nombre es obligatorio y solo puede contener letras.");
+                if (string.IsNullOrEmpty(cliente.Apellido) || !cliente.Apellido.All(char.IsLetter))throw new ArgumentException("El apellido es obligatorio y solo puede contener letras.");
+                if (string.IsNullOrEmpty(cliente.CuitCuil)) throw new ArgumentException("El CUIT/CUIL es obligatorio.");
+                if (cliente.FechaNacimiento.Date > DateTime.Now.AddYears(-18).Date) throw new Exception("El cliente debe ser mayor de edad.");
+                if (!Regex.IsMatch(cliente.CuitCuil, $"^\\d{{2}}-{cliente.DNI}-\\d$")) throw new Exception("El CUIT/CUIL no es válido para el DNI del cliente.");
+                if (string.IsNullOrEmpty(cliente.Telefono) || !Regex.IsMatch(cliente.Telefono, @"^\d+$")) throw new Exception("El teléfono no puede estar vacío y solo debe contener números.");
+                if (string.IsNullOrEmpty(cliente.Email) || !cliente.Email.Contains("@"))throw new Exception("El email ingresado no es válido. Debe contener '@'.");
+
+            }
+            catch (Exception ex)
+            {
+
+                throw new Exception("BLL Cliente error al validar datos cliente: "+ex.Message,ex);
+            }
+        }
+
         public void BajaCliente(int IdCliente)
         {
             try
             {
+                if (IdCliente <= 0) throw new Exception("id cliente invalido");
                 Cliente clienteBaja = clienteDAO.BuscarClientePorID(IdCliente);
                 if (clienteBaja == null) throw new Exception("El cliente no existe en la base de datos.");  
                 clienteDAO.BajaCliente(IdCliente);
@@ -80,13 +104,10 @@ namespace BLL
         {
             try
             {
-                if (clienteMod == null) throw new ArgumentNullException(nameof(clienteMod), "El cliente no puede ser nulo.");
+                ValidarDatosCliente(clienteMod);
                 Cliente cliente = clienteDAO.BuscarPersonaPorDNI(clienteMod.DNI);
-                if (cliente != null && clienteMod.IDPersona != cliente.IDPersona) throw new Exception("Ya existe una persona  con ese DNI ya existe."); // muy importante
-                if (string.IsNullOrWhiteSpace(clienteMod.Nombre)) throw new ArgumentException("El nombre del cliente no puede estar vacío.", nameof(clienteMod.Nombre));
-                if (string.IsNullOrWhiteSpace(clienteMod.Apellido)) throw new ArgumentException("El apellido del cliente no puede estar vacío.", nameof(clienteMod.Apellido));
-                if (clienteMod.DNI <= 0) throw new ArgumentException("El DNI del cliente debe ser un número positivo.", nameof(clienteMod.DNI));
-                if (string.IsNullOrWhiteSpace(clienteMod.CuitCuil)) throw new ArgumentException("El CUIT/CUIL del cliente no puede estar vacío.", nameof(clienteMod.CuitCuil));
+                if (cliente != null && clienteMod.IDPersona != cliente.IDPersona) throw new Exception("Ya existe una persona registrada con ese DNI."); // muy importante
+              
                 clienteDAO.ModificarCliente(clienteMod);
             }
             catch (Exception ex)
@@ -123,7 +144,7 @@ namespace BLL
             catch (Exception ex)
             {
 
-                throw new Exception("BLL Cliente Error al actualizar saldo Vuelo" + ex.Message, ex);
+                throw new Exception("BLL Cliente Error al descontar saldo Vuelo" + ex.Message, ex);
             }
         }
         public void AcreditarSaldoVuelo(int iDCliente, decimal tV)
@@ -139,7 +160,7 @@ namespace BLL
             catch (Exception ex)
             {
 
-                throw new Exception("BLL Cliente Error al actualizar saldo Vuelo" + ex.Message, ex);
+                throw new Exception("BLL Cliente Error al acreditar saldo Vuelo" + ex.Message, ex);
             }
         }
 
@@ -159,7 +180,7 @@ namespace BLL
                        
         }
 
-        internal void DescontarHorasSimulador(int iDCliente, decimal tS)
+        public void DescontarHorasSimulador(int iDCliente, decimal tS)
         {
             try
             {
@@ -175,7 +196,7 @@ namespace BLL
             }
         }
 
-        internal void AcreditarSaldoSimulador(int iDCliente, decimal tS)
+        public void AcreditarSaldoSimulador(int iDCliente, decimal tS)
         {
             try
             {

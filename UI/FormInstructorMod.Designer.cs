@@ -30,7 +30,6 @@
         {
             txt_Licencia = new TextBox();
             Licencia = new Label();
-            txt_FechaNac = new TextBox();
             label7 = new Label();
             txt_Email = new TextBox();
             label6 = new Label();
@@ -50,6 +49,7 @@
             txt_IdPersona = new TextBox();
             btn_ModificarInstructor = new Button();
             checkBox_Activo = new CheckBox();
+            dtp_FechaNacimiento = new DateTimePicker();
             SuspendLayout();
             // 
             // txt_Licencia
@@ -67,13 +67,6 @@
             Licencia.Size = new Size(50, 15);
             Licencia.TabIndex = 54;
             Licencia.Text = "Licencia";
-            // 
-            // txt_FechaNac
-            // 
-            txt_FechaNac.Location = new Point(154, 239);
-            txt_FechaNac.Name = "txt_FechaNac";
-            txt_FechaNac.Size = new Size(125, 23);
-            txt_FechaNac.TabIndex = 53;
             // 
             // label7
             // 
@@ -200,6 +193,7 @@
             // 
             // txt_IdInstructor
             // 
+            txt_IdInstructor.Enabled = false;
             txt_IdInstructor.Location = new Point(156, 10);
             txt_IdInstructor.Name = "txt_IdInstructor";
             txt_IdInstructor.Size = new Size(123, 23);
@@ -232,11 +226,20 @@
             checkBox_Activo.Text = "Activo";
             checkBox_Activo.UseVisualStyleBackColor = true;
             // 
+            // dtp_FechaNacimiento
+            // 
+            dtp_FechaNacimiento.Format = DateTimePickerFormat.Short;
+            dtp_FechaNacimiento.Location = new Point(154, 241);
+            dtp_FechaNacimiento.Name = "dtp_FechaNacimiento";
+            dtp_FechaNacimiento.Size = new Size(125, 23);
+            dtp_FechaNacimiento.TabIndex = 67;
+            // 
             // FormInstructorMod
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(364, 499);
+            Controls.Add(dtp_FechaNacimiento);
             Controls.Add(checkBox_Activo);
             Controls.Add(btn_ModificarInstructor);
             Controls.Add(txt_IdPersona);
@@ -245,7 +248,6 @@
             Controls.Add(label8);
             Controls.Add(txt_Licencia);
             Controls.Add(Licencia);
-            Controls.Add(txt_FechaNac);
             Controls.Add(label7);
             Controls.Add(txt_Email);
             Controls.Add(label6);
@@ -269,7 +271,6 @@
 
         private TextBox txt_Licencia;
         private Label Licencia;
-        private TextBox txt_FechaNac;
         private Label label7;
         private TextBox txt_Email;
         private Label label6;
@@ -289,5 +290,6 @@
         private TextBox txt_IdPersona;
         private Button btn_ModificarInstructor;
         private CheckBox checkBox_Activo;
+        private DateTimePicker dtp_FechaNacimiento;
     }
 }

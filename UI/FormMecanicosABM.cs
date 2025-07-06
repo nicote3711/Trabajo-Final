@@ -38,7 +38,7 @@ namespace UI
                 List<Mecanico> LMecanicos = MecanicoBLO.ObtenerMecanicos();
                 dgv_MecanicosABM.DataSource = null;
 
-                if (checkBox_VerInactivos.Checked)
+                if (!checkBox_VerInactivos.Checked)
                 {
                     LMecanicos = LMecanicos.Where(m => m.Activo).ToList();
                 }

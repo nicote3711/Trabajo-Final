@@ -30,17 +30,13 @@ namespace UI
             try
             {
                 List<Cliente> LClientes = ClienteBLO.ObtenerClientes();
-                if (LClientes.Count >= 0)
+                dgvClientesAMB.DataSource = null;      
+                
+                if (!checkBox_VerInactivos.Checked){ LClientes = LClientes.Where(c => c.Activo).ToList();}
+                                                       
+                if(LClientes!=null && LClientes.Count() > 0)
                 {
-                    if (!checkBox_VerInactivos.Checked){ LClientes = LClientes.Where(c => c.Activo).ToList();}
-                   
-                    dgvClientesAMB.DataSource = null;
                     dgvClientesAMB.DataSource = LClientes;
-                }
-                else
-                {
-                    dgvClientesAMB.DataSource = null;
-
                 }
             }
             catch (Exception ex)
@@ -125,10 +121,13 @@ namespace UI
             {
                 if (dgvClientesAMB.Rows.Count <= 0) throw new Exception("No hay clientes para eliminar.");
                 if (dgvClientesAMB.SelectedRows.Count <= 0) throw new Exception("Debe seleccionar un cliente para eliminar.");
-                int idClienteBaja = Convert.ToInt32(dgvClientesAMB.SelectedRows[0].Cells["IDCliente"].Value);
-                ClienteBLO.BajaCliente(idClienteBaja);                // solo inactiva al cliente(la persona sigue disponible
-                MessageBox.Show("Cliente eliminado correctamente.");
+                if (!(dgvClientesAMB.SelectedRows[0].DataBoundItem is Cliente cliente)) throw new Exception("error al obtener objeto cliente de la gilla");
+                if (cliente == null) throw new Exception("el cliente es nulo");
+
+                ClienteBLO.BajaCliente(cliente.IDCliente);                // solo inactiva al cliente la persona sigue disponible
                 CargarClientes();
+                MessageBox.Show("Cliente eliminado correctamente.");
+              
             }
             catch (Exception ex)
             {
