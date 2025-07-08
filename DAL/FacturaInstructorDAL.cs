@@ -120,5 +120,24 @@ namespace DAL
                 throw new Exception("DAL FacturaDueno error al registrar Factura");
             }
         }
+
+        public bool ExisteFacturaConCuilYNro(string cuilEmisor, int nroFactura)
+        {
+            try
+            {
+                if (!File.Exists(rutaXml)) throw new FileNotFoundException("No se encontró el archivo XML.");
+                DataSet ds = new DataSet();
+                ds.ReadXml(rutaXml, XmlReadMode.ReadSchema);
+
+                DataTable tablaFacturas = ds.Tables["Factura"];
+                if (tablaFacturas == null) throw new Exception("No se encontró la tabla Factura.");
+
+                return tablaFacturas.AsEnumerable().Any(row => row["Cuil_Emisor"].ToString().Equals(cuilEmisor) && Convert.ToInt32(row["Nro_Factura"]).Equals(nroFactura));
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("DAL Factura combustible error al verificar existencia de factura por CUIL y número: " + ex.Message, ex);
+            }
+        }
     }
 }

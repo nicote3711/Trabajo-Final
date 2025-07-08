@@ -148,5 +148,19 @@ namespace BLL
                 throw new Exception("BLL Instrucotr error al buscar instructor por ID" + ex.Message, ex);
             }
         }
+
+        internal Instructor BuscarInstructorPorCuit(string cuilEmisor)
+        {
+            try
+            {
+                if (string.IsNullOrEmpty(cuilEmisor)) throw new Exception("cuit invalido");
+                return InstructorDAO.BuscarInstructorPorCuit(cuilEmisor);
+            }
+            catch (Exception ex)
+            {
+
+                throw new Exception("BLL Instructor error al buscar instructor por cuit:"+ex.Message,ex);
+            }
+        }
     }
 }

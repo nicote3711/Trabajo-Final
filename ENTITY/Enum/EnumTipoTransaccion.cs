@@ -10,7 +10,7 @@ namespace ENTITY.Enum
     {
         PagoInstructor=1, 
         PagoDueño=2, 
-        CobroSolictudHoras=3, 
+        CobroSolicitudHoras=3, 
         PagoMantenimientoMecanico=4, 
         PagoCombustible=5
     }

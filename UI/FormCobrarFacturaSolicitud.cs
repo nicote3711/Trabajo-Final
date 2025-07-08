@@ -194,14 +194,14 @@ namespace UI
             try
             {
                 dgv_CobrosFactSolicitudes.DataSource = null;
-                List<TransaccionFinanciera> Ltransacciones = TransaccionFinancieraBLO.ObtenerTodas().Where(t => t.TipoTransaccion.IdTipoTransaccion.Equals((int)EnumTipoTransaccion.CobroSolictudHoras)).ToList();
+                List<TransaccionFinanciera> Ltransacciones = TransaccionFinancieraBLO.ObtenerTodas().Where(t => t.TipoTransaccion.IdTipoTransaccion.Equals((int)EnumTipoTransaccion.CobroSolicitudHoras)).ToList();
 
 
                 if (cmBox_Cliente.SelectedIndex >= 0 && cmBox_Cliente.SelectedItem is Cliente)
                 {
                     Cliente cliente = cmBox_Cliente.SelectedItem as Cliente;
                     if (cliente == null) throw new Exception("error al obtener cliente del combo box");
-                    Ltransacciones = Ltransacciones.Where(tf =>tf.Factura is FacturaSolicitudHoras fsh && fsh.Solicitud.Cliente.IDCliente.Equals(cliente.IDCliente)).ToList();
+                    Ltransacciones = Ltransacciones.Where(tf =>tf.Factura is FacturaSolicitudHoras fsh && fsh.Solicitud.Cliente.IDCliente.Equals(cliente.IDCliente)).ToList(); // no hacia falta puedo buscar por cuit del cliente.
                 }
 
                 if (Ltransacciones.Count > 0){dgv_CobrosFactSolicitudes.DataSource = Ltransacciones;}

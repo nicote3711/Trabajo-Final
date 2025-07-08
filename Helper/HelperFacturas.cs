@@ -193,14 +193,14 @@ namespace Helper
 
                         document.Add(new Paragraph("Condición de Venta: CONTADO / CTA. CTE.")
                             .SetFont(fontNormal).SetFontSize(9).SetTextAlignment(TextAlignment.LEFT));
-                        document.Add(new Paragraph("CUIT del emisor en AFIP: XX-XXXXXXXX-X") // Reemplazar con el CUIT real de tu empresa
+                        document.Add(new Paragraph($"CUIT del emisor en AFIP: {emisor.CuitCuil}") // Reemplazar con el CUIT real de tu empresa
                             .SetFont(fontNormal).SetFontSize(8).SetTextAlignment(TextAlignment.CENTER));
 
                         
                         document.Add(new Paragraph("\n")
                             .Add(new Text("Impreso por: Imprenta XYZ S.A. | ").SetFont(fontNormal).SetFontSize(7))
                             .Add(new Text("Habilitación AFIP: XXXX | ").SetFont(fontNormal).SetFontSize(7))
-                            .Add(new Text("Fecha Impresión: DD/MM/AAAA | ").SetFont(fontNormal).SetFontSize(7))
+                            .Add(new Text($"Fecha Impresión: {factura.FechaFactura} | ").SetFont(fontNormal).SetFontSize(7))
                             .Add(new Text("Desde Nro.: 0001-00000001 Hasta Nro.: 0001-99999999").SetFont(fontNormal).SetFontSize(7))
                             .SetTextAlignment(TextAlignment.CENTER));
 

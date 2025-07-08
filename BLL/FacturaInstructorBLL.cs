@@ -23,6 +23,8 @@ namespace BLL
             {
                 if (facturaInstructor.IdFactura == null || facturaInstructor.IdFactura <= 0) throw new Exception("Id de factura nulo o invalido.");
                 if (facturaInstructor.ListaLiquidaciones == null || facturaInstructor.ListaLiquidaciones.Count <= 0) throw new Exception("Lista de liquidaciones de la factura nula o vacia");
+        
+
 
                 FacturaInstructorDAO.EliminarFactura(facturaInstructor.IdFactura);
                 Resultado result = HelperFacturas.EliminarFacturaPDF((int)EnumTiposFactura.FacturaInstructor, facturaInstructor.NroFactura);
@@ -46,14 +48,19 @@ namespace BLL
                 List<FacturaInstructor> LFacturasInstructor = FacturaInstructorDAO.ObtenerFacturas();
                 LiquidacionInstructorBLL LiquidacionInstructorBLO = new LiquidacionInstructorBLL();
                 TransaccionFinancieraBLL TransaccionFinancieraBLO = new TransaccionFinancieraBLL();
+                InstructorBLL InstructorBLO = new InstructorBLL();
+
                 foreach (FacturaInstructor factura in LFacturasInstructor)
                 {
                     factura.ListaLiquidaciones = LiquidacionInstructorBLO.ObtenerLiquidacionesPorIdFactura(factura.IdFactura);
                     TransaccionFinanciera transaccionFinanciera = TransaccionFinancieraBLO.BuscarTransaccionPorIdFactura(factura.IdFactura);
-                    if( transaccionFinanciera != null )
+                    if (transaccionFinanciera != null)
                     {
                         factura.Transaccion = transaccionFinanciera;
                     }
+                    Instructor instructor = InstructorBLO.BuscarInstructorPorCuit(factura.CuilEmisor);
+                    if(instructor == null || instructor.IdInstructor<=0) throw new Exception("no se encontro al instructor para la factura por cuit");
+                    factura.Instructor = instructor;
                 }
                 return LFacturasInstructor;
             }
@@ -75,6 +82,7 @@ namespace BLL
                 if (facturaInstructor.MontoTotal <= 0) throw new Exception("El monto total no puede ser 0 o menor que 0");
                 if (string.IsNullOrEmpty(facturaInstructor.CuilEmisor)) throw new Exception("El cuit no puede ser nulo o vaico");
 
+                FacturaInstructorDAO.ExisteFacturaConCuilYNro(facturaInstructor.CuilEmisor, facturaInstructor.NroFactura);
                 FacturaInstructorDAO.RegistrarFactura(facturaInstructor);
                 if (facturaInstructor.IdFactura == null || facturaInstructor.IdFactura <=0) throw new Exception("El id de la factura es nulo o invalido");
 
@@ -88,8 +96,7 @@ namespace BLL
 
                 //Generar FacturaPDF
                 Resultado result = HelperFacturas.GenerarFacturaPDF(facturaInstructor);
-                if (!result.Success)
-                    throw new Exception(result.Message);
+                if (!result.Success) throw new Exception(result.Message);
             }
             catch (Exception ex)
             {

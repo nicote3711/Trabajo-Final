@@ -262,5 +262,37 @@ namespace DAL
                 throw new Exception("DAL Instructor error al dar baja a instructor: "+ex.Message,ex);
             }
         }
+
+        public Instructor BuscarInstructorPorCuit(string cuilEmisor)
+        {
+            try
+            {
+                if (!File.Exists(rutaXml)) throw new FileNotFoundException("No se encuentra el archivo de datos");
+                DataSet ds = new DataSet();
+                ds.ReadXml(rutaXml, XmlReadMode.ReadSchema);
+
+                DataTable tablaInstructores = ds.Tables["Instructor"];
+                DataTable tablaPersonas = ds.Tables["Persona"];
+                if (tablaPersonas == null || tablaInstructores == null)throw new Exception("Faltan tablas requeridas en el archivo XML.");
+
+                DataRow personaRow = tablaPersonas.AsEnumerable().FirstOrDefault(p => p.Field<string>("Cuit_Cuil") == cuilEmisor);
+                if (personaRow == null) return null;
+
+
+                DataRow instructorRow = tablaInstructores.AsEnumerable().FirstOrDefault(d => d.Field<int>("Id_Persona") == personaRow.Field<int>("Id_Persona"));
+                if (instructorRow == null) return null;
+
+                Instructor instructor = new Instructor();
+                InstructorMAP.MapearInstructorDesdeDB(instructor, instructorRow);
+                PersonaMap.MapearPesonaDesdeDB(instructor, personaRow);
+                return instructor;
+
+            }
+            catch (Exception ex)
+            {
+
+                throw new Exception("DAL Instructor error al buscar instructor por cuit: "+ex.Message,ex);
+            }
+        }
     }
 }

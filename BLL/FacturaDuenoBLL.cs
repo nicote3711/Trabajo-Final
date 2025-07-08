@@ -25,6 +25,7 @@ namespace BLL
 				if (facturaDueno.MontoTotal <= 0) throw new Exception("El monto total no puede ser 0 o menor a 0");
 				if (string.IsNullOrEmpty(facturaDueno.CuilEmisor)) throw new Exception("El cuit no puede ser nulo o vacio");
 
+				FacturaDuenoDAO.ExisteFacturaConCuilYNro(facturaDueno.CuilEmisor, facturaDueno.NroFactura);
 				FacturaDuenoDAO.RegistrarFactura(facturaDueno);
 				if (facturaDueno.IdFactura == null || facturaDueno.IdFactura <= 0) throw new Exception("el id de la factura es nulo o invalido");
 
@@ -55,8 +56,9 @@ namespace BLL
 
 				TransaccionFinancieraBLL TransaccionFinancieraBLO = new TransaccionFinancieraBLL();
 				LiquidacionDuenoBLL LiquidacionDuenoBLO = new LiquidacionDuenoBLL();
-				
-				foreach(FacturaDueno factura in LFacturasDueno)
+				DuenoBLL DuenoBLO = new DuenoBLL();
+
+				foreach (FacturaDueno factura in LFacturasDueno)
 				{
 					factura.ListaLiquidaciones = LiquidacionDuenoBLO.BuscarLiquidacionesPorIdFactura(factura.IdFactura);
 					TransaccionFinanciera transaccionFinanciera = TransaccionFinancieraBLO.BuscarTransaccionPorIdFactura(factura.IdFactura);
@@ -64,6 +66,9 @@ namespace BLL
 					{
 						factura.Transaccion = transaccionFinanciera;
 					}
+					Dueno dueno = DuenoBLO.BuscarDuenoPorCuit(factura.CuilEmisor);
+					if (dueno == null || dueno.IdDueno <= 0) throw new Exception("No se encontro el dueño por cuit de la factura");
+					factura.Dueno = dueno;
 				}
 				
 
