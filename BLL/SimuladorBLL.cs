@@ -1,5 +1,6 @@
 ﻿using DAL;
 using ENTITY;
+using ENTITY.Enum;
 using Helper;
 using System;
 using System.Collections.Generic;
@@ -39,6 +40,45 @@ namespace BLL
 			{
 				throw new Exception("BLL Simulador error al obtener simuladores: " + ex.Message, ex);
 			}
+        }
+
+        public Dictionary<string, int> BuscarSimuladoresPorFiltro(DashboardFiltroPeriodo filtroSimuladores)
+        {
+            try
+            {
+                Dictionary<string, int> vuelos = new Dictionary<string, int>();
+
+                if (filtroSimuladores == null) throw new Exception("Filtro invalido");
+
+                switch (filtroSimuladores.TipoFiltro)
+                {
+                    case (int)EnumFiltrosDashboard.Semanal:
+                        {
+                            vuelos = SimuladorDAO.BuscarSimuladoresFiltroSemanal(filtroSimuladores.Anio, filtroSimuladores.Mes);
+                            break;
+                        }
+                    case (int)EnumFiltrosDashboard.Diario:
+                        {
+                            vuelos = SimuladorDAO.BuscarSimuladoresFiltroDiario(filtroSimuladores.Anio, filtroSimuladores.Mes, filtroSimuladores.Semana);
+                            break;
+                        }
+                    default:
+                        {
+                            vuelos = SimuladorDAO.BuscarSimuladoresFiltroMensual(filtroSimuladores.Anio);
+                            break;
+                        }
+                }
+
+
+                return vuelos;
+
+
+            }
+            catch (Exception ex)
+            {
+
+                throw new Exception("BLL Vuelo error al buscar vuelo por id: " + ex.Message, ex);
+            }
         }
 
         public void RegistrarSimulador(Simulador simulador)

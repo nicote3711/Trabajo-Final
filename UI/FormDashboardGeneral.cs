@@ -17,30 +17,115 @@ namespace UI
 {
     public partial class FormDashboardGeneral : Form
     {
+        List<string> MesesDelAnio = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
+        int CantidadSemanasPorMes = 4;
         public FormDashboardGeneral()
         {
             InitializeComponent();
             InicializarFiltros();
-            GenerarGraficoVuelos();
-            GenerarGraficoSimulaciones();
             GenerarGraficoFacturasCobro();
         }
 
         private void InicializarFiltros()
         {
-            cbVuelosFiltro.Items.Clear();
-            foreach (EnumFiltrosDashboard filtro in Enum.GetValues(typeof(EnumFiltrosDashboard))) 
+            InicializarFiltrosVuelos();
+            InicializarFiltrosSimuladores();
+        }
+        private void InicializarFiltrosSimuladores() 
+        {
+
+            cbFiltroSimuladores.Items.Clear();
+            cbSemanasFiltroSimuladores.Items.Clear();
+            cbMesesFiltroSimuladores.Items.Clear();
+
+
+            foreach (EnumFiltrosDashboard filtro in Enum.GetValues(typeof(EnumFiltrosDashboard)))
             {
                 var item = new ComboBoxItem
                 {
-                    Text = filtro.ToString(), // El texto que se mostrará en el ComboBox (ej. "Baja")
-                    Value = (int)filtro    // El valor numérico asociado (ej. 1)
+                    Text = filtro.ToString(),
+                    Value = (int)filtro
+                };
+
+                cbFiltroSimuladores.Items.Add(item);
+            }
+            cbFiltroSimuladores.SelectedIndex = 0;
+
+            foreach (string mes in MesesDelAnio)
+            {
+                var item = new ComboBoxItem
+                {
+                    Text = mes,
+                    Value = MesesDelAnio.IndexOf(mes) + 1
+                };
+
+                cbMesesFiltroSimuladores.Items.Add(item);
+            }
+
+            cbMesesFiltroSimuladores.SelectedIndex = DateTime.Now.Month - 1;
+
+            for (int i = 1; i <= CantidadSemanasPorMes; i++)
+            {
+                var item = new ComboBoxItem
+                {
+                    Text = "Semana " + i,
+                    Value = i
+                };
+
+                cbSemanasFiltroSimuladores.Items.Add(item);
+            }
+
+            cbSemanasFiltroSimuladores.SelectedIndex = 0;
+
+            GenerarGraficoSimulaciones();
+        }
+
+        private void InicializarFiltrosVuelos()
+        {
+            cbVuelosFiltro.Items.Clear();
+            cbSemanaFiltroVuelo.Items.Clear();
+            cbMesesFiltroVuelos.Items.Clear();
+
+
+            foreach (EnumFiltrosDashboard filtro in Enum.GetValues(typeof(EnumFiltrosDashboard)))
+            {
+                var item = new ComboBoxItem
+                {
+                    Text = filtro.ToString(),
+                    Value = (int)filtro
                 };
 
                 cbVuelosFiltro.Items.Add(item);
             }
-
             cbVuelosFiltro.SelectedIndex = 0;
+
+            foreach (string mes in MesesDelAnio)
+            {
+                var item = new ComboBoxItem
+                {
+                    Text = mes,
+                    Value = MesesDelAnio.IndexOf(mes) + 1
+                };
+
+                cbMesesFiltroVuelos.Items.Add(item);
+            }
+
+            cbMesesFiltroVuelos.SelectedIndex = DateTime.Now.Month - 1;
+
+            for (int i = 1; i <= CantidadSemanasPorMes; i++)
+            {
+                var item = new ComboBoxItem
+                {
+                    Text = "Semana " + i,
+                    Value = i
+                };
+
+                cbSemanaFiltroVuelo.Items.Add(item);
+            }
+
+            cbSemanaFiltroVuelo.SelectedIndex = 0;
+
+            GenerarGraficoVuelos();
 
         }
 
@@ -49,109 +134,99 @@ namespace UI
             var itemSeleccionado = (ComboBoxItem)cbVuelosFiltro.SelectedItem;
             chartVuelosPorMes.Series.Clear();
 
-            
-
             var datosVuelos = new Dictionary<string, int>();
             DashboardFiltroPeriodo filtroVuelo = new DashboardFiltroPeriodo();
             filtroVuelo.TipoFiltro = itemSeleccionado.Value;
             filtroVuelo.Anio = 2025;
-            filtroVuelo.Mes = 6;
-            filtroVuelo.Semana = 4;
+            filtroVuelo.Mes = ((ComboBoxItem)cbMesesFiltroVuelos.SelectedItem) == null ? 1 : ((ComboBoxItem)cbMesesFiltroVuelos.SelectedItem).Value;
+            filtroVuelo.Semana = ((ComboBoxItem)cbSemanaFiltroVuelo.SelectedItem) == null ? 1 : ((ComboBoxItem)cbSemanaFiltroVuelo.SelectedItem).Value;
 
             datosVuelos = new VueloBLL().BuscarVuelosPorFiltro(filtroVuelo);
 
             Series serieTorta = new Series("Vuelos por Mes");
-            serieTorta.ChartType = SeriesChartType.Pie; // Establecer el tipo de gráfico como torta
+            serieTorta.ChartType = SeriesChartType.Pie;
 
-            serieTorta["PieLabelStyle"] = "Outside"; // Etiquetas fuera de la torta
-            serieTorta["PieLineColor"] = "Black"; // Color de la línea de las etiquetas
+            serieTorta["PieLabelStyle"] = "Outside"; 
+            serieTorta["PieLineColor"] = "Black"; 
             serieTorta.Font = new System.Drawing.Font("Arial", 9f, System.Drawing.FontStyle.Bold);
-            serieTorta.LabelFormat = "{0} ({1:P0})"; // Formato de la etiqueta: Nombre (Porcentaje)
+            serieTorta.LabelFormat = "{0} ({1:P0})"; 
 
             foreach (var item in datosVuelos)
             {
                 DataPoint punto = new DataPoint();
-                punto.SetValueY(item.Value); // Cantidad de vuelos
-                punto.Label = item.Value.ToString();      // Nombre del mes como etiqueta
-                punto.LegendText = item.Key; // Nombre del mes en la leyenda
-                punto.ToolTip = $"Vuelos en {item.Key}: {item.Value}"; // Tooltip al pasar el ratón
+                punto.SetValueY(item.Value);
+                punto.Label = item.Value.ToString();
+                punto.LegendText = item.Key;
+                punto.ToolTip = $"Vuelos en {item.Key}: {item.Value}";
                 serieTorta.Points.Add(punto);
             }
 
             chartVuelosPorMes.Series.Add(serieTorta);
 
-            chartVuelosPorMes.ChartAreas[0].Area3DStyle.Enable3D = true; // Opcional: Habilitar 3D
-            chartVuelosPorMes.ChartAreas[0].Area3DStyle.Inclination = 30; // Inclinación 3D
-            chartVuelosPorMes.ChartAreas[0].Area3DStyle.Rotation = 0;   // Rotación 3D
+            chartVuelosPorMes.ChartAreas[0].Area3DStyle.Enable3D = true;
+            chartVuelosPorMes.ChartAreas[0].Area3DStyle.Inclination = 30;
+            chartVuelosPorMes.ChartAreas[0].Area3DStyle.Rotation = 0;
 
-            
             chartVuelosPorMes.Titles.Clear();
-            chartVuelosPorMes.Titles.Add("Distribución de Vuelos por Mes");
+            chartVuelosPorMes.Titles.Add("Vuelos por Mes");
             chartVuelosPorMes.Titles[0].Font = new System.Drawing.Font("Arial", 14f, System.Drawing.FontStyle.Bold);
 
-            chartVuelosPorMes.Legends[0].Docking = Docking.Bottom; // Posición de la leyenda
+            chartVuelosPorMes.Legends[0].Docking = Docking.Bottom;
             chartVuelosPorMes.Legends[0].Alignment = System.Drawing.StringAlignment.Center;
             chartVuelosPorMes.Legends[0].IsTextAutoFit = true;
             chartVuelosPorMes.Legends[0].Title = "Meses";
         }
         private void GenerarGraficoSimulaciones()
         {
-            // 1. Limpiar cualquier serie existente en el gráfico
             chartSimulacionesPorMes.Series.Clear();
 
-            // 2. Definir los datos de ejemplo (Mes y Cantidad de Vuelos)
-            // En un escenario real, estos datos vendrían de una base de datos, un servicio, etc.
-            var datosSimulaciones = new Dictionary<string, int>()
+            var itemSeleccionado = (ComboBoxItem)cbFiltroSimuladores.SelectedItem;
+            var datosVuelos = new Dictionary<string, int>();
+            DashboardFiltroPeriodo filtroSimuladores = new DashboardFiltroPeriodo();
+            filtroSimuladores.TipoFiltro = itemSeleccionado.Value;
+            filtroSimuladores.Anio = 2025;
+            filtroSimuladores.Mes = ((ComboBoxItem)cbMesesFiltroSimuladores.SelectedItem) == null ? 1 : ((ComboBoxItem)cbMesesFiltroSimuladores.SelectedItem).Value;
+            filtroSimuladores.Semana = ((ComboBoxItem)cbSemanasFiltroSimuladores.SelectedItem) == null ? 1 : ((ComboBoxItem)cbSemanasFiltroSimuladores.SelectedItem).Value;
+
+            if (itemSeleccionado != null)
             {
-                { "Enero", 150 },
-                { "Febrero", 180 },
-                { "Marzo", 220 },
-                { "Abril", 190 },
-                { "Mayo", 250 },
-                { "Junio", 200 }
-            };
+                var datosSimulaciones = new SimuladorBLL().BuscarSimuladoresPorFiltro(filtroSimuladores);
 
-            // 3. Crear una nueva serie para el gráfico de torta
-            Series serieTorta = new Series("Simulaciones por Mes");
-            serieTorta.ChartType = SeriesChartType.Pie; // Establecer el tipo de gráfico como torta
 
-            // Opcional: Configurar la apariencia de la torta (explosión de rebanadas, etiquetas, etc.)
-            serieTorta["PieLabelStyle"] = "Outside"; // Etiquetas fuera de la torta
-            serieTorta["PieLineColor"] = "Black"; // Color de la línea de las etiquetas
-            serieTorta.Font = new System.Drawing.Font("Arial", 9f, System.Drawing.FontStyle.Bold);
-            serieTorta.LabelFormat = "{0} ({1:P0})"; // Formato de la etiqueta: Nombre (Porcentaje)
+                Series serieTorta = new Series("Simulaciones por Mes");
+                serieTorta.ChartType = SeriesChartType.Pie;
 
-            // 4. Agregar los puntos de datos a la serie
-            foreach (var item in datosSimulaciones)
-            {
-                DataPoint punto = new DataPoint();
-                punto.SetValueY(item.Value); // Cantidad de vuelos
-                punto.Label = item.Value.ToString();      // Nombre del mes como etiqueta
-                punto.LegendText = item.Key; // Nombre del mes en la leyenda
-                punto.ToolTip = $"Vuelos en {item.Key}: {item.Value}"; // Tooltip al pasar el ratón
-                serieTorta.Points.Add(punto);
+                serieTorta["PieLabelStyle"] = "Outside";
+                serieTorta["PieLineColor"] = "Black";
+                serieTorta.Font = new System.Drawing.Font("Arial", 9f, System.Drawing.FontStyle.Bold);
+                serieTorta.LabelFormat = "{0} ({1:P0})";
+
+                foreach (var item in datosSimulaciones)
+                {
+                    DataPoint punto = new DataPoint();
+                    punto.SetValueY(item.Value);
+                    punto.Label = item.Value.ToString();
+                    punto.LegendText = item.Key;
+                    punto.ToolTip = $"Vuelos en {item.Key}: {item.Value}";
+                    serieTorta.Points.Add(punto);
+                }
+
+                chartSimulacionesPorMes.Series.Add(serieTorta);
+
+
+                chartSimulacionesPorMes.ChartAreas[0].Area3DStyle.Enable3D = true;
+                chartSimulacionesPorMes.ChartAreas[0].Area3DStyle.Inclination = 30;
+                chartSimulacionesPorMes.ChartAreas[0].Area3DStyle.Rotation = 0;
+
+                chartSimulacionesPorMes.Titles.Clear();
+                chartSimulacionesPorMes.Titles.Add("Distribución de Vuelos por Mes");
+                chartSimulacionesPorMes.Titles[0].Font = new System.Drawing.Font("Arial", 14f, System.Drawing.FontStyle.Bold);
+
+                chartSimulacionesPorMes.Legends[0].Docking = Docking.Bottom;
+                chartSimulacionesPorMes.Legends[0].Alignment = System.Drawing.StringAlignment.Center;
+                chartSimulacionesPorMes.Legends[0].IsTextAutoFit = true;
+                chartSimulacionesPorMes.Legends[0].Title = "Meses";
             }
-
-            // 5. Agregar la serie al control Chart
-            chartSimulacionesPorMes.Series.Add(serieTorta);
-
-            // 6. Configurar el área del gráfico (si es necesario)
-            // Esto es más común en otros tipos de gráficos, pero puedes configurarlo
-            // para el título o fondo.
-            chartSimulacionesPorMes.ChartAreas[0].Area3DStyle.Enable3D = true; // Opcional: Habilitar 3D
-            chartSimulacionesPorMes.ChartAreas[0].Area3DStyle.Inclination = 30; // Inclinación 3D
-            chartSimulacionesPorMes.ChartAreas[0].Area3DStyle.Rotation = 0;   // Rotación 3D
-
-            // 7. Configurar el título del gráfico
-            chartSimulacionesPorMes.Titles.Clear();
-            chartSimulacionesPorMes.Titles.Add("Distribución de Vuelos por Mes");
-            chartSimulacionesPorMes.Titles[0].Font = new System.Drawing.Font("Arial", 14f, System.Drawing.FontStyle.Bold);
-
-            // 8. Opcional: Configurar la leyenda
-            chartSimulacionesPorMes.Legends[0].Docking = Docking.Bottom; // Posición de la leyenda
-            chartSimulacionesPorMes.Legends[0].Alignment = System.Drawing.StringAlignment.Center;
-            chartSimulacionesPorMes.Legends[0].IsTextAutoFit = true;
-            chartSimulacionesPorMes.Legends[0].Title = "Meses";
         }
 
         private void GenerarGraficoFacturasCobro()
@@ -251,13 +326,91 @@ namespace UI
             chartFacturasCobradas.Series["Horas Simulador Cobradas"]["PointWidth"] = "0.8";
         }
 
+        #region GraficoVuelos
         private void cbVuelosFiltro_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (cbVuelosFiltro.SelectedItem != null)
             {
+
+                if (((ComboBoxItem)cbVuelosFiltro.SelectedItem).Value > 2)
+                {
+                    lblSemanaFiltroVuelo.Visible = true;
+                    cbSemanaFiltroVuelo.Visible = true;
+                }
+
+                if (((ComboBoxItem)cbVuelosFiltro.SelectedItem).Value > 1)
+                {
+                    lblMesFiltroVuelos.Visible = true;
+                    cbMesesFiltroVuelos.Visible = true;
+                }
+                else
+                {
+                    lblSemanaFiltroVuelo.Visible = false;
+                    cbSemanaFiltroVuelo.Visible = false;
+                    lblMesFiltroVuelos.Visible = false;
+                    cbMesesFiltroVuelos.Visible = false;
+                }
+
                 GenerarGraficoVuelos();
             }
         }
+
+        private void cbMesesFiltroVuelos_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (cbMesesFiltroVuelos.SelectedItem != null)
+            {
+                GenerarGraficoVuelos();
+            }
+        }
+
+        private void cbSemanaFiltroVuelo_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (cbSemanaFiltroVuelo.SelectedItem != null)
+            {
+                GenerarGraficoVuelos();
+            }
+        }
+
+        #endregion
+
+        #region
+
+
+        private void cbFiltroSimuladores_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (((ComboBoxItem)cbFiltroSimuladores.SelectedItem).Value > 2)
+            {
+                lblSemanaFiltroSimuladores.Visible = true;
+                cbSemanasFiltroSimuladores.Visible = true;
+            }
+
+            if (((ComboBoxItem)cbFiltroSimuladores.SelectedItem).Value > 1)
+            {
+                lblMesFiltroSimuladores.Visible = true;
+                cbMesesFiltroSimuladores.Visible = true;
+            }
+            else
+            {
+                lblSemanaFiltroSimuladores.Visible = false;
+                cbSemanasFiltroSimuladores.Visible = false;
+                cbMesesFiltroSimuladores.Visible = false;
+                lblMesFiltroSimuladores.Visible = false;
+            }
+
+            GenerarGraficoSimulaciones();
+        }
+
+        private void cbMesesFiltroSimuladores_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            GenerarGraficoSimulaciones();
+        }
+
+        private void cbSemanasFiltroSimuladores_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            GenerarGraficoSimulaciones();
+        }
+
+        #endregion
         private class ComboBoxItem
         {
             public string Text { get; set; }
@@ -268,5 +421,6 @@ namespace UI
                 return Text; // Esto asegura que el ComboBox muestre el texto
             }
         }
+
     }
 }

@@ -4,6 +4,7 @@ using iText.Kernel.Actions.Events;
 using MAPPER;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Data;
 using System.Globalization;
 using System.Linq;
@@ -253,12 +254,30 @@ namespace DAL
                 var rows = tabla.AsEnumerable().Where(r => Convert.ToDateTime(r["Fecha"]).Year.Equals(Anio) && Convert.ToDateTime(r["Fecha"]).Month.Equals(Mes));
                 if (rows == null) throw new Exception("Vuelo no encontrado.");
 
+                List<Vuelo> vuelosSemana1 = new List<Vuelo>();
+                List<Vuelo> vuelosSemana2 = new List<Vuelo>();
+                List<Vuelo> vuelosSemana3 = new List<Vuelo>();
+                List<Vuelo> vuelosSemana4 = new List<Vuelo>();
+
                 foreach (var row in rows)
                 {
                     Vuelo vuelo = new Vuelo();
                     VueloMAP.MapearDesdeDB(vuelo, row);
-                    vuelos.Add(vuelo);
+                    int semana = ObtenerSemanaDelMes(vuelo.Fecha);
+                    switch (semana)
+                    {
+                        case 1: vuelosSemana1.Add(vuelo); break;
+                        case 2: vuelosSemana2.Add(vuelo); break;
+                        case 3: vuelosSemana3.Add(vuelo); break;
+                        case 4: vuelosSemana4.Add(vuelo); break;
+                        default: break;
+                    }
                 }
+
+                vuelosFiltrados.Add("Semana 1", vuelosSemana1.Count);
+                vuelosFiltrados.Add("Semana 2", vuelosSemana2.Count);
+                vuelosFiltrados.Add("Semana 3", vuelosSemana3.Count);
+                vuelosFiltrados.Add("Semana 4", vuelosSemana4.Count);
 
                 return vuelosFiltrados;
 
