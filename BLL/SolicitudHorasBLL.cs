@@ -73,10 +73,11 @@ namespace BLL
 			{
 				if (solicitud.CantidadHorasVuelo < 0) throw new Exception("La cantidad de horas no puede ser negativa");
 				if (solicitud.CantidadHorasSimulador < 0) throw new Exception("La cantidad de horas de simulador no puede ser negativa");
-				if (solicitud.ValorHoraVuelo < 0) throw new Exception("El valor por hora de vuelo no puede ser negativo");
-				if (solicitud.ValorHoraSimulador < 0) throw new Exception("El valor por hora de simulador no puede ser negativo");
-				if (solicitud.Cliente == null) throw new Exception("Debe seleccionar un cliente para la solicitud de horas.");	
-				
+				if (solicitud.CantidadHorasVuelo == 0 && solicitud.CantidadHorasSimulador == 0) throw new Exception("La cantidad de horas de vuelo y simulador no pueden ser 0 simultaneamente");
+				if (solicitud.ValorHoraVuelo <= 0) throw new Exception("El valor por hora de vuelo no puede ser negativo o 0");
+				if (solicitud.ValorHoraSimulador <= 0) throw new Exception("El valor por hora de simulador no puede ser negativo o 0");
+				if (solicitud.Cliente == null) throw new Exception("Debe seleccionar un cliente para la solicitud de horas.");
+				if (solicitud.FechaSolicitud.Date > DateTime.Now.Date) throw new Exception("la fecha no puede ser posterior a la de hoy");
             }
 			catch (Exception ex)
 			{

@@ -21,26 +21,61 @@ namespace UI
             CargarInstructores();
         }
 
+        #region Funciones Form
         private void CargarInstructores()
         {
-            List<Instructor> Instructores;
-            Instructores = InstructorBLO.ObtenerInstructores();
-            var activos = Instructores.Where(i => i.Activo).ToList();
-            dgv_InstructorAMB.DataSource = null;
-            dgv_InstructorAMB.DataSource = activos;
+            try
+            {
+                List<Instructor> LInstructores = InstructorBLO.ObtenerInstructores();
+                dgv_InstructorAMB.DataSource = null;
+                if(!checkBox_VerInactivos.Checked )
+                {
+                    LInstructores = LInstructores.Where(i=>i.Activo).ToList();
+                }
+                if(LInstructores!=null &&LInstructores.Count > 0)
+                {
+                    dgv_InstructorAMB.DataSource = LInstructores;
+                }
+               
+            }
+            catch (Exception ex)
+            {
+
+                MessageBox.Show(ex.Message);
+            }
+            
         }
 
+        private void checkBox_VerInactivos_CheckedChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                CargarInstructores();
+            }
+            catch (Exception ex)
+            {
+
+                MessageBox.Show(ex.Message);
+            }
+        }
+
+
+
+        #endregion Funciones Form
+
+        #region Botones Form
         private void btn_AltaInstructor_Click(object sender, EventArgs e)
         {
             try
             {
+                if (!long.TryParse(txt_Dni.Text, out long dni)) throw new Exception("dni invalido este debe ser numerico"); 
 
                 Instructor instructorAlta = new Instructor();
-                instructorAlta.DNI = long.Parse(txt_Dni.Text);
+                instructorAlta.DNI = dni;
                 instructorAlta.Nombre = txt_Nombre.Text;
                 instructorAlta.Apellido = txt_Apellido.Text;
                 instructorAlta.CuitCuil = txt_Cuil.Text;
-                instructorAlta.FechaNacimiento = DateTime.Parse(txt_FechaNac.Text);
+                instructorAlta.FechaNacimiento = dtp_FechaNacimiento.Value.Date;
                 instructorAlta.Telefono = txt_Telefono.Text;
                 instructorAlta.Email = txt_Email.Text;
                 instructorAlta.Licencia = txt_Licencia.Text;
@@ -116,8 +151,10 @@ namespace UI
             {
                 if (dgv_InstructorAMB.Rows.Count <= 0) throw new Exception("No hay instructores a eliminar");
                 if (dgv_InstructorAMB.SelectedRows.Count <= 0) throw new Exception("Debe seleccionar un instructor para eliminar.");
-                int idInstructorBaja = Convert.ToInt32(dgv_InstructorAMB.SelectedRows[0].Cells["IdInstructor"].Value);
-                InstructorBLO.BajaInstructor(idInstructorBaja);
+                if (!(dgv_InstructorAMB.SelectedRows[0].DataBoundItem is Instructor instructor)) throw new Exception("error al obtener instructor de la grilla");
+                if (instructor == null) throw new Exception("el instructor de la grilla es nulo");
+                
+                InstructorBLO.BajaInstructor(instructor.IdInstructor);
                 CargarInstructores();
                 MessageBox.Show("Instructor eliminado correctamente.");
             }
@@ -127,5 +164,7 @@ namespace UI
                 MessageBox.Show(ex.Message);
             }
         }
+
+        #endregion Fin Botones Form
     }
 }

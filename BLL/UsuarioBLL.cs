@@ -29,12 +29,10 @@ namespace BLL
         public void AltaUsuario(Usuario usuario)
         {
             try
-            {
-                if (usuario == null) throw new ArgumentNullException(nameof(usuario));
-                if (string.IsNullOrWhiteSpace(usuario.NombreUsuario)) throw new ArgumentException("El nombre de usuario es obligatorio.");
-                if (string.IsNullOrWhiteSpace(usuario.Contrasena)) throw new ArgumentException("La contraseña es obligatoria.");
-                if (UsuarioDAO.BuscarPorNombreUsuario(usuario.NombreUsuario) != null)throw new Exception("Ya existe un usuario con ese nombre de usuario.");
-                if (UsuarioDAO.BuscarPorDNI(usuario.DNI) != null) throw new Exception("Ya existe un usuario con ese DNI.");
+            {  
+
+                ValidarAltaUsuario(usuario);
+                
                
                 // Encriptamos antes de guardar
                 usuario.Contrasena = Encriptador.Encriptar(usuario.Contrasena);
@@ -45,6 +43,25 @@ namespace BLL
             catch (Exception ex)
             {
                 throw new Exception ("BLL Usuario error en alta de usuario: " + ex.Message,ex );
+            }
+        }
+
+        private void ValidarAltaUsuario(Usuario usuario)
+        {
+            try
+            {
+                if (usuario == null) throw new ArgumentNullException(nameof(usuario));
+                if (string.IsNullOrWhiteSpace(usuario.NombreUsuario)) throw new ArgumentException("El nombre de usuario es obligatorio.");
+                if (string.IsNullOrWhiteSpace(usuario.Contrasena)) throw new ArgumentException("La contraseña es obligatoria.");
+                if(string.IsNullOrEmpty(usuario.Nombre)||!usuario.Nombre.All(char.IsLetter)) throw new Exception("el nombre no puede estar vacio y solo debe contener letras");
+                if (string.IsNullOrEmpty(usuario.Apellido) || !usuario.Apellido.All(char.IsLetter)) throw new Exception("el apellido no puede estar vacio y solo debe contener letras");
+                if (UsuarioDAO.BuscarPorNombreUsuario(usuario.NombreUsuario) != null) throw new Exception("Ya existe un usuario con ese nombre de usuario.");
+                if (UsuarioDAO.BuscarPorDNI(usuario.DNI) != null) throw new Exception("Ya existe un usuario con ese DNI.");
+            }
+            catch (Exception ex)
+            {
+
+                throw new Exception("BLL Usuario arror al validar: "+ex.Message,ex);
             }
         }
 
@@ -116,11 +133,14 @@ namespace BLL
         {
             try
             {
-                Usuario usuarioAux;
+
                 if (usuario == null) throw new ArgumentNullException(nameof(usuario));
                 if (string.IsNullOrWhiteSpace(usuario.NombreUsuario)) throw new ArgumentException("El nombre de usuario es obligatorio.");
                 if (string.IsNullOrWhiteSpace(usuario.Contrasena)) throw new ArgumentException("La contraseña es obligatoria.");
-                
+                if (string.IsNullOrEmpty(usuario.Nombre) || !usuario.Nombre.All(char.IsLetter)) throw new Exception("el nombre no puede estar vacio y solo debe contener letras");
+                if (string.IsNullOrEmpty(usuario.Apellido) || !usuario.Apellido.All(char.IsLetter)) throw new Exception("el apellido no puede estar vacio y solo debe contener letras");
+                Usuario usuarioAux;
+               
                 
                 usuarioAux = UsuarioDAO.BuscarPorNombreUsuario(usuario.NombreUsuario);
                 if(usuarioAux != null && usuarioAux.IdUsuario != usuario.IdUsuario) throw new Exception("Ya existe otro usuario con ese NombreUsuario");

@@ -96,7 +96,7 @@ namespace DAL
             }
         }
 
-        public List<Vuelo> BuscarVuelosPorInstructor(int idInstructor)
+        public List<Vuelo> BuscarVuelosPorInstructor(int idInstructor) // no se usa de momento
         {
             try
             {
@@ -122,7 +122,7 @@ namespace DAL
             }
         }
 
-        public List<Vuelo> BuscarVuelosPorAeronave(int idAeronave)
+        public List<Vuelo> BuscarVuelosPorAeronave(int idAeronave) // no se usa de momento
         {
             try
             {
@@ -328,14 +328,22 @@ namespace DAL
 
         private static int ObtenerSemanaDelMes(DateTime date)
         {
-            // Calcula el día del mes
-            int diaDelMes = date.Day;
+            try
+            {
+                // Calcula el día del mes
+                int diaDelMes = date.Day;
 
-            int semana = (diaDelMes - 1) / 7 + 1;
+                int semana = (diaDelMes - 1) / 7 + 1;
+          
+                // Las fechas en la 5ta semana (días 29-31) no cumplirán el filtro si weekOfMonth es 1-4.
+                return semana <= 4 ? semana : 0; // Devuelvo 0 para indicar que está fuera de las 4 primeras semanas.
+            }
+            catch (Exception ex)
+            {
 
-            // Limitar a las 4 primeras semanas, como solicitaste.
-            // Las fechas en la 5ta semana (días 29-31) no cumplirán el filtro si weekOfMonth es 1-4.
-            return semana <= 4 ? semana : 0; // Devolvemos 0 para indicar que está fuera de las 4 primeras semanas.
+                throw new Exception("DAL Vuelo error al obtener semana del mes");
+            }
+  
         }
 
         public void LiquidarVuelo(int idVuelo)
@@ -364,6 +372,39 @@ namespace DAL
             }
         }
 
-      
+        public List<Vuelo> BuscarVuelosEnFecha(DateTime fecha)
+        {
+            try
+            {
+                if (!File.Exists(archivoXml)) throw new FileNotFoundException("No se encontró el archivo XML.");
+
+                DataSet ds = new DataSet();
+                ds.ReadXml(archivoXml, XmlReadMode.ReadSchema);
+
+                DataTable tabla = ds.Tables["Vuelo"];
+                if (tabla == null) throw new Exception("No se encontró la tabla Vuelo en el archivo XML.");
+
+                List<Vuelo> LVuelosEnFecha = new List<Vuelo>();
+
+                foreach (DataRow row in tabla.Rows)
+                {
+                    DateTime fechaVuelo = Convert.ToDateTime(row["Fecha"]);
+
+                    if (fechaVuelo.Date == fecha.Date) // Comparación solo por fecha, sin hora
+                    {
+                        Vuelo vuelo = new Vuelo();
+                        VueloMAP.MapearDesdeDB(vuelo, row);
+                        LVuelosEnFecha.Add(vuelo);
+                    }
+                }
+
+                return LVuelosEnFecha;
+            }
+            catch (Exception ex)
+            {
+
+                throw new Exception("DAL Vuelo error al buscar vuelos en fecha: "+ex.Message,ex);
+            }
+        }
     }
 }

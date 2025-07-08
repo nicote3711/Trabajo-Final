@@ -29,7 +29,7 @@ namespace UI
             CargarDuenos();
             CargarAeronaves();
         }
-
+        #region Fuinciones Form
         private void CargarAeronaves()
         {
             try
@@ -76,6 +76,7 @@ namespace UI
 
         }
 
+        #endregion Funciones Form 
         private void btn_AltaAeronave_Click(object sender, EventArgs e)
         {
             try
@@ -85,7 +86,7 @@ namespace UI
                 if (string.IsNullOrWhiteSpace(txt_Modelo.Text)) throw new Exception("Debe ingresar un modelo.");
                 if (!int.TryParse(txt_Ano.Text, out int ano)) throw new Exception("El año debe ser un número entero válido.");
                 if (!decimal.TryParse(txt_Revision100Hs.Text, out decimal rev100hs)) throw new Exception("La revisión 100Hs debe ser un número válido.");
-                DateTime revAnual = dtp_RevisionAnual.Value;
+                DateTime revAnual = dtp_RevisionAnual.Value.Date;
 
 
                 Aeronave aeronaveAlta = new Aeronave();
@@ -185,6 +186,11 @@ namespace UI
             {
 
                 MessageBox.Show(ex.Message);
+            }
+            finally
+            {
+                CargarAeronaves();
+                CargarDuenos();
             }
         }
     }

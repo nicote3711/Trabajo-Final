@@ -53,10 +53,10 @@ namespace DAL.Composite
 
                 return raices;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
 
-                throw;
+                throw new Exception("DAL Permiso error al obtener arbol de permisos: "+ex.Message,ex);
             }
 
         }
@@ -80,10 +80,10 @@ namespace DAL.Composite
 
                 return null;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
 
-                throw;
+                throw new Exception("DAL Permiso error al buscar por id: "+ex.Message,ex);
             }
          
         }
@@ -103,13 +103,13 @@ namespace DAL.Composite
                     Componente componente = PermisoMAP.MapearDesdeDB(row);
                     lista.Add(componente);
                 }
-                //Mapea solo los nodos, no los hijos.
+                //Mapea solo los nodos, no los hijos. osea plano
                 return lista;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
 
-                throw;
+                throw new Exception("DAL permiso error al obtener todos: "+ex.Message,ex);
             }
 
         }
@@ -132,10 +132,10 @@ namespace DAL.Composite
 
                 return diccionario;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
 
-                throw;
+                throw new Exception("DAL Permiso error al obtener diccionario plano: "+ex.Message,ex);
             }
 
         }
@@ -160,10 +160,10 @@ namespace DAL.Composite
                     }
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
 
-                throw;
+                throw new Exception("DAL Permiso error al cargar jerarquia: "+ex.Message,ex);
             }
           
         }
@@ -196,10 +196,10 @@ namespace DAL.Composite
                 }
                 return IdAncestros;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
 
-                throw;
+                throw new Exception("DAL Permiso error al obtener id Ancestros: "+ex.Message,ex) ;
             }
         }
    

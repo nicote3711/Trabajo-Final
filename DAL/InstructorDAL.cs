@@ -45,12 +45,11 @@ namespace DAL
 
                 return lista;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                throw;
+                throw new Exception("DAL Instructor error al obtener instructores: "+ex.Message,ex) ;
             }
         }
-
 
         public void AltaInstructor(Instructor instructor)
         {
@@ -95,10 +94,10 @@ namespace DAL
 
                 ds.WriteXml(rutaXml, XmlWriteMode.WriteSchema);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
 
-                throw;
+                throw new Exception("DAL Instructor error al dar alta instructor: "+ex.Message,ex);
             }
           
         }
@@ -127,38 +126,56 @@ namespace DAL
                 PersonaMap.MapearPesonaDesdeDB(instructor, personaRow); 
                 return instructor;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
 
-                throw;
+                throw new Exception("DAL Instructor error al buscar instructor por dni: "+ex.Message,ex);
             }
         }
 
         public Instructor BuscarPersonaPorDNI(long dni)
         {
-            if (!File.Exists(rutaXml)) throw new FileNotFoundException("Archivo XML no encontrado");
+            try
+            {
+                if (!File.Exists(rutaXml)) throw new FileNotFoundException("Archivo XML no encontrado");
 
-            DataSet ds = new DataSet();
-            ds.ReadXml(rutaXml, XmlReadMode.ReadSchema);
+                DataSet ds = new DataSet();
+                ds.ReadXml(rutaXml, XmlReadMode.ReadSchema);
 
-            var tablaPersonas = ds.Tables["Persona"];
-            var row = tablaPersonas?.AsEnumerable().FirstOrDefault(p => Convert.ToInt64(p["Dni"]) == dni);
-            if (row == null) return null;
+                var tablaPersonas = ds.Tables["Persona"];
+                var row = tablaPersonas?.AsEnumerable().FirstOrDefault(p => Convert.ToInt64(p["Dni"]) == dni);
+                if (row == null) return null;
 
-            Instructor persona = new Instructor();
-            PersonaMap.MapearPesonaDesdeDB(persona, row);
-            return persona;
+                Instructor persona = new Instructor();
+                PersonaMap.MapearPesonaDesdeDB(persona, row);
+                return persona;
+            }
+            catch (Exception ex)
+            {
+
+                throw new Exception("DAL Instructor error al buscar persona por dni:" +ex.Message,ex);
+            }
+          
         }
 
         public void ModificarPersonaExistente(Persona persona)
         {
-            DataSet ds = new DataSet();
-            ds.ReadXml(rutaXml, XmlReadMode.ReadSchema);
-            var tabla = ds.Tables["Persona"];
-            var row = tabla.Select($"Id_Persona = {persona.IDPersona}").FirstOrDefault();
-            if (row == null) throw new Exception("No se encontró la persona a modificar.");
-            PersonaMap.MapearPersonaHaciaDB(persona, row);
-            ds.WriteXml(rutaXml, XmlWriteMode.WriteSchema);
+            try
+            {
+                DataSet ds = new DataSet();
+                ds.ReadXml(rutaXml, XmlReadMode.ReadSchema);
+                var tabla = ds.Tables["Persona"];
+                var row = tabla.Select($"Id_Persona = {persona.IDPersona}").FirstOrDefault();
+                if (row == null) throw new Exception("No se encontró la persona a modificar.");
+                PersonaMap.MapearPersonaHaciaDB(persona, row);
+                ds.WriteXml(rutaXml, XmlWriteMode.WriteSchema);
+            }
+            catch (Exception ex)
+            {
+
+                throw new Exception("DAL Instructor error al modificar persona existente: "+ex.Message,ex);
+            }
+           
         }
 
         public void ModificarInstructor(Instructor instructorAlta)
@@ -186,10 +203,10 @@ namespace DAL
                 ds.WriteXml(rutaXml, XmlWriteMode.WriteSchema);
 
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 
-                throw;
+                throw new Exception("DAL Instructor error al modificar instructor:"+ex.Message,ex);
 
             }
        
@@ -217,10 +234,10 @@ namespace DAL
                 PersonaMap.MapearPesonaDesdeDB(instructor, personaRow);
                 return instructor;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
 
-                throw;
+                throw new Exception("DAL Instructor error al buscar instructor por id: "+ex.Message,ex);
             }
         }
 
@@ -239,10 +256,10 @@ namespace DAL
                 instructorRow["Activo"] = false; // Marcamos el instructor como inactivo    
                 ds.WriteXml(rutaXml, XmlWriteMode.WriteSchema); // Guardamos los cambios en el XML
             }
-            catch (Exception)
+            catch (Exception ex)
             {
 
-                throw;
+                throw new Exception("DAL Instructor error al dar baja a instructor: "+ex.Message,ex);
             }
         }
     }

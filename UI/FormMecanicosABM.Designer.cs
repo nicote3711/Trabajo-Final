@@ -30,7 +30,6 @@
         {
             txt_MatriculaTecnica = new TextBox();
             Licencia = new Label();
-            txt_FechaNac = new TextBox();
             label7 = new Label();
             txt_Email = new TextBox();
             label6 = new Label();
@@ -54,6 +53,7 @@
             txt_DireccionTaller = new TextBox();
             label9 = new Label();
             checkedListBox_Mostrar = new CheckedListBox();
+            dtp_FechaNacimiento = new DateTimePicker();
             ((System.ComponentModel.ISupportInitialize)dgv_MecanicosABM).BeginInit();
             SuspendLayout();
             // 
@@ -72,13 +72,6 @@
             Licencia.Size = new Size(100, 15);
             Licencia.TabIndex = 55;
             Licencia.Text = "Matricula Tecnica";
-            // 
-            // txt_FechaNac
-            // 
-            txt_FechaNac.Location = new Point(147, 184);
-            txt_FechaNac.Name = "txt_FechaNac";
-            txt_FechaNac.Size = new Size(140, 23);
-            txt_FechaNac.TabIndex = 54;
             // 
             // label7
             // 
@@ -279,11 +272,20 @@
             checkedListBox_Mostrar.Size = new Size(120, 94);
             checkedListBox_Mostrar.TabIndex = 65;
             // 
+            // dtp_FechaNacimiento
+            // 
+            dtp_FechaNacimiento.Format = DateTimePickerFormat.Short;
+            dtp_FechaNacimiento.Location = new Point(145, 183);
+            dtp_FechaNacimiento.Name = "dtp_FechaNacimiento";
+            dtp_FechaNacimiento.Size = new Size(142, 23);
+            dtp_FechaNacimiento.TabIndex = 66;
+            // 
             // FormMecanicosABM
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(976, 580);
+            Controls.Add(dtp_FechaNacimiento);
             Controls.Add(checkedListBox_Mostrar);
             Controls.Add(label9);
             Controls.Add(txt_DireccionTaller);
@@ -295,7 +297,6 @@
             Controls.Add(checkedListBox_Alta);
             Controls.Add(txt_MatriculaTecnica);
             Controls.Add(Licencia);
-            Controls.Add(txt_FechaNac);
             Controls.Add(label7);
             Controls.Add(txt_Email);
             Controls.Add(label6);
@@ -322,7 +323,6 @@
 
         private TextBox txt_MatriculaTecnica;
         private Label Licencia;
-        private TextBox txt_FechaNac;
         private Label label7;
         private TextBox txt_Email;
         private Label label6;
@@ -346,5 +346,6 @@
         private TextBox txt_DireccionTaller;
         private Label label9;
         private CheckedListBox checkedListBox_Mostrar;
+        private DateTimePicker dtp_FechaNacimiento;
     }
 }

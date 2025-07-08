@@ -65,7 +65,7 @@ namespace UI
                     Aeronave aeronave = cmBox_Aeronaves.SelectedItem as Aeronave;
                     if (aeronave == null || aeronave.IdAeronave <= 0) throw new Exception("error al obtener la aeronave del combo box");
                     LMantenimientos = LMantenimientos.Where(m => m.Aeronave.IdAeronave.Equals(aeronave.IdAeronave)).ToList();
-                    ;
+                   
                 }
                 if (LMantenimientos.Count > 0) dgv_MantenimientosEnCurso.DataSource = LMantenimientos;
 

@@ -30,7 +30,6 @@
         {
             txtLicencia = new TextBox();
             Licencia = new Label();
-            txtFechaNac = new TextBox();
             label7 = new Label();
             txtEmail = new TextBox();
             label6 = new Label();
@@ -50,6 +49,7 @@
             txt_IDCliente = new TextBox();
             label9 = new Label();
             checkBox_Activo = new CheckBox();
+            dtp_FechaNacimiento = new DateTimePicker();
             SuspendLayout();
             // 
             // txtLicencia
@@ -67,13 +67,6 @@
             Licencia.Size = new Size(50, 15);
             Licencia.TabIndex = 35;
             Licencia.Text = "Licencia";
-            // 
-            // txtFechaNac
-            // 
-            txtFechaNac.Location = new Point(171, 242);
-            txtFechaNac.Name = "txtFechaNac";
-            txtFechaNac.Size = new Size(125, 23);
-            txtFechaNac.TabIndex = 34;
             // 
             // label7
             // 
@@ -232,11 +225,20 @@
             checkBox_Activo.Text = "checkBox1";
             checkBox_Activo.UseVisualStyleBackColor = true;
             // 
-            // FormModCliente
+            // dtp_FechaNacimiento
+            // 
+            dtp_FechaNacimiento.Format = DateTimePickerFormat.Short;
+            dtp_FechaNacimiento.Location = new Point(169, 244);
+            dtp_FechaNacimiento.Name = "dtp_FechaNacimiento";
+            dtp_FechaNacimiento.Size = new Size(127, 23);
+            dtp_FechaNacimiento.TabIndex = 92;
+            // 
+            // FormClienteMod
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(348, 450);
+            Controls.Add(dtp_FechaNacimiento);
             Controls.Add(checkBox_Activo);
             Controls.Add(txt_IDPersona);
             Controls.Add(label8);
@@ -244,7 +246,6 @@
             Controls.Add(label9);
             Controls.Add(txtLicencia);
             Controls.Add(Licencia);
-            Controls.Add(txtFechaNac);
             Controls.Add(label7);
             Controls.Add(txtEmail);
             Controls.Add(label6);
@@ -259,7 +260,7 @@
             Controls.Add(txtDni);
             Controls.Add(label1);
             Controls.Add(btn_ModificarCliente);
-            Name = "FormModCliente";
+            Name = "FormClienteMod";
             Text = "FormModCliente";
             ResumeLayout(false);
             PerformLayout();
@@ -269,7 +270,6 @@
 
         private TextBox txtLicencia;
         private Label Licencia;
-        private TextBox txtFechaNac;
         private Label label7;
         private TextBox txtEmail;
         private Label label6;
@@ -289,5 +289,6 @@
         private TextBox txt_IDCliente;
         private Label label9;
         private CheckBox checkBox_Activo;
+        private DateTimePicker dtp_FechaNacimiento;
     }
 }

@@ -322,25 +322,30 @@ namespace UI
         {
             try
             {
-                if (cmBox_Cliente.SelectedItem == null) throw new Exception("Debe seleccionar un cliente.");
-                if (cmBox_Aeronave.SelectedItem == null) throw new Exception("Debe seleccionar una aeronave.");
-                if (cmBox_Finalidad.SelectedItem == null) throw new Exception("Debe seleccionar una finalidad.");
+                if (cmBox_Cliente.SelectedIndex<=-1 || !(cmBox_Cliente.SelectedItem is Cliente clienteSeleccionado))throw new Exception("Debe seleccionar un cliente.");
+                if (clienteSeleccionado == null) throw new Exception("el cliente seleccionado es nulo");
+                if (cmBox_Aeronave.SelectedIndex<=-1 || !(cmBox_Aeronave.SelectedItem is Aeronave aeronaveSeleccionada)) throw new Exception("Debe seleccionar una aeronave.");
+                if (aeronaveSeleccionada == null) throw new Exception("la aeronave seleccionada es nula");
+                if (cmBox_Finalidad.SelectedIndex<=-1 || !(cmBox_Finalidad.SelectedItem is Finalidad finalidadSeleccionada)) throw new Exception("Debe seleccionar una finalidad.");
+                if (finalidadSeleccionada == null) throw new Exception("la finalidad seleccionada es nula");
                 if (string.IsNullOrWhiteSpace(txt_HubInicial.Text) || string.IsNullOrWhiteSpace(txt_HubFinal.Text)) throw new Exception("Debe ingresar los valores de HUB.");
+                if (!decimal.TryParse(txt_HubInicial.Text, out decimal hubInicial)) throw new Exception("El hub inicial debe ser numerico");
+                if (!decimal.TryParse(txt_HubFinal.Text, out decimal hubFinal)) throw new Exception("El hub final debe ser numerico");
                 Vuelo vuelo = new Vuelo();
 
                 vuelo.Fecha = dtp_Fecha.Value.Date;
                 vuelo.HoraPM = TimeOnly.FromTimeSpan(dtp_HoraPM.Value.TimeOfDay);
                 vuelo.HoraCorte = TimeOnly.FromTimeSpan(dtv_HoraCorte.Value.TimeOfDay);
-                vuelo.HubInicial = decimal.Parse(txt_HubInicial.Text);
-                vuelo.HubFinal = decimal.Parse(txt_HubFinal.Text);
+                vuelo.HubInicial = hubInicial;
+                vuelo.HubFinal = hubFinal;
                 vuelo.Origen = txt_Origen.Text;
                 vuelo.Destino = txt_Destino.Text;
-                vuelo.Cliente = cmBox_Cliente.SelectedItem as Cliente;
-                vuelo.Aeronave = cmBox_Aeronave.SelectedItem as Aeronave;
-                vuelo.Finalidad = cmBox_Finalidad.SelectedItem as Finalidad;
-                if (cmBox_Instructor.SelectedItem != null)
+                vuelo.Cliente = clienteSeleccionado;
+                vuelo.Aeronave = aeronaveSeleccionada;
+                vuelo.Finalidad = finalidadSeleccionada;
+                if (cmBox_Instructor.SelectedItem != null && cmBox_Instructor.SelectedItem is Instructor instructorSeleccionado)
                 {
-                    vuelo.Instructor = cmBox_Instructor.SelectedItem as Instructor; // Puede ser null
+                    vuelo.Instructor = instructorSeleccionado; // Puede ser null
                 }
                 else
                 {

@@ -42,6 +42,18 @@ namespace BLL
 			}
         }
 
+        private bool HorasSeSuperponen(TimeOnly inicio1, TimeOnly fin1, TimeOnly inicio2, TimeOnly fin2)
+        {
+			try
+			{
+                return inicio1 < fin2 && inicio2 < fin1;
+            }
+			catch (Exception ex)
+			{
+                throw new Exception("BLL Simulador error al verificar si se superponen las horas: " + ex.Message, ex);
+            }
+        }
+
         public Dictionary<string, int> BuscarSimuladoresPorFiltro(DashboardFiltroPeriodo filtroSimuladores)
         {
             try
@@ -88,13 +100,28 @@ namespace BLL
             try
 			{
 				if(simulador == null)throw new ArgumentNullException(nameof(simulador), "El simulador no puede ser nulo.");
+				if (simulador.Fecha.Date > DateTime.Now.Date) throw new Exception("El simulador no puede tener una fecha posterior al dia de hoy");
                 if(simulador.Cliente == null) throw new ArgumentNullException(nameof(simulador.Cliente), "El cliente del simulador no puede ser nulo.");
 				if(simulador.Instructor == null) throw new ArgumentNullException(nameof(simulador.Instructor), "El instructor del simulador no puede ser nulo.");
 				if(simulador.Finalidad == null) throw new ArgumentNullException(nameof(simulador.Finalidad), "La finalidad del simulador no puede ser nula.");
 				if(simulador.Cliente.SaldoHorasSimulador <= -10 || simulador.Cliente.SaldoHorasVuelo <=-10) throw new Exception("El cliente debe mas de 10 horas de simulador o de vuelo y debe cancelar la deuda primero.");
 				simulador.Liquidacion = null; // es null al momento de registrar el simulador, se asigna luego en la liquidación al crearse la misma
+                if (simulador.HoraInicio.Hour.Equals(simulador.HoraFin.Hour)&& simulador.HoraInicio.Minute.Equals(simulador.HoraFin.Minute)) throw new Exception("La hora de inicio y fin del simulador no pueden ser iguales.");
 
-				SimuladorDAO.RegistrarSimulador(simulador);
+                List<Simulador> LsimuladoresEnFecha = SimuladorDAO.BuscarSimuladoresEnFecha(simulador.Fecha);
+
+                foreach (Simulador otroSimulador in LsimuladoresEnFecha)
+                {
+                    // Validación por Cliente
+                    if (simulador.Cliente.IDCliente.Equals(otroSimulador.Cliente.IDCliente) && HorasSeSuperponen(simulador.HoraInicio, simulador.HoraFin, otroSimulador.HoraInicio, otroSimulador.HoraFin)) throw new Exception("Ya existe un simulador registrado para este cliente en el horario especificado.");
+                    
+
+                    // Validación por Instructor
+                    if (simulador.Instructor.IdInstructor.Equals(otroSimulador.Instructor.IdInstructor) &&HorasSeSuperponen(simulador.HoraInicio, simulador.HoraFin, otroSimulador.HoraInicio, otroSimulador.HoraFin))throw new Exception("Ya existe un simulador registrado para este instructor en el horario especificado.");
+                    
+                }
+
+                SimuladorDAO.RegistrarSimulador(simulador);
 				ClienteBLO.DescontarHorasSimulador(simulador.Cliente.IDCliente, simulador.TS); // Descontar las horas de simulador al cliente
 				
             }
@@ -142,7 +169,7 @@ namespace BLL
 			}
         }
 
-        internal List<Simulador> ObtenerSimuladoresPorIdLiquidacion(int idLiquidacionServicio)
+        public List<Simulador> ObtenerSimuladoresPorIdLiquidacion(int idLiquidacionServicio)
         {
 			try
 			{

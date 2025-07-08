@@ -25,7 +25,7 @@ namespace UI
             txtCuil.Text = ClienteAModificar.CuitCuil;
             txtDni.Text = ClienteAModificar.DNI.ToString();
             txtEmail.Text = ClienteAModificar.Email;    
-            txtFechaNac.Text = ClienteAModificar.FechaNacimiento.ToString("dd/MM/yyyy");    
+            dtp_FechaNacimiento.Value = ClienteAModificar.FechaNacimiento.Date;    
             txtLicencia.Text = ClienteAModificar.Licencia;
             txt_IDCliente.Text = ClienteAModificar.IDCliente.ToString();
             txt_IDPersona.Text= ClienteAModificar.IDPersona.ToString();
@@ -40,17 +40,16 @@ namespace UI
         {
             try
             {
+                if (!long.TryParse(txtDni.Text, out long dni)) throw new Exception("dni invalido este debe ser numerico");
                 ClienteModificado.Nombre = txtNombre.Text;
                 ClienteModificado.Apellido = txtApellido.Text;
                 ClienteModificado.CuitCuil = txtCuil.Text;
-                ClienteModificado.DNI = long.Parse(txtDni.Text);
+                ClienteModificado.DNI = dni;
                 ClienteModificado.Email = txtEmail.Text;
-                ClienteModificado.FechaNacimiento = DateTime.ParseExact(txtFechaNac.Text, "dd/MM/yyyy", System.Globalization.CultureInfo.InvariantCulture);
+                ClienteModificado.FechaNacimiento = dtp_FechaNacimiento.Value.Date;
                 ClienteModificado.Licencia = txtLicencia.Text;
                 ClienteModificado.Telefono = txtTelefono.Text;
-                ClienteModificado.Activo = checkBox_Activo.Checked;
-                ClienteModificado.IDCliente = int.Parse(txt_IDCliente.Text);
-                ClienteModificado.IDPersona = int.Parse(txt_IDPersona.Text);                
+                ClienteModificado.Activo = checkBox_Activo.Checked;             
                 DialogResult = DialogResult.OK;
                 Close();
             }

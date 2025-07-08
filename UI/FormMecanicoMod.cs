@@ -28,7 +28,7 @@ namespace UI
             txt_Nombre.Text = mecanico.Nombre;
             txt_Cuil.Text = mecanico.CuitCuil;
             txt_Dni.Text = mecanico.DNI.ToString();
-            txt_FechaNac.Text = mecanico.FechaNacimiento.ToString("dd/MM/yyyy");
+            dtp_FechaNacimiento.Value = mecanico.FechaNacimiento.Date;
             txt_Telefono.Text = mecanico.Telefono;
             txt_Email.Text = mecanico.Email;
             txt_MatriculaTecnica.Text = mecanico.MatriculaTecnica;
@@ -77,12 +77,13 @@ namespace UI
         {
             try
             {
+                if (!long.TryParse(txt_Dni.Text, out long dni)) throw new Exception("dni invalido este debe ser numerico");
                 mecanicoModificado.Apellido = txt_Apellido.Text;
                 mecanicoModificado.Nombre = txt_Nombre.Text;
                 mecanicoModificado.CuitCuil = txt_Cuil.Text;
-                mecanicoModificado.DNI = long.Parse(txt_Dni.Text);
+                mecanicoModificado.DNI = dni;
                 mecanicoModificado.Email = txt_Email.Text;
-                mecanicoModificado.FechaNacimiento = DateTime.ParseExact(txt_FechaNac.Text, "dd/MM/yyyy", null);
+                mecanicoModificado.FechaNacimiento = dtp_FechaNacimiento.Value.Date;
                 mecanicoModificado.Telefono = txt_Telefono.Text;
                 mecanicoModificado.MatriculaTecnica = txt_MatriculaTecnica.Text;
                 mecanicoModificado.DireccionTaller = txt_DireccionTaller.Text;

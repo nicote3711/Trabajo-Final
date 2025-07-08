@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace BLL
@@ -29,12 +30,8 @@ namespace BLL
         {
             try
             {
-                if (dueno == null) throw new ArgumentNullException(nameof(dueno), "El dueño no puede ser nulo.");
-                if (string.IsNullOrWhiteSpace(dueno.Nombre)) throw new ArgumentException("El nombre no puede estar vacío.");
-                if (string.IsNullOrWhiteSpace(dueno.Apellido)) throw new ArgumentException("El apellido no puede estar vacío.");
-                if (string.IsNullOrWhiteSpace(dueno.CuitCuil)) throw new ArgumentException("El CUIT/CUIL no puede estar vacío.");
-                if (duenoDAO.BuscarDuenoPorDNI(dueno.DNI) != null) throw new Exception("El dueño con ese DNI ya existe.");
-                
+                ValidarDatosDueno(dueno);
+                if (duenoDAO.BuscarDuenoPorDNI(dueno.DNI) != null) throw new Exception("el dueño que intenta registrar ya existe");
                 dueno.Activo = true;
 
                 duenoDAO.AltaDueno(dueno);
@@ -42,6 +39,30 @@ namespace BLL
             catch (Exception ex)
             {
                 throw new Exception("BLL Dueño error al dar alta Dueño: " + ex.Message, ex);
+            }
+        }
+
+        private void ValidarDatosDueno(Dueno dueno)
+        {
+            try
+            {
+                // Dueño
+                if (dueno == null) throw new ArgumentNullException(nameof(dueno), "El dueño no puede ser nulo.");
+                // Persona
+                if (dueno.DNI <= 0) throw new ArgumentException("Valor de DNI inválido.");
+                if (string.IsNullOrEmpty(dueno.Nombre) || !dueno.Nombre.All(char.IsLetter))  throw new ArgumentException("El nombre es obligatorio y solo puede contener letras.");
+                if (string.IsNullOrEmpty(dueno.Apellido) || !dueno.Apellido.All(char.IsLetter)) throw new ArgumentException("El apellido es obligatorio y solo puede contener letras.");
+                if (string.IsNullOrEmpty(dueno.CuitCuil)) throw new ArgumentException("El CUIT/CUIL es obligatorio.");
+                if (dueno.FechaNacimiento.Date > DateTime.Now.AddYears(-18).Date)  throw new Exception("El dueño debe ser mayor de edad.");
+                if (!Regex.IsMatch(dueno.CuitCuil, $"^\\d{{2}}-{dueno.DNI}-\\d$")) throw new Exception("El CUIT/CUIL no es válido para el DNI del dueño.");
+                if (string.IsNullOrEmpty(dueno.Telefono) || !Regex.IsMatch(dueno.Telefono, @"^\d+$")) throw new Exception("El teléfono no puede estar vacío y solo debe contener números.");
+                if (string.IsNullOrEmpty(dueno.Email) || !dueno.Email.Contains("@")) throw new Exception("El email ingresado no es válido. Debe contener '@'.");
+
+            }
+            catch (Exception ex)
+            {
+
+                throw new Exception("BLL Dueño error al validar datos dueño: "+ex.Message,ex);
             }
         }
 
@@ -61,14 +82,10 @@ namespace BLL
         {
             try
             {
-                if (duenoMod == null) throw new ArgumentNullException(nameof(duenoMod), "El dueño no puede ser nulo.");
-                if (string.IsNullOrWhiteSpace(duenoMod.Nombre)) throw new ArgumentException("El nombre no puede estar vacío.");
-                if (string.IsNullOrWhiteSpace(duenoMod.Apellido)) throw new ArgumentException("El apellido no puede estar vacío.");
-                if (string.IsNullOrWhiteSpace(duenoMod.CuitCuil)) throw new ArgumentException("El CUIT/CUIL no puede estar vacío.");
-                if (duenoDAO.BuscarDuenoPorDNI(duenoMod.DNI) != null) throw new Exception("El dueño con ese DNI ya existe.");
-                Dueno dueno = new Dueno();
-                dueno = duenoDAO.BuscarPersonaPorDNI(duenoMod.DNI);
-                if (dueno != null && dueno.IDPersona != duenoMod.IDPersona) throw new Exception("Ya existe otra persona registrar con estew DNI");
+              
+                ValidarDatosDueno(duenoMod);
+                Dueno dueno = duenoDAO.BuscarPersonaPorDNI(duenoMod.DNI);
+                if (dueno != null && dueno.IDPersona != duenoMod.IDPersona) throw new Exception("Ya existe otra persona registrada con estew DNI");
                 duenoDAO.ModificarDueno(duenoMod);
             }
             catch (Exception ex)
@@ -81,8 +98,7 @@ namespace BLL
         {
             try
             {
-                
-              
+
                 duenoDAO.ModificarPersonaExistente(duenoMod);
             }
             catch (Exception ex)
@@ -133,7 +149,7 @@ namespace BLL
             catch (Exception ex)
             {
 
-                throw new Exception("BLL dueño error al buscar Dueño por Id Persona: " + ex.Message, ex);
+                throw new Exception("BLL dueño error al buscar Dueño por cuit Persona: " + ex.Message, ex);
             }
         }
     }

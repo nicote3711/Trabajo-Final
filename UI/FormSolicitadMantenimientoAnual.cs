@@ -91,10 +91,10 @@ namespace UI
                     dgv_MantenimientosPendientes.DataSource = LMantenimientos;
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
 
-                throw;
+                MessageBox.Show(ex.Message);
             }
         }
 
@@ -124,8 +124,6 @@ namespace UI
 
 
         #region Botones Form
-
-        #endregion Fin Botones Form
 
         private void btn_SolicitarMantenimiento_Click(object sender, EventArgs e)
         {
@@ -177,6 +175,13 @@ namespace UI
                 MessageBox.Show(ex.Message);
             }
         }
+
+
+
+
+        #endregion Fin Botones Form
+
+
 
 
     }

@@ -330,5 +330,28 @@ namespace DAL
                 throw new Exception("DAL Mantenimiento error al eliminar factura de mantenimiento: "+ex.Message,ex);
             }
         }
+
+        public bool ExisteMantenimeintoNoFinalizadoAeronave(int idAeronave)
+        {
+            try
+            {
+                if (!File.Exists(rutaXml)) throw new FileNotFoundException("No se encontró el archivo XML.");
+
+                DataSet ds = new DataSet();
+                ds.ReadXml(rutaXml, XmlReadMode.ReadSchema);
+
+                DataTable tabla = ds.Tables["Mantenimiento"];
+                if (tabla == null) throw new Exception("No se encontró la tabla Mantenimiento.");
+
+                DataRow row = tabla.AsEnumerable().FirstOrDefault(r => Convert.ToInt32(r["Id_Aeronave"]).Equals(idAeronave) && Convert.ToInt32(r["Id_Estado_Mantenimiento"])!=(int)EnumEstadoMantenimiento.Finalizado);
+                if (row == null) return false;
+                else return true;
+            }
+            catch (Exception ex)
+            {
+
+                throw new Exception("DAL Mantenimiento error al verificar si existe mantenimiento no finalizado para la aeronave: "+ex.Message,ex);
+            }
+        }
     }
 }

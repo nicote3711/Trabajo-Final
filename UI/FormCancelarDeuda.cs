@@ -105,16 +105,13 @@ namespace UI
         }
 
 
-
-
-
         private void cmBox_Cliente_SelectedIndexChanged(object sender, EventArgs e)
         {
             try
             {
                 if (cmBox_Cliente.DataSource != null && cmBox_Cliente.SelectedIndex >= 0 && cmBox_Cliente.SelectedItem is Cliente cliente)
                 {
-                    // Cargar grillas
+                   
                     CargarDgvSolicitud();
                     CargarDgvFacturaSolicitud();
 
@@ -165,17 +162,6 @@ namespace UI
 
 
 
-
-
-
-
-
-
-
-
-        #endregion Fin Botones Form
-
-
         private void btn_SolicitudDeuda_Click(object sender, EventArgs e)
         {
             try
@@ -206,7 +192,7 @@ namespace UI
                 facturaHoras.Solicitud = solicitudHoras;
                 FacturaSolicitudHorasBLO.RegistrarFactura(facturaHoras);
 
-               
+
                 CargarDgvSolicitud();
                 CargarDgvFacturaSolicitud();
 
@@ -240,5 +226,16 @@ namespace UI
                 MessageBox.Show(ex.Message);
             }
         }
+
+
+
+
+
+
+
+        #endregion Fin Botones Form
+
+
+
     }
 }

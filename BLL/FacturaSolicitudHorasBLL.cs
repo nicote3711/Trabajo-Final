@@ -57,11 +57,11 @@ namespace BLL
                 SolicitudHorasBLO.ValidarSolicitudHoras(factura.Solicitud); // Validar la solicitud de horas antes de continuar
                 CargarFacturaConSolicitud(factura);
 
-                if (factura.FechaFactura == default) throw new ArgumentException("La fecha de la factura no puede ser la fecha por defecto.", nameof(factura.FechaFactura));
+                if (factura.FechaFactura.Date > DateTime.Now.Date) throw new ArgumentException("La fecha de la factura no puede ser mayor a la fecha de hoy");
                 if (factura.MontoTotal <= 0) throw new ArgumentOutOfRangeException(nameof(factura.MontoTotal), "El monto total debe ser mayor a cero.");
                 // Aquí se llamaría al método DAL para registrar la factura en la base de datos o archivo XML
                 // FacturaDAL.RegistrarFactura(factura);
-
+                if (FacturaSolicitudHorasDAO.ExisteFacturaConCuilYNro(factura.CuilEmisor, factura.NroFactura)) throw new Exception("ya existe ese numero de factura para ese cuit fiscal");
 
                 FacturaSolicitudHorasDAO.RegistrarFactura(factura);
                 factura.Solicitud.Factura = new FacturaSolicitudHoras() { IdFactura = factura.IdFactura }; // Crear una nueva instancia de FacturaSolicitudHoras para la solicitud
@@ -70,8 +70,7 @@ namespace BLL
 
                 
                 Resultado result = HelperFacturas.GenerarFacturaPDF(factura);
-                if (!result.Success)
-                throw new Exception(result.Message);
+                if (!result.Success)throw new Exception(result.Message);
 
             }
             catch (Exception ex)
@@ -88,7 +87,8 @@ namespace BLL
                 factura.FechaFactura = factura.Solicitud.FechaSolicitud;
                 factura.MontoTotal = (factura.Solicitud.CantidadHorasVuelo * factura.Solicitud.ValorHoraVuelo) + (factura.Solicitud.CantidadHorasSimulador * factura.Solicitud.ValorHoraSimulador);
                 factura.NroFactura = FacturaSolicitudHorasDAO.ObtenerNumeroFactura(factura.TipoFactura.IdTipoFactura); // Generar un número de factura único
-                factura.CuilEmisor = factura.Solicitud.Cliente.CuitCuil; // Asignar el CUIL del cliente emisor
+                Persona empresa = factura.DatosEmisor();
+                factura.CuilEmisor =  empresa.CuitCuil ; 
                 factura.Detalle = $"Factura por solicitud de horas:  - Cliente: {factura.Solicitud.Cliente.Identificar} -Total {factura.MontoTotal} "; // deberia ver horas vuelo y simu con sus precios.
             }
             catch (Exception ex)

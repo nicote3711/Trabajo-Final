@@ -92,7 +92,7 @@ namespace BLL
 			}
         }
 
-        internal void EliminarRecargaPorIdFactura(int idFactura)
+        public void EliminarRecargaPorIdFactura(int idFactura)
         {
 			try
 			{
@@ -102,7 +102,26 @@ namespace BLL
 			catch (Exception ex)
 			{
 
-				throw new Exception("BLL Recarga Combustible error al borrar Recarga por id Factura");
+				throw new Exception("BLL Recarga Combustible error al borrar Recarga por id Factura: "+ex.Message,ex);
+			}
+        }
+
+        public void ValidarRecarga(RecargaCombustible recargaCombu)
+        {
+			try
+			{
+				if (recargaCombu == null) throw new Exception("la recarga es nula");
+				if (recargaCombu.CantidadLitros <= 0) throw new Exception("los litros deben ser mayores a 0");
+				if (recargaCombu.DepositoCombu == null) throw new Exception("la recarga debe tener un deposito");
+				if (recargaCombu.ProveedorCombu == null) throw new Exception("la recargar debe tener un proveedor de combustible");
+				if (recargaCombu.CantidadLitros > recargaCombu.DepositoCombu.Capacidad) throw new Exception("los litros de una recarga no puede superar la capacidad del deposito");
+				if (recargaCombu.PrecioLitros <= 0) throw new Exception("el precio del litro no puede ser menor o igual a 0");
+				if (recargaCombu.Fecha.Date > DateTime.Now.Date) throw new Exception("la fecha de la recarga no puede ser posterior a la fecha actual");
+			}
+			catch (Exception ex)
+			{
+
+				throw new Exception("BLL Recarga error al validar la recarga: "+ex.Message,ex);
 			}
         }
     }

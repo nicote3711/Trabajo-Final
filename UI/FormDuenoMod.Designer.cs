@@ -34,7 +34,6 @@
             txt_IdDueno = new TextBox();
             label9 = new Label();
             label8 = new Label();
-            txt_FechaNac = new TextBox();
             label7 = new Label();
             txt_Email = new TextBox();
             label6 = new Label();
@@ -48,6 +47,7 @@
             label2 = new Label();
             txt_Dni = new TextBox();
             label1 = new Label();
+            dtp_FechaNacimiento = new DateTimePicker();
             SuspendLayout();
             // 
             // checkBox_Activo
@@ -101,13 +101,6 @@
             label8.Size = new Size(55, 15);
             label8.TabIndex = 78;
             label8.Text = "Id Dueño";
-            // 
-            // txt_FechaNac
-            // 
-            txt_FechaNac.Location = new Point(143, 266);
-            txt_FechaNac.Name = "txt_FechaNac";
-            txt_FechaNac.Size = new Size(125, 23);
-            txt_FechaNac.TabIndex = 77;
             // 
             // label7
             // 
@@ -214,16 +207,24 @@
             label1.TabIndex = 64;
             label1.Text = "DNI";
             // 
+            // dtp_FechaNacimiento
+            // 
+            dtp_FechaNacimiento.Format = DateTimePickerFormat.Short;
+            dtp_FechaNacimiento.Location = new Point(143, 268);
+            dtp_FechaNacimiento.Name = "dtp_FechaNacimiento";
+            dtp_FechaNacimiento.Size = new Size(127, 23);
+            dtp_FechaNacimiento.TabIndex = 92;
+            // 
             // FormDuenoMod
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(346, 497);
+            Controls.Add(dtp_FechaNacimiento);
             Controls.Add(txt_IdPersona);
             Controls.Add(txt_IdDueno);
             Controls.Add(label9);
             Controls.Add(label8);
-            Controls.Add(txt_FechaNac);
             Controls.Add(label7);
             Controls.Add(txt_Email);
             Controls.Add(label6);
@@ -253,7 +254,6 @@
         private TextBox txt_IdDueno;
         private Label label9;
         private Label label8;
-        private TextBox txt_FechaNac;
         private Label label7;
         private TextBox txt_Email;
         private Label label6;
@@ -267,5 +267,6 @@
         private Label label2;
         private TextBox txt_Dni;
         private Label label1;
+        private DateTimePicker dtp_FechaNacimiento;
     }
 }

@@ -30,7 +30,6 @@
         {
             txt_Licencia = new TextBox();
             Licencia = new Label();
-            txt_FechaNac = new TextBox();
             label7 = new Label();
             txt_Email = new TextBox();
             label6 = new Label();
@@ -48,6 +47,8 @@
             btn_ModInstructor = new Button();
             btn_AltaInstructor = new Button();
             dgv_InstructorAMB = new DataGridView();
+            dtp_FechaNacimiento = new DateTimePicker();
+            checkBox_VerInactivos = new CheckBox();
             ((System.ComponentModel.ISupportInitialize)dgv_InstructorAMB).BeginInit();
             SuspendLayout();
             // 
@@ -66,13 +67,6 @@
             Licencia.Size = new Size(50, 15);
             Licencia.TabIndex = 38;
             Licencia.Text = "Licencia";
-            // 
-            // txt_FechaNac
-            // 
-            txt_FechaNac.Location = new Point(126, 192);
-            txt_FechaNac.Name = "txt_FechaNac";
-            txt_FechaNac.Size = new Size(125, 23);
-            txt_FechaNac.TabIndex = 37;
             // 
             // label7
             // 
@@ -217,14 +211,34 @@
             dgv_InstructorAMB.Size = new Size(412, 157);
             dgv_InstructorAMB.TabIndex = 20;
             // 
+            // dtp_FechaNacimiento
+            // 
+            dtp_FechaNacimiento.Format = DateTimePickerFormat.Short;
+            dtp_FechaNacimiento.Location = new Point(128, 194);
+            dtp_FechaNacimiento.Name = "dtp_FechaNacimiento";
+            dtp_FechaNacimiento.Size = new Size(125, 23);
+            dtp_FechaNacimiento.TabIndex = 67;
+            // 
+            // checkBox_VerInactivos
+            // 
+            checkBox_VerInactivos.AutoSize = true;
+            checkBox_VerInactivos.Location = new Point(691, 250);
+            checkBox_VerInactivos.Name = "checkBox_VerInactivos";
+            checkBox_VerInactivos.Size = new Size(92, 19);
+            checkBox_VerInactivos.TabIndex = 68;
+            checkBox_VerInactivos.Text = "Ver Inactivos";
+            checkBox_VerInactivos.UseVisualStyleBackColor = true;
+            checkBox_VerInactivos.CheckedChanged += checkBox_VerInactivos_CheckedChanged;
+            // 
             // FormInstructorABM
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(800, 450);
+            Controls.Add(checkBox_VerInactivos);
+            Controls.Add(dtp_FechaNacimiento);
             Controls.Add(txt_Licencia);
             Controls.Add(Licencia);
-            Controls.Add(txt_FechaNac);
             Controls.Add(label7);
             Controls.Add(txt_Email);
             Controls.Add(label6);
@@ -253,7 +267,6 @@
 
         private TextBox txt_Licencia;
         private Label Licencia;
-        private TextBox txt_FechaNac;
         private Label label7;
         private TextBox txt_Email;
         private Label label6;
@@ -271,5 +284,7 @@
         private Button btn_ModInstructor;
         private Button btn_AltaInstructor;
         private DataGridView dgv_InstructorAMB;
+        private DateTimePicker dtp_FechaNacimiento;
+        private CheckBox checkBox_VerInactivos;
     }
 }

@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace BLL
@@ -23,10 +24,10 @@ namespace BLL
             {
                 return InstructorDAO.BuscarPersonaPorDNI(dNI);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
 
-                throw;
+                throw new Exception("BLL Instructor error al buscar persona por dni: "+ex.Message,ex);
             }
         }
 
@@ -34,20 +35,44 @@ namespace BLL
         {
             try
             {
-                if (string.IsNullOrEmpty(instructorAlta.Licencia)) throw new ArgumentException("La licencia es obligatoria para el instructor.");
-                if (instructorAlta ==null) throw new ArgumentNullException(nameof(instructorAlta), "El instructor no puede ser nulo.");
+                ValidarDatosInstructor(instructorAlta);
+             
                 if(InstructorDAO.BuscarInstructorPorDNI(instructorAlta.DNI) != null) throw new Exception("El instructor con ese DNI ya existe.");
-                if(string.IsNullOrWhiteSpace(instructorAlta.Nombre)) throw new ArgumentException("El nombre del instructor no puede estar vacío.", nameof(instructorAlta.Nombre));
-                if(string.IsNullOrWhiteSpace(instructorAlta.Apellido)) throw new ArgumentException("El apellido del instructor no puede estar vacío.", nameof(instructorAlta.Apellido));
-                if(string.IsNullOrWhiteSpace(instructorAlta.CuitCuil)) throw new ArgumentException("El CUIT/CUIL del instructor no puede estar vacío.", nameof(instructorAlta.CuitCuil));
+              
                 instructorAlta.Activo = true; // Por defecto, al dar de alta, el instructor está activo
 
                 InstructorDAO.AltaInstructor(instructorAlta);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
 
-                throw;
+                throw new Exception("BLL Instructor error al dar alta instructor: "+ex.Message,ex);
+            }
+        }
+
+        private void ValidarDatosInstructor(Instructor instructorAlta)
+        {
+            try
+            {
+                //Instructor
+                if (instructorAlta == null) throw new ArgumentNullException(nameof(instructorAlta), "El instructor no puede ser nulo.");
+                if (string.IsNullOrEmpty(instructorAlta.Licencia)) throw new ArgumentException("La licencia es obligatoria para el instructor.");
+            
+                // Persona
+                if (instructorAlta.DNI <= 0) throw new ArgumentException("Valor de DNI inválido.");
+                if (string.IsNullOrEmpty(instructorAlta.Nombre) || !instructorAlta.Nombre.All(char.IsLetter)) throw new ArgumentException("El nombre es obligatorio y solo puede contener letras.");
+                if (string.IsNullOrEmpty(instructorAlta.Apellido) || !instructorAlta.Apellido.All(char.IsLetter)) throw new ArgumentException("El apellido es obligatorio y solo puede contener letras.");
+                if (string.IsNullOrEmpty(instructorAlta.CuitCuil)) throw new ArgumentException("El CUIT/CUIL es obligatorio.");
+                if (instructorAlta.FechaNacimiento.Date > DateTime.Now.AddYears(-18).Date) throw new Exception("El instructor debe ser mayor de edad.");
+                if (!Regex.IsMatch(instructorAlta.CuitCuil, $"^\\d{{2}}-{instructorAlta.DNI}-\\d$")) throw new Exception("El CUIT/CUIL no es válido para el DNI del instructor.");
+                if (string.IsNullOrEmpty(instructorAlta.Telefono) || !Regex.IsMatch(instructorAlta.Telefono, @"^\d+$")) throw new Exception("El teléfono no puede estar vacío y solo debe contener números.");
+                if (string.IsNullOrEmpty(instructorAlta.Email) || !instructorAlta.Email.Contains("@")) throw new Exception("El email ingresado no es válido. Debe contener '@'.");
+
+            }
+            catch (Exception ex)
+            {
+
+                throw new Exception("BLL Instructor error al validar datos instructor: "+ex.Message,ex);
             }
         }
 
@@ -61,7 +86,7 @@ namespace BLL
             catch (Exception ex)
             {
                
-                throw new Exception("Error al obtener los instructores.", ex);
+                throw new Exception("BLL Instructor error al obtener los instructores: "+ex.Message , ex);
             }
         }
 
@@ -69,21 +94,17 @@ namespace BLL
         {
             try
             {
+                ValidarDatosInstructor(instructorMod);
+
                 Instructor instructor = new Instructor();
-                if (string.IsNullOrEmpty(instructorMod.Licencia)) throw new ArgumentException("La licencia es obligatoria para el instructor.");
-                if (instructorMod == null) throw new ArgumentNullException(nameof(instructorMod), "El instructor no puede ser nulo.");
-                if (InstructorDAO.BuscarInstructorPorDNI(instructorMod.DNI) != null) throw new Exception("El instructor con ese DNI ya existe.");
-                if (string.IsNullOrWhiteSpace(instructorMod.Nombre)) throw new ArgumentException("El nombre del instructor no puede estar vacío.", nameof(instructorMod.Nombre));
-                if (string.IsNullOrWhiteSpace(instructorMod.Apellido)) throw new ArgumentException("El apellido del instructor no puede estar vacío.", nameof(instructorMod.Apellido));
-                if (string.IsNullOrWhiteSpace(instructorMod.CuitCuil)) throw new ArgumentException("El CUIT/CUIL del instructor no puede estar vacío.", nameof(instructorMod.CuitCuil));
                 instructor = InstructorDAO.BuscarPersonaPorDNI(instructorMod.DNI);
                 if (instructor != null && instructor.IDPersona != instructorMod.IDPersona) throw new Exception("Ya existe otra persona registrada con este DNI");
                 InstructorDAO.ModificarInstructor(instructorMod);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
 
-                throw;
+                throw new Exception("BLL Instructor error al modificar instructor: "+ex.Message,ex);
             }
         }
 
@@ -95,10 +116,10 @@ namespace BLL
                 if (InstructorBaja == null) throw new Exception("No se encontró el instructor a eliminar.");
                 InstructorDAO.BajaInstructor(idInstructorBaja);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
 
-                throw;
+                throw new Exception("BLL Instructor error al dar baja de instructor: "+ex.Message,ex);
             }
         }
 
@@ -108,10 +129,10 @@ namespace BLL
             {
                 InstructorDAO.ModificarPersonaExistente(instructorAlta);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
 
-                throw;
+                throw new Exception("BLL Instructor error al modificar persona existente: "+ex.Message,ex);
             }
         }
 
@@ -124,7 +145,7 @@ namespace BLL
             catch (Exception ex)
             {
 
-                throw new Exception("BLL Instrucotr Error al buscar instructor por ID" + ex.Message, ex);
+                throw new Exception("BLL Instrucotr error al buscar instructor por ID" + ex.Message, ex);
             }
         }
     }

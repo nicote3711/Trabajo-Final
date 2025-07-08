@@ -15,24 +15,24 @@ namespace UI
     {
         public Instructor instructorModificado;
         public FormInstructorABM formABM;
-        public FormInstructorMod(Instructor Instuctor, FormInstructorABM fromPpal)
+        public FormInstructorMod(Instructor instuctor, FormInstructorABM fromPpal)
         {
             InitializeComponent();
             txt_IdInstructor.Enabled = false;
             txt_IdPersona.Enabled = false;
-            txt_IdInstructor.Text = Instuctor.IdInstructor.ToString();
-            txt_IdPersona.Text = Instuctor.IDPersona.ToString();
-            txt_Apellido.Text = Instuctor.Apellido;
-            txt_Nombre.Text = Instuctor.Nombre;
-            txt_Cuil.Text = Instuctor.CuitCuil;
-            txt_Dni.Text = Instuctor.DNI.ToString();
-            txt_FechaNac.Text = Instuctor.FechaNacimiento.ToString("dd/MM/yyyy");
-            txt_Email.Text = Instuctor.Email;
-            txt_Telefono.Text = Instuctor.Telefono;
-            txt_Licencia.Text = Instuctor.Licencia;
-            checkBox_Activo.Checked = Instuctor.Activo;
+            txt_IdInstructor.Text = instuctor.IdInstructor.ToString();
+            txt_IdPersona.Text = instuctor.IDPersona.ToString();
+            txt_Apellido.Text = instuctor.Apellido;
+            txt_Nombre.Text = instuctor.Nombre;
+            txt_Cuil.Text = instuctor.CuitCuil;
+            txt_Dni.Text = instuctor.DNI.ToString();
+            dtp_FechaNacimiento.Value = instuctor.FechaNacimiento.Date;
+            txt_Email.Text = instuctor.Email;
+            txt_Telefono.Text = instuctor.Telefono;
+            txt_Licencia.Text = instuctor.Licencia;
+            checkBox_Activo.Checked = instuctor.Activo;
 
-            instructorModificado = Instuctor;
+            instructorModificado = instuctor;
             formABM = fromPpal;
         }
 
@@ -40,16 +40,15 @@ namespace UI
         {
             try
             {
+                if (!long.TryParse(txt_Dni.Text, out long dni)) throw new Exception("dni invalido este debe ser numerico");
                 instructorModificado.Apellido = txt_Apellido.Text;
                 instructorModificado.Nombre = txt_Nombre.Text;
                 instructorModificado.CuitCuil = txt_Cuil.Text;
-                instructorModificado.DNI = long.Parse(txt_Dni.Text);
+                instructorModificado.DNI = dni;
                 instructorModificado.Email = txt_Email.Text;
-                instructorModificado.FechaNacimiento = DateTime.ParseExact(txt_FechaNac.Text, "dd/MM/yyyy", System.Globalization.CultureInfo.InvariantCulture);
+                instructorModificado.FechaNacimiento = dtp_FechaNacimiento.Value.Date;
                 instructorModificado.Licencia = txt_Licencia.Text;
                 instructorModificado.Telefono = txt_Telefono.Text;
-                instructorModificado.IdInstructor = int.Parse(txt_IdInstructor.Text);
-                instructorModificado.IDPersona = int.Parse(txt_IdPersona.Text);
                 instructorModificado.Activo = checkBox_Activo.Checked;
                 DialogResult = DialogResult.OK;
                 Close();

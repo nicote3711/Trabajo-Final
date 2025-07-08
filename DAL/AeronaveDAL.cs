@@ -86,24 +86,33 @@ namespace DAL
 
         public Aeronave BuscarAeronavePorId(int IdAeronave)
         {
-            DataSet ds = new DataSet();
-            ds.ReadXml(rutaXml, XmlReadMode.ReadSchema);
-
-            DataTable tabla = ds.Tables["Aeronave"];
-            if (tabla == null) throw new Exception("No se encontró la tabla Aeronave.");
-
-            DataRow row = tabla.AsEnumerable().FirstOrDefault(a => a.Field<int>("Id_Aeronave") == IdAeronave);
-            if (row == null) return null;
-
-            Aeronave aeronave = new Aeronave();
-            AeronaveMAP.MapearDesdeDB(aeronave, row);
-            aeronave.Estado = EstadoAeronaveDAO.BuscarEstadoPorId(Convert.ToInt32(row["Id_Estado_Aeronave"]));
-            if (!row.IsNull("Id_Dueno"))
+            try
             {
-                aeronave.Dueno = DuenoDao.BuscarDuenoPorId(Convert.ToInt32(row["Id_Dueno"]));
-            }
+                DataSet ds = new DataSet();
+                ds.ReadXml(rutaXml, XmlReadMode.ReadSchema);
 
-            return aeronave;
+                DataTable tabla = ds.Tables["Aeronave"];
+                if (tabla == null) throw new Exception("No se encontró la tabla Aeronave.");
+
+                DataRow row = tabla.AsEnumerable().FirstOrDefault(a => a.Field<int>("Id_Aeronave") == IdAeronave);
+                if (row == null) return null;
+
+                Aeronave aeronave = new Aeronave();
+                AeronaveMAP.MapearDesdeDB(aeronave, row);
+                aeronave.Estado = EstadoAeronaveDAO.BuscarEstadoPorId(Convert.ToInt32(row["Id_Estado_Aeronave"]));
+                if (!row.IsNull("Id_Dueno"))
+                {
+                    aeronave.Dueno = DuenoDao.BuscarDuenoPorId(Convert.ToInt32(row["Id_Dueno"]));
+                }
+
+                return aeronave;
+            }
+            catch (Exception ex)
+            {
+
+                throw new Exception("DAL aeronave aerror al buscar aeronave por id: "+ex.Message,ex);
+            }
+        
         }
 
         public void ModificarAeronave(Aeronave aeronave)

@@ -22,6 +22,7 @@ namespace UI
 
         public FormMenuPrincipal(Usuario usuarioValido)
         {
+
             InitializeComponent();
             usuarioLogueado = usuarioValido;
         }
@@ -30,7 +31,6 @@ namespace UI
         private void FormMenuPrincipal_Load(object sender, EventArgs e)
         {
             OcultarTodosLosMenus();
-            string prueba = gestioDeUsuariosToolStripMenuItem.Text;
             HablitirarItemsMenuPorPermiso();
 
         }
@@ -39,72 +39,117 @@ namespace UI
 
         private void HablitirarItemsMenuPorPermiso()
         {
-            List<Componente> permisos = usuarioLogueado.ObtenerPermisos();
-
-            foreach (Componente permiso in permisos)
+            try
             {
-                HabilitarMenuItemPorNombre(permiso.NombreComponente, menuStrip1.Items);
+                List<Componente> permisos = usuarioLogueado.ObtenerPermisos();
+
+                foreach (Componente permiso in permisos)
+                {
+                    HabilitarMenuItemPorNombre(permiso.NombreComponente, menuStrip1.Items);
+                }
             }
+            catch (Exception ex)
+            {
+
+                MessageBox.Show(ex.Message);
+            }
+         
         }
 
         private void HabilitarMenuItemPorNombre(string nombreComponente, ToolStripItemCollection items)
         {
-            foreach (ToolStripItem item in items)
+            try
             {
-                if (item is ToolStripMenuItem menuItem)
+                foreach (ToolStripItem item in items)
                 {
-                    // Comparar por texto del ítem con el nombre del permiso
-
-                    if (menuItem.Text.Trim().Equals(nombreComponente.Trim(), StringComparison.OrdinalIgnoreCase))
+                    if (item is ToolStripMenuItem menuItem)
                     {
-                        menuItem.Visible = true;
-                    }
+                        // Comparar por texto del ítem con el nombre del permiso
 
-                    // Llamada recursiva para submenús
-                    if (menuItem.DropDownItems.Count > 0)
-                    {
-                        HabilitarMenuItemPorNombre(nombreComponente, menuItem.DropDownItems);
+                        if (menuItem.Text.Trim().Equals(nombreComponente.Trim(), StringComparison.OrdinalIgnoreCase))
+                        {
+                            menuItem.Visible = true;
+                        }
+
+                        // Llamada recursiva para submenús
+                        if (menuItem.DropDownItems.Count > 0)
+                        {
+                            HabilitarMenuItemPorNombre(nombreComponente, menuItem.DropDownItems);
+                        }
                     }
                 }
             }
+            catch (Exception ex)
+            {
+
+                MessageBox.Show(ex.Message);
+            }
+          
         }
 
         private void OcultarTodosLosMenus()
         {
-            foreach (ToolStripMenuItem menu in menuStrip1.Items)
+            try
             {
-                OcultarRecursivamente(menu);
+                foreach (ToolStripMenuItem menu in menuStrip1.Items)
+                {
+                    OcultarRecursivamente(menu);
+                }
             }
+            catch (Exception ex)
+            {
+
+                MessageBox.Show(ex.Message);
+            }
+          
         }
 
         private void OcultarRecursivamente(ToolStripMenuItem item)
         {
-            item.Visible = false;
-            foreach (ToolStripItem subItem in item.DropDownItems)
+            try
             {
-                if (subItem is ToolStripMenuItem subMenuItem)
+                item.Visible = false;
+                foreach (ToolStripItem subItem in item.DropDownItems)
                 {
-                    OcultarRecursivamente(subMenuItem);
+                    if (subItem is ToolStripMenuItem subMenuItem)
+                    {
+                        OcultarRecursivamente(subMenuItem);
+                    }
                 }
             }
+            catch (Exception ex)
+            {
+
+                MessageBox.Show(ex.Message);
+            }
+         
         }
 
         private void FormMenuPrincipal_FormClosing(object sender, FormClosingEventArgs e)
         {
-            if (e.CloseReason == CloseReason.UserClosing)
+            try
             {
-                DialogResult resultado = MessageBox.Show("¿Está seguro que desea cerrar la sesión?", "Cerrar sesión", MessageBoxButtons.OKCancel, MessageBoxIcon.Question);
+                if (e.CloseReason == CloseReason.UserClosing)
+                {
+                    DialogResult resultado = MessageBox.Show("¿Está seguro que desea cerrar la sesión?", "Cerrar sesión", MessageBoxButtons.OKCancel, MessageBoxIcon.Question);
 
-                if (resultado == DialogResult.OK)
-                {
-                    SessionManager.Instancia.CerrarSesion();
-                    // e.Cancel = false; ← opcional, el cierre ya va a ocurrir
-                }
-                else
-                {
-                    e.Cancel = true; // Cancela el cierre
+                    if (resultado == DialogResult.OK)
+                    {
+                        SessionManager.Instancia.CerrarSesion();
+                        // e.Cancel = false; ← opcional, el cierre ya va a ocurrir
+                    }
+                    else
+                    {
+                        e.Cancel = true; // Cancela el cierre
+                    }
                 }
             }
+            catch (Exception ex)
+            {
+
+                MessageBox.Show(ex.Message);
+            }
+          
         }
 
         #endregion Termina Funciones Form   
@@ -238,16 +283,7 @@ namespace UI
 
         #endregion Termina Botones de los items del menu
 
-
-
-
-
-
-        private void dueñoToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-
-        }
-
+      
         private void solicitarHorasToolStripMenuItem_Click(object sender, EventArgs e)
         {
             try

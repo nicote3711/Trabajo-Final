@@ -29,6 +29,7 @@ namespace UI
             CargarMecanicos();
         }
 
+        #region Funciones Form
 
         private void CargarMecanicos()
         {
@@ -36,14 +37,14 @@ namespace UI
             {
                 List<Mecanico> LMecanicos = MecanicoBLO.ObtenerMecanicos();
                 dgv_MecanicosABM.DataSource = null;
-                
-                if (checkBox_VerInactivos.Checked)
+
+                if (!checkBox_VerInactivos.Checked)
                 {
                     LMecanicos = LMecanicos.Where(m => m.Activo).ToList();
                 }
-                if(LMecanicos!=null && LMecanicos.Count > 0)
+                if (LMecanicos != null && LMecanicos.Count > 0)
                 {
-                      
+
                     dgv_MecanicosABM.DataSource = LMecanicos;
                 }
             }
@@ -74,19 +75,28 @@ namespace UI
 
         private void LimpiarCampos()
         {
-            txt_Dni.Clear();
-            txt_Nombre.Clear();
-            txt_Apellido.Clear();
-            txt_Cuil.Clear();
-            txt_FechaNac.Clear();
-            txt_Telefono.Clear();
-            txt_Email.Clear();
-            txt_MatriculaTecnica.Clear();
-            txt_DireccionTaller.Clear();
-            foreach (int i in checkedListBox_Alta.CheckedIndices)
+            try
             {
-                checkedListBox_Alta.SetItemChecked(i, false);
+                txt_Dni.Clear();
+                txt_Nombre.Clear();
+                txt_Apellido.Clear();
+                txt_Cuil.Clear();
+                dtp_FechaNacimiento.Value = DateTime.Now.Date;
+                txt_Telefono.Clear();
+                txt_Email.Clear();
+                txt_MatriculaTecnica.Clear();
+                txt_DireccionTaller.Clear();
+                foreach (int i in checkedListBox_Alta.CheckedIndices)
+                {
+                    checkedListBox_Alta.SetItemChecked(i, false);
+                }
             }
+            catch (Exception ex)
+            {
+
+                MessageBox.Show(ex.Message);
+            }
+
         }
 
         private void checkBox_VerInactivos_CheckedChanged(object sender, EventArgs e)
@@ -151,7 +161,10 @@ namespace UI
         }
 
 
+        #endregion Fin Funciones Form
 
+
+        #region Botones Form
 
 
         private void btn_AltaMecanico_Click(object sender, EventArgs e)
@@ -160,14 +173,14 @@ namespace UI
             {
                 Mecanico mecanicoAlta = new Mecanico();
                 // mecanicoAlta.TiposDeMantenimiento = new List<TipoMantenimiento>();
+                if (!long.TryParse(txt_Dni.Text, out long dni)) throw new Exception("el dni debe ser numerico");
 
 
-
-                mecanicoAlta.DNI = long.Parse(txt_Dni.Text);
+                mecanicoAlta.DNI = dni;
                 mecanicoAlta.Nombre = txt_Nombre.Text;
                 mecanicoAlta.Apellido = txt_Apellido.Text;
                 mecanicoAlta.CuitCuil = txt_Cuil.Text;
-                mecanicoAlta.FechaNacimiento = DateTime.Parse(txt_FechaNac.Text);
+                mecanicoAlta.FechaNacimiento = dtp_FechaNacimiento.Value.Date;
                 mecanicoAlta.Telefono = txt_Telefono.Text;
                 mecanicoAlta.Email = txt_Email.Text;
                 mecanicoAlta.MatriculaTecnica = txt_MatriculaTecnica.Text;
@@ -176,7 +189,6 @@ namespace UI
                 var tiposSeleccionados = checkedListBox_Alta.CheckedItems.Cast<TipoMantenimiento>().ToList();
                 foreach (var tipo in tiposSeleccionados)
                 {
-
                     mecanicoAlta.TiposDeMantenimiento.Add(tipo);
                 }
 
@@ -241,6 +253,10 @@ namespace UI
 
                 MessageBox.Show(ex.Message);
             }
+            finally
+            {
+                CargarMecanicos();
+            }
         }
 
         private void btn_BajaMecanico_Click(object sender, EventArgs e)
@@ -261,5 +277,8 @@ namespace UI
 
             }
         }
+
+
+        #endregion Fin Botone Form
     }
 }
