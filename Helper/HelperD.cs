@@ -12,25 +12,42 @@ namespace Helper
     {
         public static int ObtenerProximoID(DataTable tabla, string nombreColumnaID)
         {
-            if (tabla == null || tabla.Rows.Count == 0)
-                return 1;
+            try
+            {
+                if (tabla == null || tabla.Rows.Count == 0)
+                    return 1;
 
-            var valores = tabla.AsEnumerable()
-                               .Where(row => row[nombreColumnaID] != DBNull.Value)
-                               .Select(row => Convert.ToInt32(row[nombreColumnaID]));
+                var valores = tabla.AsEnumerable()
+                                   .Where(row => row[nombreColumnaID] != DBNull.Value)
+                                   .Select(row => Convert.ToInt32(row[nombreColumnaID]));
 
-            return valores.Any() ? valores.Max() + 1 : 1;
+                return valores.Any() ? valores.Max() + 1 : 1;
+            }
+            catch (Exception ex)
+            {
+
+                throw new Exception("HelperD error al obtener proximo id");
+            }
+
         }
 
         public static int ObtenerProximoNumeroFactura(DataTable tabla, int tipoFactura)
         {
-            if (tabla == null || tabla.Rows.Count == 0)
-                return 1;
+            try
+            {
+                if (tabla == null || tabla.Rows.Count == 0)
+                    return 1;
 
-            var valores = tabla.AsEnumerable()
-                                .Where(row => Convert.ToInt32(row["Id_Tipo_Factura"]).Equals(tipoFactura));
+                var valores = tabla.AsEnumerable().Where(row => Convert.ToInt32(row["Id_Tipo_Factura"]).Equals(tipoFactura));
 
-            return valores.Any() ? valores.Max(row => Convert.ToInt32(row["Nro_Factura"])) + 1 : 1;
+                return valores.Any() ? valores.Max(row => Convert.ToInt32(row["Nro_Factura"])) + 1 : 1;
+            }
+            catch (Exception ex)
+            {
+
+                throw new Exception("HelperD error al obtener proximo numero para factura");
+            }
+         
         }
 
         public static string ObtenerConexionXMl()
@@ -43,9 +60,17 @@ namespace Helper
         }
         public static bool ExisteRelacion(DataTable tabla, Dictionary<string, object> condiciones)
         {
-            if (tabla == null || condiciones == null || condiciones.Count == 0) return false;
-            var query = tabla.AsEnumerable().Where(row => condiciones.All(cond => row.Field<object>(cond.Key)?.Equals(cond.Value) ?? false));
-            return query.Any();
+            try
+            {
+                if (tabla == null || condiciones == null || condiciones.Count == 0) return false;
+                var query = tabla.AsEnumerable().Where(row => condiciones.All(cond => row.Field<object>(cond.Key)?.Equals(cond.Value) ?? false));
+                return query.Any();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("HelperD eror a ver si existe relacion: "+ex.Message,ex);
+            }
+        
         }
 
         public static void RealizarBackUp(DateTime fechaRegistro)
@@ -88,13 +113,14 @@ namespace Helper
                 }
                 catch (Exception ex)
                 {
-                    throw new Exception("Error al realizar el restore: " + ex.Message, ex);
+                    throw new Exception("HelperD Error al realizar el restore: " + ex.Message, ex);
                 }
             }
         }
 
         public static bool ExisteBackUp(DateTime fechaRegistro)
         {
+
             string backupDir = @"BackUp";
             string nombreArchivo = fechaRegistro.ToString("dd-MM-yyyy HH.mm") + "_BackUp.xml";
             string rutaCompleta = Path.Combine(backupDir, nombreArchivo);

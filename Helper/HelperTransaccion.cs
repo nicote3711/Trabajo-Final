@@ -19,10 +19,10 @@ namespace Helper
                 dsRollBack.ReadXml(HelperD.ObtenerConexionXMl(), XmlReadMode.ReadSchema);
                 return dsRollBack;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
 
-                throw;
+                throw new Exception("Helper transaccion error al crear ds para transaccion: "+ex.Message,ex);
             }
           
         }
@@ -35,7 +35,7 @@ namespace Helper
             }
             catch (Exception ex)
             {
-                throw new Exception("Error al realizar el rollback del DataSet: " + ex.Message, ex);
+                throw new Exception("Helper transaccion error al realizar el rollback del DataSet: " + ex.Message, ex);
             }
         }
     }

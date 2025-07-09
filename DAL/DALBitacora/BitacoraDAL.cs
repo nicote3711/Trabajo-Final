@@ -17,51 +17,69 @@ namespace DAL.DALBitacora
 
         public List<Bitacora> ObtenerTodos()
         {
-            if (!File.Exists(archivoXml)) throw new FileNotFoundException("El archivo de bitácora no existe.");
-
-            List<Bitacora> LBitacora = new List<Bitacora>();
-            DataSet ds = new DataSet();
-
-
-            ds.ReadXml(archivoXml, XmlReadMode.ReadSchema);
-            if (ds.Tables.Contains("R_Bitacora"))
+            try
             {
-                foreach (DataRow row in ds.Tables["R_Bitacora"].Rows)
+                if (!File.Exists(archivoXml)) throw new FileNotFoundException("El archivo de bitácora no existe.");
+
+                List<Bitacora> LBitacora = new List<Bitacora>();
+                DataSet ds = new DataSet();
+
+
+                ds.ReadXml(archivoXml, XmlReadMode.ReadSchema);
+                if (ds.Tables.Contains("R_Bitacora"))
                 {
-                    Bitacora bitacora = new Bitacora();
-                    BitacoraMAP.MapearDesdeDB(bitacora, row);
-                    LBitacora.Add(bitacora);
+                    foreach (DataRow row in ds.Tables["R_Bitacora"].Rows)
+                    {
+                        Bitacora bitacora = new Bitacora();
+                        BitacoraMAP.MapearDesdeDB(bitacora, row);
+                        LBitacora.Add(bitacora);
+                    }
                 }
+
+
+                return LBitacora;
             }
+            catch (Exception ex)
+            {
 
-
-            return LBitacora;
+                throw new Exception("DAL Bitacora error al obtener todos: "+ex.Message,ex);
+            }
+           
         }
 
         public void GuardarBitacora(Bitacora bitacora)
         {
-            if (bitacora == null) throw new ArgumentNullException(nameof(bitacora), "La bitácora no puede ser nula.");
-            DataSet ds = new DataSet();
-            if (!File.Exists(archivoXml)) throw new FileNotFoundException("El archivo de bitácora no existe.");
-            ds.ReadXml(archivoXml, XmlReadMode.ReadSchema);
-            
-            DataTable tabla = ds.Tables["R_Bitacora"];
-            if (tabla == null) throw new Exception("No se encontró la tabla de Bitácora.");
-
-            if (bitacora.Descripcion == null || bitacora.Descripcion.Trim() == "")throw new ArgumentException("La descripción de la bitácora no puede estar vacía.");
-            if(bitacora.Descripcion!= "BackUp" && bitacora.Descripcion != "Restore")throw new ArgumentException("La descripción de la bitácora debe ser 'BackUp' o 'Restore'.");
-            
-
-            int nuevoId = HelperD.ObtenerProximoID(tabla, "Id_Bitacora");
-            bitacora.IdBitacora = nuevoId;
-            DataRow row = tabla.NewRow();
-            BitacoraMAP.MapearHaciaDB(bitacora, row);
-            tabla.Rows.Add(row);
-            if (bitacora.Descripcion == "BackUp")
+            try
             {
-                HelperD.RealizarBackUp(bitacora.FechaRegistro);
+                if (bitacora == null) throw new ArgumentNullException(nameof(bitacora), "La bitácora no puede ser nula.");
+                DataSet ds = new DataSet();
+                if (!File.Exists(archivoXml)) throw new FileNotFoundException("El archivo de bitácora no existe.");
+                ds.ReadXml(archivoXml, XmlReadMode.ReadSchema);
+
+                DataTable tabla = ds.Tables["R_Bitacora"];
+                if (tabla == null) throw new Exception("No se encontró la tabla de Bitácora.");
+
+                if (bitacora.Descripcion == null || bitacora.Descripcion.Trim() == "") throw new ArgumentException("La descripción de la bitácora no puede estar vacía.");
+                if (bitacora.Descripcion != "BackUp" && bitacora.Descripcion != "Restore") throw new ArgumentException("La descripción de la bitácora debe ser 'BackUp' o 'Restore'.");
+
+
+                int nuevoId = HelperD.ObtenerProximoID(tabla, "Id_Bitacora");
+                bitacora.IdBitacora = nuevoId;
+                DataRow row = tabla.NewRow();
+                BitacoraMAP.MapearHaciaDB(bitacora, row);
+                tabla.Rows.Add(row);
+                if (bitacora.Descripcion == "BackUp")
+                {
+                    HelperD.RealizarBackUp(bitacora.FechaRegistro);
+                }
+                ds.WriteXml(archivoXml, XmlWriteMode.WriteSchema);
             }
-            ds.WriteXml(archivoXml, XmlWriteMode.WriteSchema);
+            catch (Exception ex)
+            {
+
+                throw new Exception("DAL Bitacora error al guardar: "+ex.Message,ex);
+            }
+          
         }
 
         public void RealizarRestore(Bitacora BackUp, Bitacora Restore)
@@ -77,9 +95,8 @@ namespace DAL.DALBitacora
             catch (Exception ex)
             {
 
-                throw;
-            }
-           
+                throw new Exception("DAL Bitacora error al realizar restore: "+ex.Message,ex);
+            }    
             
         }
 

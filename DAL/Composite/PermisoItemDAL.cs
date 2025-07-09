@@ -40,10 +40,10 @@ namespace DAL.Composite
 
                 return LPermisoItem;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
 
-                throw;
+                throw new Exception("DAL Permiso item error al obtener permisos item: "+ex.Message,ex);
             }
 
         }
@@ -65,10 +65,10 @@ namespace DAL.Composite
                 tablaPermiso.Rows.Add(row);
                 ds.WriteXml(rutaXml, XmlWriteMode.WriteSchema);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
 
-                throw;
+                throw new Exception("DAL Permismo item error al dar alta permiso item: "+ex.Message,ex);
             }
 
 
@@ -92,10 +92,10 @@ namespace DAL.Composite
 
                 return item;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
 
-                throw;
+                throw new Exception("DAL Permiso item error al buscar permiso item por id: "+ex.Message,ex);
             }
 
         }
@@ -131,10 +131,10 @@ namespace DAL.Composite
 
                 ds.WriteXml(rutaXml, XmlWriteMode.WriteSchema);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
 
-                throw;
+                throw new Exception("DAL Permiso item error al dar baja permiso item: "+ex.Message,ex);
             }
 
         }
@@ -156,10 +156,10 @@ namespace DAL.Composite
                 PermisoItemMAP.MapearDesdeDB(item, row);
                 return item;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
 
-                throw;
+                throw new Exception("DAL Permiso item error al buscar permiso item por numbre: "+ex.Message,ex);
             }
 
         }

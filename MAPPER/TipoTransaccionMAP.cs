@@ -17,10 +17,10 @@ namespace MAPPER
                 tipoTransaccion.IdTipoTransaccion = Convert.ToInt32(row["Id_Tipo_Transaccion"]);
                 tipoTransaccion.Descripcion = row["Descripcion"].ToString();
             }
-            catch (Exception)
+            catch (Exception ex)
             {
 
-                throw;
+                throw new Exception("MAP TipoTransaccion error: "+ex.Message,ex);
             }
            
         }
@@ -32,10 +32,10 @@ namespace MAPPER
                 row["Id_Tipo_Transaccion"] = tipoTransaccion.IdTipoTransaccion;
                 row["Descripcion"] = tipoTransaccion.Descripcion;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
 
-                throw;
+                throw new Exception("MAP TipoTransaccion error: " + ex.Message, ex);
             }
           
         }

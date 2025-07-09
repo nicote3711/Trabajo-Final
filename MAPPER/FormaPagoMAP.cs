@@ -18,10 +18,10 @@ namespace MAPPER
                 formaPago.Descripcion = row["Descripcion"].ToString();
                 formaPago.PorcentajeDescuentoRecargo = Convert.ToDecimal(row["Porcentaje_Descuento_Recargo"]);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
 
-                throw;
+                throw new Exception("MAP FormaPago error: " + ex.Message, ex);
             }
            
         }
@@ -34,10 +34,10 @@ namespace MAPPER
                 row["Descripcion"] = formaPago.Descripcion;
                 row["Porcentaje_Descuento_Recargo"] = formaPago.PorcentajeDescuentoRecargo;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
 
-                throw;
+                throw new Exception("MAP FormaPago error: "+ex.Message,ex);
             }
           
         }

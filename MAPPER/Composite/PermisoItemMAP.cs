@@ -12,16 +12,34 @@ namespace MAPPER.Composite
     {
         public static void MapearDesdeDB(PermisoItem item, DataRow row)
         {
-            item.IdComponente = Convert.ToInt32(row["Id_Permiso"]);
-            item.NombreComponente = row["Nombre"].ToString();
+            try
+            {
+                item.IdComponente = Convert.ToInt32(row["Id_Permiso"]);
+                item.NombreComponente = row["Nombre"].ToString();
+            }
+            catch (Exception ex)
+            {
+
+                throw new Exception("Map permisoitem error :"+ex.Message,ex);
+            }
+          
             
         }
 
         public static void MapearHaciaDB(PermisoItem item, DataRow row)
         {
-            row["Id_Permiso"] = item.IdComponente;
-            row["Nombre"] = item.NombreComponente;
-            row["Es_Item"] = item.EsHoja();
+            try
+            {
+                row["Id_Permiso"] = item.IdComponente;
+                row["Nombre"] = item.NombreComponente;
+                row["Es_Item"] = item.EsHoja();
+            }
+            catch (Exception ex)
+            {
+
+                throw new Exception("Map error: "+ex.Message,ex);
+            }
+            
         }
     }
 }

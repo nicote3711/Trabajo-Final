@@ -193,7 +193,7 @@ namespace UI
             var datosVuelos = new Dictionary<string, int>();
             DashboardFiltroPeriodo filtroVuelo = new DashboardFiltroPeriodo();
             filtroVuelo.TipoFiltro = itemSeleccionado.Value;
-            filtroVuelo.Anio = 2025;
+            filtroVuelo.Anio = 2025; //en el futuro se puede hacer filtro de año
             filtroVuelo.Mes = ((ComboBoxItem)cbMesesFiltroVuelos.SelectedItem) == null ? 1 : ((ComboBoxItem)cbMesesFiltroVuelos.SelectedItem).Value;
             filtroVuelo.Semana = ((ComboBoxItem)cbSemanaFiltroVuelo.SelectedItem) == null ? 1 : ((ComboBoxItem)cbSemanaFiltroVuelo.SelectedItem).Value;
 
@@ -275,7 +275,7 @@ namespace UI
                 chartSimulacionesPorMes.ChartAreas[0].Area3DStyle.Rotation = 0;
 
                 chartSimulacionesPorMes.Titles.Clear();
-                chartSimulacionesPorMes.Titles.Add("Distribución de Vuelos por Mes");
+                chartSimulacionesPorMes.Titles.Add("Distribución de Simulaciones por Mes");
                 chartSimulacionesPorMes.Titles[0].Font = new System.Drawing.Font("Arial", 14f, System.Drawing.FontStyle.Bold);
 
                 chartSimulacionesPorMes.Legends[0].Docking = Docking.Bottom;
@@ -337,7 +337,7 @@ namespace UI
                             int semanaSeleccionada = ((ComboBoxItem)cbSemanaFiltroTransacciones.SelectedItem).Value;
                             var cobrosDelMes = listaCobros.Where(c => c.FechaTransaccion.Month.Equals(mesSeleccionado) && ObtenerSemanaDelMes(c.FechaTransaccion).Equals(semanaSeleccionada));
                             var pagosDelMes = listaPagos.Where(c => c.FechaTransaccion.Month.Equals(mesSeleccionado) && ObtenerSemanaDelMes(c.FechaTransaccion).Equals(semanaSeleccionada));
-                            
+
                             montosTotalIngresos = cobrosDelMes.GroupBy(c => c.FechaTransaccion.ToString("dddd", CultureInfo.CurrentCulture)).ToDictionary(g => g.Key, g => g.Sum(c => c.MontoTransaccion));
                             montosTotalEgresos = pagosDelMes.GroupBy(c => c.FechaTransaccion.ToString("dddd", CultureInfo.CurrentCulture)).ToDictionary(g => g.Key, g => g.Sum(c => c.MontoTransaccion));
 
@@ -347,7 +347,7 @@ namespace UI
                                 var egresoMensual = montosTotalEgresos.FirstOrDefault(c => c.Key.ToLower().Equals(dia.ToLower()), new KeyValuePair<string, decimal>(dia, 0));
                                 datosFacturas.Add(dia, new Dictionary<string, decimal> { { "Ingresos", ingresoMensual.Value }, { "Egresos", egresoMensual.Value } });
                             }
-                            
+
                             break;
                         }
                     default:
@@ -376,7 +376,7 @@ namespace UI
                 area.AxisX.MajorGrid.Enabled = false;
                 area.AxisX.IsStartedFromZero = true;
 
-                area.AxisY.Title = "Cantidad de Facturas";
+                area.AxisY.Title = "Cantidad de dinedo en $";
                 area.AxisY.Minimum = 0;
                 area.AxisY.IntervalAutoMode = IntervalAutoMode.VariableCount;
                 area.AxisY.MajorGrid.LineColor = Color.LightGray;

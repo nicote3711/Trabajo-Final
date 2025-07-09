@@ -12,37 +12,51 @@ namespace MAPPER
     {
         public static void MapearDesdeDB(LiquidacionServicio liquidacion, DataRow row)
         {
-            liquidacion.IdLiquidacionServicio = Convert.ToInt32(row["Id_Liquidacion_Servicio"]);
+            try
+            {
+                liquidacion.IdLiquidacionServicio = Convert.ToInt32(row["Id_Liquidacion_Servicio"]);
 
-            // Parse de string MM/yyyy a DateTime (se asume día 1 del mes)
-            liquidacion.Periodo = DateTime.ParseExact(row["Periodo"].ToString(), "MM/yyyy", null);
+                // Parse de string MM/yyyy a DateTime (se asume día 1 del mes)
+                liquidacion.Periodo = DateTime.ParseExact(row["Periodo"].ToString(), "MM/yyyy", null);
 
-            liquidacion.CantHoras = Convert.ToDecimal(row["Cantidad_Horas"]);
+                liquidacion.CantHoras = Convert.ToDecimal(row["Cantidad_Horas"]);
 
-            liquidacion.MontoTotal = Convert.ToDecimal(row["Monto_Total"]);
+                liquidacion.MontoTotal = Convert.ToDecimal(row["Monto_Total"]);
 
-            if(liquidacion.Servicio.IdServicio != Convert.ToInt32(row["Id_Servicio"])) throw new Exception("Error al mapear LiquidacionServicio: IdServicio no coincide con el objeto Servicio asociado en Base de Datos.");
+                if (liquidacion.Servicio.IdServicio != Convert.ToInt32(row["Id_Servicio"])) throw new Exception("Error al mapear LiquidacionServicio: IdServicio no coincide con el objeto Servicio asociado en Base de Datos.");
 
-            liquidacion.Servicio.IdServicio = Convert.ToInt32(row["Id_Servicio"]); //las liquidaciones ya crean su objeto servicio porque son de un tipo especifico y deberian saber si Id ademas.
+                liquidacion.Servicio.IdServicio = Convert.ToInt32(row["Id_Servicio"]); //las liquidaciones ya crean su objeto servicio porque son de un tipo especifico y deberian saber si Id ademas.
 
-            liquidacion.IdPersona = Convert.ToInt32(row["Id_Persona"]);
+                liquidacion.IdPersona = Convert.ToInt32(row["Id_Persona"]);
 
-            liquidacion.Persona.IDPersona = Convert.ToInt32(row["Id_Persona"]);
+                liquidacion.Persona.IDPersona = Convert.ToInt32(row["Id_Persona"]);
 
-            liquidacion.IdFactura = row["Id_Factura"] == DBNull.Value ? null : (int)row["Id_Factura"];
+                liquidacion.IdFactura = row["Id_Factura"] == DBNull.Value ? null : (int)row["Id_Factura"];
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("MAP LiquidacionServicio error: " + ex.Message, ex);
+            }
         }
 
         public static void MapearHaciaDB(LiquidacionServicio liquidacion, DataRow row)
         {
-            row["Id_Liquidacion_Servicio"] = liquidacion.IdLiquidacionServicio;
+            try
+            {
+                row["Id_Liquidacion_Servicio"] = liquidacion.IdLiquidacionServicio;
 
-            // Guardar como string en formato MM/yyyy
-            row["Periodo"] = liquidacion.Periodo.ToString("MM/yyyy");
-            row["Cantidad_Horas"] = liquidacion.CantHoras;
-            row["Monto_Total"] = liquidacion.MontoTotal;
-            row["Id_Servicio"] = liquidacion.Servicio.IdServicio;
-            row["Id_Persona"] = liquidacion.IdPersona;
-            row["Id_Factura"] = liquidacion.IdFactura == null? DBNull.Value:(object)liquidacion.IdFactura;
+                // Guardar como string en formato MM/yyyy
+                row["Periodo"] = liquidacion.Periodo.ToString("MM/yyyy");
+                row["Cantidad_Horas"] = liquidacion.CantHoras;
+                row["Monto_Total"] = liquidacion.MontoTotal;
+                row["Id_Servicio"] = liquidacion.Servicio.IdServicio;
+                row["Id_Persona"] = liquidacion.IdPersona;
+                row["Id_Factura"] = liquidacion.IdFactura == null ? DBNull.Value : (object)liquidacion.IdFactura;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("MAP LiquidacionServicio error: " + ex.Message, ex);
+            }
         }
     }
 }

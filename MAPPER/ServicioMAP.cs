@@ -12,16 +12,30 @@ namespace MAPPER
     {
         public static void MapearDesdeDB(Servicio servicio, DataRow row)
         {
-            servicio.IdServicio = Convert.ToInt32(row["Id_Servicio"]);
-            servicio.Descripcion = row["Descripcion"].ToString();
-            servicio.Precio = Convert.ToDecimal(row["Precio_Hora"]);
+            try
+            {
+                servicio.IdServicio = Convert.ToInt32(row["Id_Servicio"]);
+                servicio.Descripcion = row["Descripcion"].ToString();
+                servicio.Precio = Convert.ToDecimal(row["Precio_Hora"]);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("MAP Servicio error: " + ex.Message, ex);
+            }         
         }
 
         public static void MapearHaciaDB(Servicio servicio, DataRow row)
         {
-            row["Id_Servicio"] = servicio.IdServicio;
-            row["Descripcion"] = servicio.Descripcion;
-            row["Precio_Hora"] = servicio.Precio;
+            try
+            {
+                row["Id_Servicio"] = servicio.IdServicio;
+                row["Descripcion"] = servicio.Descripcion;
+                row["Precio_Hora"] = servicio.Precio;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("MAP Servicio error: " + ex.Message, ex);
+            }
         }
     }
 }

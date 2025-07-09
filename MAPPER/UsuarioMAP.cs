@@ -12,26 +12,42 @@ namespace MAPPER
     {
         public static void MapearDesdeDB(Usuario usuario, DataRow row)
         {
-            usuario.IdUsuario = Convert.ToInt32(row["Id_Usuario"]);
-            usuario.NombreUsuario = row["Nombre_Usuario"].ToString();
-            usuario.Contrasena = row["Password"].ToString(); // Encriptada
-            usuario.DNI = Convert.ToInt64(row["DNI"]);
-            usuario.Nombre = row["Nombre"].ToString();
-            usuario.Apellido = row["Apellido"].ToString();
-            usuario.Activo = Convert.ToBoolean(row["Activo"]);
+            try
+            {
+                usuario.IdUsuario = Convert.ToInt32(row["Id_Usuario"]);
+                usuario.NombreUsuario = row["Nombre_Usuario"].ToString();
+                usuario.Contrasena = row["Password"].ToString(); // Encriptada
+                usuario.DNI = Convert.ToInt64(row["DNI"]);
+                usuario.Nombre = row["Nombre"].ToString();
+                usuario.Apellido = row["Apellido"].ToString();
+                usuario.Activo = Convert.ToBoolean(row["Activo"]);
 
-            // No se mapean roles acá; se delega a UsuarioDAL si es necesario
+                // No se mapean roles acá; se delega a UsuarioDAL si es necesario
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("MAP Usuario error: " + ex.Message, ex);
+            }
         }
 
         public static void MapearHaciaDB(Usuario usuario, DataRow row)
         {
-            row["Id_Usuario"] = usuario.IdUsuario;
-            row["Nombre_Usuario"] = usuario.NombreUsuario;
-            row["DNI"] = usuario.DNI;
-            row["Nombre"] = usuario.Nombre;
-            row["Apellido"] = usuario.Apellido;
-            row["Password"] = usuario.Contrasena; // Ya encriptada
-            row["Activo"] = usuario.Activo;
+
+            try
+            {
+                row["Id_Usuario"] = usuario.IdUsuario;
+                row["Nombre_Usuario"] = usuario.NombreUsuario;
+                row["DNI"] = usuario.DNI;
+                row["Nombre"] = usuario.Nombre;
+                row["Apellido"] = usuario.Apellido;
+                row["Password"] = usuario.Contrasena; // Ya encriptada
+                row["Activo"] = usuario.Activo;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("MAP Usuario error: " + ex.Message, ex);
+            }
+         
         }
     }
 }

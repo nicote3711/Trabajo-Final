@@ -26,10 +26,10 @@ namespace BLL.BLLBitacora
 
                 BitacoraDAO.GuardarBitacora(backup);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
 
-                throw;
+                throw new Exception("BLL Bitacora error al realiza back up: "+ex.Message,ex);
             }
 
         }
@@ -49,10 +49,10 @@ namespace BLL.BLLBitacora
                 restore.FechaRegistro = DateTime.Now;
                 BitacoraDAO.RealizarRestore(BackUpSeleccionado, restore);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
 
-                throw;
+                throw new Exception("BLL Bitacora error al realizar restore: "+ex.Message,ex);
             }
         }
         public List<Bitacora> ObtenerTodos()
@@ -63,7 +63,7 @@ namespace BLL.BLLBitacora
             }
             catch (Exception ex)
             {
-                throw new Exception("Error al obtener las bitácoras: " + ex.Message, ex);
+                throw new Exception("BLL Bitacora Error al obtener las bitácoras: " + ex.Message, ex);
             }
         }
     }

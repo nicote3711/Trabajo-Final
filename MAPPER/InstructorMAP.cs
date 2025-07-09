@@ -19,9 +19,9 @@ namespace MAPPER
                 row["Licencia"] = instructor.Licencia;
                 row["Activo"] = instructor.Activo;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                throw;
+                throw new Exception("MAP Instructor error: "+ex.Message,ex);
             }
         }
         public static void MapearInstructorDesdeDB(Instructor instructor,DataRow row)
@@ -33,9 +33,9 @@ namespace MAPPER
                 instructor.Licencia = row["Licencia"].ToString(); // para instructor, la licencia es obligatoria
                 instructor.Activo = Convert.ToBoolean(row["Activo"]);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                throw;
+                throw new Exception("Map Instructor error: "+ex.Message,ex);
             }
         }
     }

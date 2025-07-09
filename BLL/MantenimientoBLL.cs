@@ -226,7 +226,8 @@ namespace BLL
                 EstadoAeronaveBLL EstadoAeronaveBLO = new EstadoAeronaveBLL();
                 EstadoAeronave estadoAeronave = EstadoAeronaveBLO.BuscarPorId((int)EnumEstadoEaronave.Activo);
                 if (estadoAeronave == null || estadoAeronave.IdEstadoAeronave <= 0) throw new Exception("error al conseguir el estado aeronave activo");
-                
+                mantenimiento.Aeronave.Estado = estadoAeronave;
+
                 MantenimientoDAO.RegistrarFacturaMant(mantenimiento);
                 AeronaveBLL AeronaveBLO = new AeronaveBLL();
 
@@ -239,10 +240,8 @@ namespace BLL
                 {
                     mantenimiento.Aeronave.Revision100Hs = 0;
                 }
-
-                AeronaveBLO.ModificarAeronave(mantenimiento.Aeronave);
                 AeronaveBLO.ActualizarEstadoAeronave(mantenimiento.Aeronave.IdAeronave, estadoAeronave);
-
+                AeronaveBLO.ModificarAeronave(mantenimiento.Aeronave);
             }
             catch (Exception ex)
             {

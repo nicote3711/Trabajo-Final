@@ -20,9 +20,9 @@ namespace MAPPER
                 dueno.IdDueno = Convert.ToInt32(row["Id_Dueno"]);
                 dueno.Activo = Convert.ToBoolean(row["Activo"]);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                throw;
+                throw new Exception("MAP Dueño error: "+ex.Message,ex);
             }
         }
 
@@ -37,9 +37,9 @@ namespace MAPPER
                 row["Id_Persona"] = dueno.IDPersona;
                 row["Activo"] = dueno.Activo;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                throw;
+                throw new Exception("MAP Dueño error: "+ex.Message,ex);
             }
         }
     }

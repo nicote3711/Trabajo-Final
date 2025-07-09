@@ -37,10 +37,10 @@ namespace MAPPER
             }
 
 
-            catch (Exception)
+            catch (Exception ex)
             {
 
-                throw;
+                throw new Exception("MAP Vuelo error: "+ex.Message,ex);
             }
         }
            
@@ -69,10 +69,10 @@ namespace MAPPER
                 row["Origen"] = vuelo.Origen;
                 row["Destino"] = vuelo.Destino;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
 
-                throw;
+                throw new Exception("MAP Vuelo error: " + ex.Message, ex);
             }
           
         }

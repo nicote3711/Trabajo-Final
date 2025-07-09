@@ -28,10 +28,10 @@ namespace MAPPER
                 transaccion.IdFactura = Convert.ToInt32(row["Id_Factura"]);
 
             }
-            catch (Exception )
+            catch (Exception ex )
             {
 
-                throw;
+                throw new Exception("MAP TransaccionFinanciera error: "+ex.Message,ex);
             }
           
         }
@@ -49,10 +49,10 @@ namespace MAPPER
                 row["Referencia_Externa"] = transaccion.ReferenciaExterna == null ? DBNull.Value : transaccion.ReferenciaExterna;
                 row["Id_Factura"] = transaccion.Factura.IdFactura;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
 
-                throw;
+                throw new Exception("MAP TransaccionFinanciera error: " + ex.Message, ex);
             }
         
         }

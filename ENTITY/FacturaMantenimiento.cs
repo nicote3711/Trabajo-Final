@@ -36,7 +36,7 @@ namespace ENTITY
         {
             List<LiquidacionDetalle> liquidacionMantenimiento = new List<LiquidacionDetalle>();
 
-            liquidacionMantenimiento.Add(new LiquidacionDetalle(Mantenimiento.Fecha,Mantenimiento.Detalle,1,MontoTotal));
+            liquidacionMantenimiento.Add(new LiquidacionDetalle(Mantenimiento.Fecha,this.Detalle,1,MontoTotal));
 
             return liquidacionMantenimiento;
         }

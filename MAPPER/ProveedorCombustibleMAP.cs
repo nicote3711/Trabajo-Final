@@ -21,10 +21,10 @@ namespace MAPPER
                 proveedor.DomicilioFiscal = row["Domicilio_Fiscal"].ToString();
                 proveedor.Activo = Convert.ToBoolean(row["Activo"]);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
 
-                throw;
+                throw new Exception("MAP ProveedorCombustible error: "+ex.Message,ex);
             }
           
         }
@@ -40,10 +40,10 @@ namespace MAPPER
                 row["Domicilio_Fiscal"] = proveedor.DomicilioFiscal;
                 row["Activo"] = proveedor.Activo;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
 
-                throw;
+                throw new Exception("MAP ProveedorCombustible error: " + ex.Message, ex);
             }
          
         }

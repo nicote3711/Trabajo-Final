@@ -12,14 +12,30 @@ namespace MAPPER
     {
         public static void MapearTipoMantenimientoDesdeDB(TipoMantenimiento tipo, DataRow row)
         {
-            tipo.IdTipoMantenimiento = Convert.ToInt32(row["Id_Tipo_Mantenimiento"]);
-            tipo.Descripcion = row["Descripcion"].ToString();
+            try
+            {
+                tipo.IdTipoMantenimiento = Convert.ToInt32(row["Id_Tipo_Mantenimiento"]);
+                tipo.Descripcion = row["Descripcion"].ToString();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("MAP TipoMantenimiento error: " + ex.Message, ex);
+            }
+
         }
 
         public static void MapearTipoMantenimientoHaciaDB(TipoMantenimiento tipo, DataRow row)
         {
-            row["Id_Tipo_Mantenimiento"] = tipo.IdTipoMantenimiento;
-            row["Descripcion"] = tipo.Descripcion;
+            try
+            {
+                row["Id_Tipo_Mantenimiento"] = tipo.IdTipoMantenimiento;
+                row["Descripcion"] = tipo.Descripcion;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("MAP TipoMantenimiento error: " + ex.Message, ex);
+            }
+
         }
     }
 }

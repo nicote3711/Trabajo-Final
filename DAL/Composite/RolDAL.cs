@@ -155,6 +155,7 @@ namespace DAL.Composite
 
                 var tablaRol = ds.Tables["Rol"];
                 var tablaRP = ds.Tables["Rol_Permiso"];
+                var tablaUR = ds.Tables["Usuario_Rol"];
 
                 // Eliminar rol
                 DataRow rowRol = tablaRol.AsEnumerable().FirstOrDefault(r => Convert.ToInt32(r["Id_Rol"]) == idRol);
@@ -168,7 +169,11 @@ namespace DAL.Composite
                 {
                     fila.Delete();
                 }
-
+                var filasUR = tablaUR.AsEnumerable().Where(r => Convert.ToInt32(r["Id_Rol"]) == idRol).ToList();
+                foreach (DataRow fila in filasUR)
+                {
+                    fila.Delete();
+                }
                 ds.WriteXml(rutaXML, XmlWriteMode.WriteSchema);
             }
             catch (Exception ex)

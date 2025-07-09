@@ -17,18 +17,27 @@ namespace MAPPER.Composite
                 rol.IdComponente = Convert.ToInt32(row["Id_Rol"]);
                 rol.NombreComponente = row["Nombre"].ToString();
             }
-            catch (Exception)
+            catch (Exception ex)
             {
 
-                throw;
+                throw new Exception("MAP rol error: "+ex.Message,ex) ;
             }
           
         }
 
         public static void MapearHaciaDB(Rol rol, DataRow row)
         {
-            row["Id_Rol"] = rol.IdComponente;
-            row["Nombre"] = rol.NombreComponente;
+            try
+            {
+                row["Id_Rol"] = rol.IdComponente;
+                row["Nombre"] = rol.NombreComponente;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("MAP rol error: " + ex.Message, ex);
+            }
+
+            
         }
     }
 }

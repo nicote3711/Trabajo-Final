@@ -17,10 +17,10 @@ namespace MAPPER
                 deposito.IdDepositoCombustible = Convert.ToInt32(row["Id_Deposito_Combustible"]);
                 deposito.Capacidad = Convert.ToDecimal(row["Capacidad"]);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
 
-                throw;
+                throw new Exception("MAP Deposito Combustible error: "+ex.Message,ex);
             }
         }
 
@@ -31,10 +31,10 @@ namespace MAPPER
                 row["Id_Deposito_Combustible"] = deposito.IdDepositoCombustible;
                 row["Capacidad"] = deposito.Capacidad;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
 
-                throw;
+                throw new Exception("MAP Deposito Combustible error: "+ex.Message,ex);
             }
         }
     }

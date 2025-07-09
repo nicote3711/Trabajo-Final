@@ -23,10 +23,10 @@ namespace MAPPER
                 row["Saldo_Horas_Simulador"] = cliente.SaldoHorasSimulador;
                 row["Activo"] = cliente.Activo;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
 
-                throw;
+                throw new Exception("MAP Cliente error: "+ex.Message,ex);
             }
 
         }
@@ -44,10 +44,10 @@ namespace MAPPER
                 cliente.SaldoHorasSimulador = Convert.ToDecimal(row["Saldo_Horas_Simulador"]);
                 cliente.Activo = Convert.ToBoolean(row["Activo"]);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
 
-                throw;
+                throw new Exception("MAP Cliente error: "+ex.Message,ex);
             }
          
         }
