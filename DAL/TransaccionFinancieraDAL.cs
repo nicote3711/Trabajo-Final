@@ -1,4 +1,5 @@
 ﻿using ENTITY;
+using ENTITY.Enum;
 using Helper;
 using MAPPER;
 using System;
@@ -121,6 +122,38 @@ namespace DAL
             {
 
                 throw new Exception("DAL Transaccion Financiera error al eliminar transaccion por id: "+ex.Message,ex);
+            }
+        }
+
+        public List<TransaccionFinanciera> BuscarTransaccionesPorTipo(int tipoTransaccion)
+        {
+            try
+            {
+                if (!File.Exists(rutaXml)) throw new FileNotFoundException("No se encontró el archivo XML.");
+
+                DataSet ds = new DataSet();
+                ds.ReadXml(rutaXml, XmlReadMode.ReadSchema);
+
+                DataTable tabla = ds.Tables["Transaccion_Financiera"];
+                if (tabla == null) throw new Exception("No se encontró la tabla Transaccion_Financiera.");
+
+                List<TransaccionFinanciera> LTransaccionesF = new List<TransaccionFinanciera>();
+
+                var rows = tabla.AsEnumerable().Where(r => Convert.ToInt32(r["Id_Tipo_Transaccion"]) == tipoTransaccion);
+
+                foreach (DataRow row in rows)
+                {
+                    TransaccionFinanciera transaccion = new TransaccionFinanciera();
+                    TransaccionFinancieraMAP.MapearDesdeDB(transaccion, row);
+                    LTransaccionesF.Add(transaccion);
+                }
+
+                return LTransaccionesF;
+            }
+            catch (Exception ex)
+            {
+
+                throw new Exception("DAL Transaccion Financiera error al obtener todas: " + ex.Message, ex);
             }
         }
     }

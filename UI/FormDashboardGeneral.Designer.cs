@@ -38,7 +38,7 @@
             System.Windows.Forms.DataVisualization.Charting.Legend legend6 = new System.Windows.Forms.DataVisualization.Charting.Legend();
             System.Windows.Forms.DataVisualization.Charting.Series series6 = new System.Windows.Forms.DataVisualization.Charting.Series();
             chartVuelosPorMes = new System.Windows.Forms.DataVisualization.Charting.Chart();
-            chartFacturasCobradas = new System.Windows.Forms.DataVisualization.Charting.Chart();
+            chartTransaccionesRealizadas = new System.Windows.Forms.DataVisualization.Charting.Chart();
             chartSimulacionesPorMes = new System.Windows.Forms.DataVisualization.Charting.Chart();
             cbVuelosFiltro = new ComboBox();
             lblVueloFiltros = new Label();
@@ -52,8 +52,14 @@
             cbMesesFiltroSimuladores = new ComboBox();
             LblFiltroSImuladores = new Label();
             cbFiltroSimuladores = new ComboBox();
+            lblSemanaFiltroTransacciones = new Label();
+            cbSemanaFiltroTransacciones = new ComboBox();
+            lblMesFiltroTransacciones = new Label();
+            cbMesesTransaccionesFiltro = new ComboBox();
+            label3 = new Label();
+            cbTransaccionesFiltro = new ComboBox();
             ((System.ComponentModel.ISupportInitialize)chartVuelosPorMes).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)chartFacturasCobradas).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)chartTransaccionesRealizadas).BeginInit();
             ((System.ComponentModel.ISupportInitialize)chartSimulacionesPorMes).BeginInit();
             SuspendLayout();
             // 
@@ -73,21 +79,21 @@
             chartVuelosPorMes.TabIndex = 0;
             chartVuelosPorMes.Text = "chart1";
             // 
-            // chartFacturasCobradas
+            // chartTransaccionesRealizadas
             // 
             chartArea5.Name = "ChartArea1";
-            chartFacturasCobradas.ChartAreas.Add(chartArea5);
+            chartTransaccionesRealizadas.ChartAreas.Add(chartArea5);
             legend5.Name = "Legend1";
-            chartFacturasCobradas.Legends.Add(legend5);
-            chartFacturasCobradas.Location = new Point(83, 457);
-            chartFacturasCobradas.Name = "chartFacturasCobradas";
+            chartTransaccionesRealizadas.Legends.Add(legend5);
+            chartTransaccionesRealizadas.Location = new Point(63, 516);
+            chartTransaccionesRealizadas.Name = "chartTransaccionesRealizadas";
             series5.ChartArea = "ChartArea1";
             series5.Legend = "Legend1";
             series5.Name = "Series1";
-            chartFacturasCobradas.Series.Add(series5);
-            chartFacturasCobradas.Size = new Size(681, 300);
-            chartFacturasCobradas.TabIndex = 1;
-            chartFacturasCobradas.Text = "t";
+            chartTransaccionesRealizadas.Series.Add(series5);
+            chartTransaccionesRealizadas.Size = new Size(1561, 300);
+            chartTransaccionesRealizadas.TabIndex = 1;
+            chartTransaccionesRealizadas.Text = "t";
             // 
             // chartSimulacionesPorMes
             // 
@@ -95,7 +101,7 @@
             chartSimulacionesPorMes.ChartAreas.Add(chartArea6);
             legend6.Name = "Legend1";
             chartSimulacionesPorMes.Legends.Add(legend6);
-            chartSimulacionesPorMes.Location = new Point(701, 87);
+            chartSimulacionesPorMes.Location = new Point(644, 87);
             chartSimulacionesPorMes.Name = "chartSimulacionesPorMes";
             series6.ChartArea = "ChartArea1";
             series6.Legend = "Legend1";
@@ -170,7 +176,7 @@
             // 
             lblSemanaFiltroSimuladores.AutoSize = true;
             lblSemanaFiltroSimuladores.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
-            lblSemanaFiltroSimuladores.Location = new Point(1030, 49);
+            lblSemanaFiltroSimuladores.Location = new Point(973, 49);
             lblSemanaFiltroSimuladores.Name = "lblSemanaFiltroSimuladores";
             lblSemanaFiltroSimuladores.Size = new Size(51, 15);
             lblSemanaFiltroSimuladores.TabIndex = 14;
@@ -180,7 +186,7 @@
             // cbSemanasFiltroSimuladores
             // 
             cbSemanasFiltroSimuladores.FormattingEnabled = true;
-            cbSemanasFiltroSimuladores.Location = new Point(1087, 46);
+            cbSemanasFiltroSimuladores.Location = new Point(1030, 46);
             cbSemanasFiltroSimuladores.Name = "cbSemanasFiltroSimuladores";
             cbSemanasFiltroSimuladores.Size = new Size(74, 23);
             cbSemanasFiltroSimuladores.TabIndex = 13;
@@ -191,7 +197,7 @@
             // 
             lblMesFiltroSimuladores.AutoSize = true;
             lblMesFiltroSimuladores.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
-            lblMesFiltroSimuladores.Location = new Point(878, 49);
+            lblMesFiltroSimuladores.Location = new Point(821, 49);
             lblMesFiltroSimuladores.Name = "lblMesFiltroSimuladores";
             lblMesFiltroSimuladores.Size = new Size(30, 15);
             lblMesFiltroSimuladores.TabIndex = 12;
@@ -201,7 +207,7 @@
             // cbMesesFiltroSimuladores
             // 
             cbMesesFiltroSimuladores.FormattingEnabled = true;
-            cbMesesFiltroSimuladores.Location = new Point(914, 46);
+            cbMesesFiltroSimuladores.Location = new Point(857, 46);
             cbMesesFiltroSimuladores.Name = "cbMesesFiltroSimuladores";
             cbMesesFiltroSimuladores.Size = new Size(74, 23);
             cbMesesFiltroSimuladores.TabIndex = 11;
@@ -212,7 +218,7 @@
             // 
             LblFiltroSImuladores.AutoSize = true;
             LblFiltroSImuladores.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
-            LblFiltroSImuladores.Location = new Point(715, 49);
+            LblFiltroSImuladores.Location = new Point(658, 49);
             LblFiltroSImuladores.Name = "LblFiltroSImuladores";
             LblFiltroSImuladores.Size = new Size(36, 15);
             LblFiltroSImuladores.TabIndex = 10;
@@ -221,17 +227,84 @@
             // cbFiltroSimuladores
             // 
             cbFiltroSimuladores.FormattingEnabled = true;
-            cbFiltroSimuladores.Location = new Point(757, 46);
+            cbFiltroSimuladores.Location = new Point(700, 46);
             cbFiltroSimuladores.Name = "cbFiltroSimuladores";
             cbFiltroSimuladores.Size = new Size(74, 23);
             cbFiltroSimuladores.TabIndex = 9;
             cbFiltroSimuladores.SelectedIndexChanged += cbFiltroSimuladores_SelectedIndexChanged;
             // 
+            // lblSemanaFiltroTransacciones
+            // 
+            lblSemanaFiltroTransacciones.AutoSize = true;
+            lblSemanaFiltroTransacciones.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
+            lblSemanaFiltroTransacciones.Location = new Point(398, 479);
+            lblSemanaFiltroTransacciones.Name = "lblSemanaFiltroTransacciones";
+            lblSemanaFiltroTransacciones.Size = new Size(51, 15);
+            lblSemanaFiltroTransacciones.TabIndex = 20;
+            lblSemanaFiltroTransacciones.Text = "Semana";
+            lblSemanaFiltroTransacciones.Visible = false;
+            // 
+            // cbSemanaFiltroTransacciones
+            // 
+            cbSemanaFiltroTransacciones.FormattingEnabled = true;
+            cbSemanaFiltroTransacciones.Location = new Point(455, 476);
+            cbSemanaFiltroTransacciones.Name = "cbSemanaFiltroTransacciones";
+            cbSemanaFiltroTransacciones.Size = new Size(74, 23);
+            cbSemanaFiltroTransacciones.TabIndex = 19;
+            cbSemanaFiltroTransacciones.Visible = false;
+            cbSemanaFiltroTransacciones.SelectedIndexChanged += cbSemanaFiltroTransacciones_SelectedIndexChanged;
+            // 
+            // lblMesFiltroTransacciones
+            // 
+            lblMesFiltroTransacciones.AutoSize = true;
+            lblMesFiltroTransacciones.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
+            lblMesFiltroTransacciones.Location = new Point(246, 479);
+            lblMesFiltroTransacciones.Name = "lblMesFiltroTransacciones";
+            lblMesFiltroTransacciones.Size = new Size(30, 15);
+            lblMesFiltroTransacciones.TabIndex = 18;
+            lblMesFiltroTransacciones.Text = "Mes";
+            lblMesFiltroTransacciones.Visible = false;
+            // 
+            // cbMesesTransaccionesFiltro
+            // 
+            cbMesesTransaccionesFiltro.FormattingEnabled = true;
+            cbMesesTransaccionesFiltro.Location = new Point(282, 476);
+            cbMesesTransaccionesFiltro.Name = "cbMesesTransaccionesFiltro";
+            cbMesesTransaccionesFiltro.Size = new Size(74, 23);
+            cbMesesTransaccionesFiltro.TabIndex = 17;
+            cbMesesTransaccionesFiltro.Visible = false;
+            cbMesesTransaccionesFiltro.SelectedIndexChanged += cbMesesTransaccionesFiltro_SelectedIndexChanged;
+            // 
+            // label3
+            // 
+            label3.AutoSize = true;
+            label3.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
+            label3.Location = new Point(83, 479);
+            label3.Name = "label3";
+            label3.Size = new Size(36, 15);
+            label3.TabIndex = 16;
+            label3.Text = "Filtro";
+            // 
+            // cbTransaccionesFiltro
+            // 
+            cbTransaccionesFiltro.FormattingEnabled = true;
+            cbTransaccionesFiltro.Location = new Point(125, 476);
+            cbTransaccionesFiltro.Name = "cbTransaccionesFiltro";
+            cbTransaccionesFiltro.Size = new Size(74, 23);
+            cbTransaccionesFiltro.TabIndex = 15;
+            cbTransaccionesFiltro.SelectedIndexChanged += cbTransaccionesFiltro_SelectedIndexChanged;
+            // 
             // FormDashboardGeneral
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(1245, 785);
+            ClientSize = new Size(1697, 875);
+            Controls.Add(lblSemanaFiltroTransacciones);
+            Controls.Add(cbSemanaFiltroTransacciones);
+            Controls.Add(lblMesFiltroTransacciones);
+            Controls.Add(cbMesesTransaccionesFiltro);
+            Controls.Add(label3);
+            Controls.Add(cbTransaccionesFiltro);
             Controls.Add(lblSemanaFiltroSimuladores);
             Controls.Add(cbSemanasFiltroSimuladores);
             Controls.Add(lblMesFiltroSimuladores);
@@ -245,12 +318,12 @@
             Controls.Add(lblVueloFiltros);
             Controls.Add(cbVuelosFiltro);
             Controls.Add(chartSimulacionesPorMes);
-            Controls.Add(chartFacturasCobradas);
+            Controls.Add(chartTransaccionesRealizadas);
             Controls.Add(chartVuelosPorMes);
             Name = "FormDashboardGeneral";
             Text = "FormDashboardGeneral";
             ((System.ComponentModel.ISupportInitialize)chartVuelosPorMes).EndInit();
-            ((System.ComponentModel.ISupportInitialize)chartFacturasCobradas).EndInit();
+            ((System.ComponentModel.ISupportInitialize)chartTransaccionesRealizadas).EndInit();
             ((System.ComponentModel.ISupportInitialize)chartSimulacionesPorMes).EndInit();
             ResumeLayout(false);
             PerformLayout();
@@ -259,7 +332,7 @@
         #endregion
 
         private System.Windows.Forms.DataVisualization.Charting.Chart chartVuelosPorMes;
-        private System.Windows.Forms.DataVisualization.Charting.Chart chartFacturasCobradas;
+        private System.Windows.Forms.DataVisualization.Charting.Chart chartTransaccionesRealizadas;
         private System.Windows.Forms.DataVisualization.Charting.Chart chart1;
         private System.Windows.Forms.DataVisualization.Charting.Chart chartSimulacionesPorMes;
         private ComboBox cbVuelosFiltro;
@@ -274,5 +347,11 @@
         private ComboBox cbMesesFiltroSimuladores;
         private Label LblFiltroSImuladores;
         private ComboBox cbFiltroSimuladores;
+        private Label lblSemanaFiltroTransacciones;
+        private ComboBox cbSemanaFiltroTransacciones;
+        private Label lblMesFiltroTransacciones;
+        private ComboBox cbMesesTransaccionesFiltro;
+        private Label label3;
+        private ComboBox cbTransaccionesFiltro;
     }
 }

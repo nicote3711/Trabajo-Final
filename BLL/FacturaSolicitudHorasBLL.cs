@@ -143,9 +143,9 @@ namespace BLL
                 // Cargar el cliente asociado a la solicitud de horas
                 SolicitudHoras solicitud = SolicitudHorasBLO.BuscarSolicitudPorIdFactura(facturaSolicitudHoras.IdFactura);
                 if (solicitud == null) throw new Exception($"No se encontró la solicitud de horas con ID {facturaSolicitudHoras.Solicitud.IdSolicitudHoras}.");
-                facturaSolicitudHoras.Solicitud = solicitud; // Asignar la solicitud a la factura 
+                facturaSolicitudHoras.Solicitud = solicitud;
 
-               // Aca NO busco la transaccion porque sino hago referencia ciruclar. Con tener el id en la propiedad es suficiente.
+               //Aca NO busco la transaccion porque sino hago referencia ciruclar. Con tener el id en la propiedad es suficiente.
 
                 return facturaSolicitudHoras;
 

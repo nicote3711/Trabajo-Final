@@ -15,6 +15,14 @@ namespace BLL
     public class TransaccionFinancieraBLL
     {
 		TransaccionFinancieraDAL TransaccionFinancieraDAO = new TransaccionFinancieraDAL();
+
+        public List<TransaccionFinanciera> ObtenerCobrosPorTipoTransaccion(EnumTipoTransaccion tipoTransaccion)
+        {
+            List<TransaccionFinanciera> facturasCobradas = TransaccionFinancieraDAO.BuscarTransaccionesPorTipo((int)EnumTipoTransaccion.CobroSolictudHoras);
+
+            return facturasCobradas;
+        }
+
         public void RegistrarCobroHoras(TransaccionFinanciera transaccionFinanciera)
         {
 			HelperTransaccion helperTransaccion = new HelperTransaccion();

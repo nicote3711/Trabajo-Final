@@ -1,4 +1,5 @@
 ﻿using BLL;
+using ENTITY;
 using ENTITY.Enum;
 using Helper;
 using System;
@@ -6,6 +7,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -18,12 +20,17 @@ namespace UI
     public partial class FormDashboardGeneral : Form
     {
         List<string> MesesDelAnio = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
+        List<string> DiasDelAnio = ["Domingo", "Lunes", "Martes", "Miercoles", "Jueves", "Viernes", "Sabado"];
         int CantidadSemanasPorMes = 4;
+        List<TransaccionFinanciera> listaTransacciones;
+        List<TransaccionFinanciera> listaCobros;
+        List<TransaccionFinanciera> listaPagos;
         public FormDashboardGeneral()
         {
             InitializeComponent();
             InicializarFiltros();
-            GenerarGraficoFacturasCobro();
+            InicializarFiltrosTransacciones();
+            //GenerarGraficoFacturasCobro();
         }
 
         private void InicializarFiltros()
@@ -31,7 +38,7 @@ namespace UI
             InicializarFiltrosVuelos();
             InicializarFiltrosSimuladores();
         }
-        private void InicializarFiltrosSimuladores() 
+        private void InicializarFiltrosSimuladores()
         {
 
             cbFiltroSimuladores.Items.Clear();
@@ -129,6 +136,55 @@ namespace UI
 
         }
 
+        private void InicializarFiltrosTransacciones()
+        {
+
+            cbTransaccionesFiltro.Items.Clear();
+            cbSemanaFiltroTransacciones.Items.Clear();
+            cbMesesTransaccionesFiltro.Items.Clear();
+
+
+            foreach (EnumFiltrosDashboard filtro in Enum.GetValues(typeof(EnumFiltrosDashboard)))
+            {
+                var item = new ComboBoxItem
+                {
+                    Text = filtro.ToString(),
+                    Value = (int)filtro
+                };
+
+                cbTransaccionesFiltro.Items.Add(item);
+            }
+            cbTransaccionesFiltro.SelectedIndex = 0;
+
+            foreach (string mes in MesesDelAnio)
+            {
+                var item = new ComboBoxItem
+                {
+                    Text = mes,
+                    Value = MesesDelAnio.IndexOf(mes) + 1
+                };
+
+                cbMesesTransaccionesFiltro.Items.Add(item);
+            }
+
+            cbMesesTransaccionesFiltro.SelectedIndex = DateTime.Now.Month - 1;
+
+            for (int i = 1; i <= CantidadSemanasPorMes; i++)
+            {
+                var item = new ComboBoxItem
+                {
+                    Text = "Semana " + i,
+                    Value = i
+                };
+
+                cbSemanaFiltroTransacciones.Items.Add(item);
+            }
+
+            cbSemanaFiltroTransacciones.SelectedIndex = 0;
+
+            GenerarGraficoFacturasCobro();
+        }
+
         private void GenerarGraficoVuelos()
         {
             var itemSeleccionado = (ComboBoxItem)cbVuelosFiltro.SelectedItem;
@@ -146,10 +202,10 @@ namespace UI
             Series serieTorta = new Series("Vuelos por Mes");
             serieTorta.ChartType = SeriesChartType.Pie;
 
-            serieTorta["PieLabelStyle"] = "Outside"; 
-            serieTorta["PieLineColor"] = "Black"; 
+            serieTorta["PieLabelStyle"] = "Outside";
+            serieTorta["PieLineColor"] = "Black";
             serieTorta.Font = new System.Drawing.Font("Arial", 9f, System.Drawing.FontStyle.Bold);
-            serieTorta.LabelFormat = "{0} ({1:P0})"; 
+            serieTorta.LabelFormat = "{0} ({1:P0})";
 
             foreach (var item in datosVuelos)
             {
@@ -231,99 +287,143 @@ namespace UI
 
         private void GenerarGraficoFacturasCobro()
         {
-            chartFacturasCobradas.Series.Clear();
-            chartFacturasCobradas.Titles.Clear();
-            chartFacturasCobradas.ChartAreas.Clear();
-            chartFacturasCobradas.Legends.Clear();
+            chartTransaccionesRealizadas.Series.Clear();
+            chartTransaccionesRealizadas.Titles.Clear();
+            chartTransaccionesRealizadas.ChartAreas.Clear();
+            chartTransaccionesRealizadas.Legends.Clear();
 
-            // 2. Definir los datos de ejemplo
-            var datosFacturas = new Dictionary<string, Dictionary<string, int>>()
+            var itemSeleccionado = (ComboBoxItem)cbTransaccionesFiltro.SelectedItem;
+            Dictionary<string, decimal> montosTotalIngresos;
+            Dictionary<string, decimal> montosTotalEgresos;
+            var datosFacturas = new Dictionary<string, Dictionary<string, decimal>>();
+
+            listaTransacciones = new TransaccionFinancieraBLL().ObtenerTodas();
+            listaCobros = listaTransacciones.Where(t => t.TipoTransaccion.IdTipoTransaccion.Equals((int)EnumTipoTransaccion.CobroSolictudHoras)).ToList();
+            listaPagos = listaTransacciones.Where(t => !t.TipoTransaccion.IdTipoTransaccion.Equals((int)EnumTipoTransaccion.CobroSolictudHoras)).ToList();
+
+            if (itemSeleccionado != null)
             {
-                { "Enero", new Dictionary<string, int> { { "Vuelo", 80 }, { "Simulador", 30 } } },
-                { "Febrero", new Dictionary<string, int> { { "Vuelo", 95 }, { "Simulador", 40 } } },
-                { "Marzo", new Dictionary<string, int> { { "Vuelo", 110 }, { "Simulador", 45 } } },
-                { "Abril", new Dictionary<string, int> { { "Vuelo", 85 }, { "Simulador", 35 } } },
-                { "Mayo", new Dictionary<string, int> { { "Vuelo", 120 }, { "Simulador", 50 } } },
-                { "Junio", new Dictionary<string, int> { { "Vuelo", 100 }, { "Simulador", 42 } } },
-                { "Julio", new Dictionary<string, int> { { "Vuelo", 105 }, { "Simulador", 48 } } },
-                { "Agosto", new Dictionary<string, int> { { "Vuelo", 90 }, { "Simulador", 38 } } },
-                { "Septiembre", new Dictionary<string, int> { { "Vuelo", 115 }, { "Simulador", 52 } } },
-                { "Octubre", new Dictionary<string, int> { { "Vuelo", 100 }, { "Simulador", 44 } } },
-                { "Noviembre", new Dictionary<string, int> { { "Vuelo", 88 }, { "Simulador", 36 } } },
-                { "Diciembre", new Dictionary<string, int> { { "Vuelo", 130 }, { "Simulador", 55 } } }
-            };
 
-            // 3. Crear y configurar el área del gráfico
-            ChartArea area = new ChartArea("MainArea");
-            chartFacturasCobradas.ChartAreas.Add(area);
+                switch (itemSeleccionado.Value)
+                {
 
-            // Configuración del Eje X (Categorías)
-            area.AxisX.Title = "Mes";
-            area.AxisX.Interval = 1; // Asegura que se muestre una etiqueta para cada punto
-            area.AxisX.LabelStyle.Angle = -45; // Rotar etiquetas para evitar superposición
-            area.AxisX.IsLabelAutoFit = true;
-            area.AxisX.MajorGrid.Enabled = false; // Ocultar líneas de grid verticales
-            area.AxisX.IsStartedFromZero = true; // Asegura que el eje X comience desde el primer punto
+                    case (int)EnumFiltrosDashboard.Semanal:
+                        {
+                            int mesSeleccionado = ((ComboBoxItem)cbMesesTransaccionesFiltro.SelectedItem).Value;
 
-            // Configuración del Eje Y (Valores)
-            area.AxisY.Title = "Cantidad de Facturas";
-            area.AxisY.Minimum = 0;
-            area.AxisY.IntervalAutoMode = IntervalAutoMode.VariableCount; // Permite al gráfico determinar el mejor intervalo
-            area.AxisY.MajorGrid.LineColor = Color.LightGray; // Color de las líneas de grid horizontales
+                            var cobrosDelMes = listaCobros.Where(c => c.FechaTransaccion.Month.Equals(mesSeleccionado));
+                            var pagosDelMes = listaPagos.Where(c => c.FechaTransaccion.Month.Equals(mesSeleccionado));
 
-            // 4. Crear una serie para las facturas de Vuelo
-            Series serieVuelo = new Series("Horas Vuelo Cobradas");
-            serieVuelo.ChartType = SeriesChartType.Column;
-            serieVuelo.Color = Color.SteelBlue;
-            serieVuelo.IsValueShownAsLabel = true;
-            serieVuelo.LabelFormat = "{0}";
-            serieVuelo.ChartArea = "MainArea";
-            serieVuelo.XValueType = ChartValueType.String; // **EXPLÍCITO: El tipo de valor X es una cadena**
-            serieVuelo.IsXValueIndexed = true; // **EXPLÍCITO: Tratar los valores X como índices de puntos**
+                            var ingresosSemana1 = cobrosDelMes.Where(c => ObtenerSemanaDelMes(c.FechaTransaccion).Equals(1)).Sum(c => c.MontoTransaccion);
+                            var ingresosSemana2 = cobrosDelMes.Where(c => ObtenerSemanaDelMes(c.FechaTransaccion).Equals(2)).Sum(c => c.MontoTransaccion);
+                            var ingresosSemana3 = cobrosDelMes.Where(c => ObtenerSemanaDelMes(c.FechaTransaccion).Equals(3)).Sum(c => c.MontoTransaccion);
+                            var ingresosSemana4 = cobrosDelMes.Where(c => ObtenerSemanaDelMes(c.FechaTransaccion).Equals(4)).Sum(c => c.MontoTransaccion);
 
-            // 5. Crear una serie para las facturas de Simulador
-            Series serieSimulador = new Series("Horas Simulador Cobradas");
-            serieSimulador.ChartType = SeriesChartType.Column;
-            serieSimulador.Color = Color.Orange;
-            serieSimulador.IsValueShownAsLabel = true;
-            serieSimulador.LabelFormat = "{0}";
-            serieSimulador.ChartArea = "MainArea";
-            serieSimulador.XValueType = ChartValueType.String; // **EXPLÍCITO: El tipo de valor X es una cadena**
-            serieSimulador.IsXValueIndexed = true; // **EXPLÍCITO: Tratar los valores X como índices de puntos**
+                            var egresosSemana1 = pagosDelMes.Where(c => ObtenerSemanaDelMes(c.FechaTransaccion).Equals(1)).Sum(c => c.MontoTransaccion);
+                            var egresosSemana2 = pagosDelMes.Where(c => ObtenerSemanaDelMes(c.FechaTransaccion).Equals(2)).Sum(c => c.MontoTransaccion);
+                            var egresosSemana3 = pagosDelMes.Where(c => ObtenerSemanaDelMes(c.FechaTransaccion).Equals(3)).Sum(c => c.MontoTransaccion);
+                            var egresosSemana4 = pagosDelMes.Where(c => ObtenerSemanaDelMes(c.FechaTransaccion).Equals(4)).Sum(c => c.MontoTransaccion);
 
-            // 6. Agregar los puntos de datos a ambas series
-            // Es importante que el orden de adición de los puntos sea consistente
-            // para que los meses se alineen correctamente.
-            foreach (var mes in datosFacturas.Keys)
-            {
-                // Agregar punto para horas de Vuelo
-                serieVuelo.Points.AddXY(mes, datosFacturas[mes]["Vuelo"]);
+                            datosFacturas.Add("Semana 1", new Dictionary<string, decimal> { { "Ingresos", ingresosSemana1 }, { "Egresos", egresosSemana1 } });
+                            datosFacturas.Add("Semana 2", new Dictionary<string, decimal> { { "Ingresos", ingresosSemana2 }, { "Egresos", egresosSemana2 } });
+                            datosFacturas.Add("Semana 3", new Dictionary<string, decimal> { { "Ingresos", ingresosSemana3 }, { "Egresos", egresosSemana3 } });
+                            datosFacturas.Add("Semana 4", new Dictionary<string, decimal> { { "Ingresos", ingresosSemana4 }, { "Egresos", egresosSemana4 } });
 
-                // Agregar punto para horas de Simulador
-                serieSimulador.Points.AddXY(mes, datosFacturas[mes]["Simulador"]);
+                            break;
+                        }
+                    case (int)EnumFiltrosDashboard.Diario:
+                        {
+                            int mesSeleccionado = ((ComboBoxItem)cbMesesTransaccionesFiltro.SelectedItem).Value;
+                            int semanaSeleccionada = ((ComboBoxItem)cbSemanaFiltroTransacciones.SelectedItem).Value;
+                            var cobrosDelMes = listaCobros.Where(c => c.FechaTransaccion.Month.Equals(mesSeleccionado) && ObtenerSemanaDelMes(c.FechaTransaccion).Equals(semanaSeleccionada));
+                            var pagosDelMes = listaPagos.Where(c => c.FechaTransaccion.Month.Equals(mesSeleccionado) && ObtenerSemanaDelMes(c.FechaTransaccion).Equals(semanaSeleccionada));
+                            
+                            montosTotalIngresos = cobrosDelMes.GroupBy(c => c.FechaTransaccion.ToString("dddd", CultureInfo.CurrentCulture)).ToDictionary(g => g.Key, g => g.Sum(c => c.MontoTransaccion));
+                            montosTotalEgresos = pagosDelMes.GroupBy(c => c.FechaTransaccion.ToString("dddd", CultureInfo.CurrentCulture)).ToDictionary(g => g.Key, g => g.Sum(c => c.MontoTransaccion));
+
+                            foreach (string dia in DiasDelAnio)
+                            {
+                                var ingresoMensual = montosTotalIngresos.FirstOrDefault(c => c.Key.ToLower().Equals(dia.ToLower()), new KeyValuePair<string, decimal>(dia, 0));
+                                var egresoMensual = montosTotalEgresos.FirstOrDefault(c => c.Key.ToLower().Equals(dia.ToLower()), new KeyValuePair<string, decimal>(dia, 0));
+                                datosFacturas.Add(dia, new Dictionary<string, decimal> { { "Ingresos", ingresoMensual.Value }, { "Egresos", egresoMensual.Value } });
+                            }
+                            
+                            break;
+                        }
+                    default:
+                        {
+                            montosTotalIngresos = listaCobros.OrderBy(c => c.FechaTransaccion.Month).GroupBy(c => c.FechaTransaccion.ToString("MMMM", CultureInfo.CurrentCulture)).ToDictionary(g => g.Key, g => g.Sum(c => c.MontoTransaccion));
+                            montosTotalEgresos = listaPagos.OrderBy(c => c.FechaTransaccion.Month).GroupBy(c => c.FechaTransaccion.ToString("MMMM", CultureInfo.CurrentCulture)).ToDictionary(g => g.Key, g => g.Sum(c => c.MontoTransaccion));
+
+                            foreach (string mes in MesesDelAnio)
+                            {
+                                var ingresoMensual = montosTotalIngresos.FirstOrDefault(c => c.Key.ToLower().Equals(mes.ToLower()), new KeyValuePair<string, decimal>(mes, 0));
+                                var egresoMensual = montosTotalEgresos.FirstOrDefault(c => c.Key.ToLower().Equals(mes.ToLower()), new KeyValuePair<string, decimal>(mes, 0));
+                                datosFacturas.Add(mes, new Dictionary<string, decimal> { { "Ingresos", ingresoMensual.Value }, { "Egresos", egresoMensual.Value } });
+                            }
+
+                            break;
+                        }
+                }
+
+                ChartArea area = new ChartArea("MainArea");
+                chartTransaccionesRealizadas.ChartAreas.Add(area);
+
+                area.AxisX.Title = "Mes";
+                area.AxisX.Interval = 1;
+                area.AxisX.LabelStyle.Angle = -45;
+                area.AxisX.IsLabelAutoFit = true;
+                area.AxisX.MajorGrid.Enabled = false;
+                area.AxisX.IsStartedFromZero = true;
+
+                area.AxisY.Title = "Cantidad de Facturas";
+                area.AxisY.Minimum = 0;
+                area.AxisY.IntervalAutoMode = IntervalAutoMode.VariableCount;
+                area.AxisY.MajorGrid.LineColor = Color.LightGray;
+
+                Series cobros = new Series("Cobros realizados");
+                cobros.ChartType = SeriesChartType.Column;
+                cobros.Color = Color.SteelBlue;
+                cobros.IsValueShownAsLabel = true;
+                cobros.LabelFormat = "{0,00}";
+                cobros.Font = new System.Drawing.Font("Arial", 8f, System.Drawing.FontStyle.Bold);
+                cobros.ChartArea = "MainArea";
+                cobros.XValueType = ChartValueType.String;
+                cobros.IsXValueIndexed = true;
+
+                Series pagos = new Series("Pagos Realizados");
+                pagos.ChartType = SeriesChartType.Column;
+                pagos.Color = Color.Orange;
+                pagos.IsValueShownAsLabel = true;
+                pagos.LabelFormat = "{0,00}";
+                pagos.Font = new System.Drawing.Font("Arial", 8f, System.Drawing.FontStyle.Bold);
+                pagos.ChartArea = "MainArea";
+                pagos.XValueType = ChartValueType.String;
+                pagos.IsXValueIndexed = true;
+
+                foreach (var mes in datosFacturas.Keys)
+                {
+                    cobros.Points.AddXY(mes, datosFacturas[mes]["Ingresos"]);
+                    pagos.Points.AddXY(mes, datosFacturas[mes]["Egresos"]);
+                }
+
+                chartTransaccionesRealizadas.Series.Add(cobros);
+                chartTransaccionesRealizadas.Series.Add(pagos);
+
+                chartTransaccionesRealizadas.Titles.Add("Transacciones realizadas");
+                chartTransaccionesRealizadas.Titles[0].Font = new Font("Arial", 14f, FontStyle.Bold);
+
+                Legend legend = new Legend("MyLegend");
+                legend.Docking = Docking.Bottom;
+                legend.Alignment = StringAlignment.Center;
+                legend.Font = new Font("Arial", 10f);
+                chartTransaccionesRealizadas.Legends.Add(legend);
+                cobros.Legend = "MyLegend";
+                pagos.Legend = "MyLegend";
+
+                chartTransaccionesRealizadas.Series["Cobros realizados"]["PointWidth"] = "0.8";
+                chartTransaccionesRealizadas.Series["Pagos Realizados"]["PointWidth"] = "0.8";
             }
-
-            // 7. Agregar las series al control Chart
-            chartFacturasCobradas.Series.Add(serieVuelo);
-            chartFacturasCobradas.Series.Add(serieSimulador);
-
-            // 8. Configurar el título del gráfico
-            chartFacturasCobradas.Titles.Add("Facturas Cobradas de Vuelos y Simulador por Mes");
-            chartFacturasCobradas.Titles[0].Font = new Font("Arial", 14f, FontStyle.Bold);
-
-            // 9. Configurar la leyenda
-            Legend legend = new Legend("MyLegend");
-            legend.Docking = Docking.Bottom;
-            legend.Alignment = StringAlignment.Center;
-            legend.Font = new Font("Arial", 10f);
-            chartFacturasCobradas.Legends.Add(legend);
-            serieVuelo.Legend = "MyLegend";
-            serieSimulador.Legend = "MyLegend";
-
-            // Opcional: Ajustar el ancho de las columnas
-            // Puedes ajustar este valor para que las barras se vean mejor
-            chartFacturasCobradas.Series["Horas Vuelo Cobradas"]["PointWidth"] = "0.8";
-            chartFacturasCobradas.Series["Horas Simulador Cobradas"]["PointWidth"] = "0.8";
         }
 
         #region GraficoVuelos
@@ -422,5 +522,62 @@ namespace UI
             }
         }
 
+        private void cbTransaccionesFiltro_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            var itemSeleccionado = (ComboBoxItem)cbTransaccionesFiltro.SelectedItem;
+
+            if (itemSeleccionado != null)
+            {
+
+                if (((ComboBoxItem)cbTransaccionesFiltro.SelectedItem).Value > 2)
+                {
+                    lblSemanaFiltroTransacciones.Visible = true;
+                    cbSemanaFiltroTransacciones.Visible = true;
+                }
+
+                if (((ComboBoxItem)cbTransaccionesFiltro.SelectedItem).Value > 1)
+                {
+                    lblMesFiltroTransacciones.Visible = true;
+                    cbMesesTransaccionesFiltro.Visible = true;
+                }
+                else
+                {
+                    lblSemanaFiltroTransacciones.Visible = false;
+                    cbSemanaFiltroTransacciones.Visible = false;
+                    lblMesFiltroTransacciones.Visible = false;
+                    cbMesesTransaccionesFiltro.Visible = false;
+                }
+
+                GenerarGraficoFacturasCobro();
+            }
+        }
+
+        private static int ObtenerSemanaDelMes(DateTime date)
+        {
+            // Calcula el día del mes
+            int diaDelMes = date.Day;
+
+            int semana = (diaDelMes - 1) / 7 + 1;
+
+            // Limitar a las 4 primeras semanas, como solicitaste.
+            // Las fechas en la 5ta semana (días 29-31) no cumplirán el filtro si weekOfMonth es 1-4.
+            return semana <= 4 ? semana : 0; // Devolvemos 0 para indicar que está fuera de las 4 primeras semanas.
+        }
+
+        private void cbMesesTransaccionesFiltro_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (cbMesesTransaccionesFiltro.SelectedItem != null)
+            {
+                GenerarGraficoFacturasCobro();
+            }
+        }
+
+        private void cbSemanaFiltroTransacciones_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (cbSemanaFiltroTransacciones.SelectedItem != null)
+            {
+                GenerarGraficoFacturasCobro();
+            }
+        }
     }
 }

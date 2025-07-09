@@ -229,8 +229,6 @@ namespace BLL
                 EstadoAeronave estadoAeronave = EstadoAeronaveBLO.BuscarPorId((int)EnumEstadoEaronave.Activo);
                 if (estadoAeronave == null || estadoAeronave.IdEstadoAeronave <= 0) throw new Exception("error al conseguir el estado aeronave activo");
                 
-                
-
                 MantenimientoDAO.RegistrarFacturaMant(mantenimiento);
                 AeronaveBLL AeronaveBLO = new AeronaveBLL();
 
@@ -243,6 +241,10 @@ namespace BLL
                 {
                     mantenimiento.Aeronave.Revision100Hs = 0;
                 }
+
+                //GenerarPDFFactura();
+                HelperFacturas.GenerarFacturaPDF(mantenimiento.FacturaMantenimiento);
+
                 AeronaveBLO.ModificarAeronave(mantenimiento.Aeronave);
                 AeronaveBLO.ActualizarEstadoAeronave(mantenimiento.Aeronave.IdAeronave, estadoAeronave);
 
@@ -273,6 +275,7 @@ namespace BLL
                     MecanicoBLL MecanicoBLO = new MecanicoBLL();
                     mantenimiento.Mecanico = MecanicoBLO.BuscarMecanicoPorId(mantenimiento.Mecanico.IdMecanico); //falta implementar
                 }
+                
                 if (mantenimiento.FacturaMantenimiento != null && mantenimiento.FacturaMantenimiento.IdFactura > 0)
                 {
                    //NO mapeo la factura para evitar ref circular. Si llego a necesitar la info uso otro metodo con consulta linq.

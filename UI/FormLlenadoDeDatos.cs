@@ -31,17 +31,12 @@ namespace UI
 
         private void GenerarVuelos_Click(object sender, EventArgs e)
         {
-
-
-
             VueloBLL vuelosBLO = new VueloBLL();
             InstructorBLL instructorBLO = new InstructorBLL();
             AeronaveBLL aeronaveBLO = new AeronaveBLL();
             ClienteBLL clienteBLO = new ClienteBLL();
             FinalidadBLL finalidadBLO = new FinalidadBLL();
-
-
-
+            
             List<Instructor> instructores = instructorBLO.ObtenerInstructores();
             List<Aeronave> aeronaves = aeronaveBLO.ObtenerTodas();
             List<Cliente> clientes = clienteBLO.ObtenerClientes();
