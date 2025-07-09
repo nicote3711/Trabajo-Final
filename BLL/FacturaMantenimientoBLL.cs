@@ -33,7 +33,7 @@ namespace BLL
                 
                 MantenimientoBLO.EliminarFacturaDeMantenimiento(facturaMantenimiento.Mantenimiento);
 
-                HelperFacturas.EliminarFacturaPDF((int)EnumTiposFactura.FacturaMantenimiento, facturaMantenimiento.NroFactura);
+               Resultado resultado = HelperFacturas.EliminarFacturaPDF((int)EnumTiposFactura.FacturaMantenimiento, facturaMantenimiento.NroFactura);
 
             }
             catch (Exception ex)

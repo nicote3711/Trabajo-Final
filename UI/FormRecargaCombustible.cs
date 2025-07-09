@@ -134,6 +134,27 @@ namespace UI
         }
 
 
+        private void txt_CantidadLitros_TextChanged(object sender, EventArgs e)
+        {
+            CalcularMontoFactura();
+        }
+
+        private void txt_PrecioLitro_TextChanged(object sender, EventArgs e)
+        {
+            CalcularMontoFactura();
+        }
+
+        private void CalcularMontoFactura()
+        {
+            decimal cantidadLitros = 0;
+            decimal precioPorLitro = 0;
+
+            decimal.TryParse(txt_CantidadLitros.Text, out cantidadLitros);
+
+            decimal.TryParse(txt_PrecioLitro.Text, out precioPorLitro);
+
+            txt_MontoFactura.Text = (cantidadLitros * precioPorLitro).ToString("N2");
+        }
 
         #endregion Fin Funciones Form
 
@@ -181,7 +202,8 @@ namespace UI
             }
             catch (Exception ex)
             {
-
+                CargarDgvFacturaRecargaCombu();
+                CargarDgvRecargasCombu();
                 MessageBox.Show(ex.Message);
             }
         }
@@ -204,7 +226,8 @@ namespace UI
             }
             catch (Exception ex)
             {
-
+                CargarDgvFacturaRecargaCombu();
+                CargarDgvRecargasCombu();
                 MessageBox.Show(ex.Message);
             }
         }
@@ -212,26 +235,6 @@ namespace UI
         #endregion Fin Botones Form
 
 
-        private void txt_CantidadLitros_TextChanged(object sender, EventArgs e)
-        {
-            CalcularMontoFactura();
-        }
 
-        private void txt_PrecioLitro_TextChanged(object sender, EventArgs e)
-        {
-            CalcularMontoFactura();
-        }
-
-        private void CalcularMontoFactura()
-        {
-            decimal cantidadLitros = 0;
-            decimal precioPorLitro = 0;
-
-            decimal.TryParse(txt_CantidadLitros.Text, out cantidadLitros);
-
-            decimal.TryParse(txt_PrecioLitro.Text, out precioPorLitro);
-
-            txt_MontoFactura.Text = (cantidadLitros * precioPorLitro).ToString("N2");
-        }
     }
 }

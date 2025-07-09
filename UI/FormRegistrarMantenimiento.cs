@@ -151,7 +151,8 @@ namespace UI
             }
             catch (Exception ex)
             {
-
+                CargarDgvFacturaMantenimientso();
+                CargarDgvMantenimientos();
                 MessageBox.Show(ex.Message);
             }
         }
@@ -180,7 +181,8 @@ namespace UI
             }
             catch (Exception ex)
             {
-
+                CargarDgvFacturaMantenimientso();
+                CargarDgvMantenimientos();
                 MessageBox.Show(ex.Message);
             }
         }

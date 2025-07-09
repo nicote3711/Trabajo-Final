@@ -168,7 +168,7 @@ namespace UI
             }
             catch (Exception ex)
             {
-
+                CargarDgvMantenimientosEnCurso();
                 MessageBox.Show(ex.Message);
             }
         }
@@ -191,7 +191,7 @@ namespace UI
             }
             catch (Exception ex)
             {
-
+                CargarDgvMantenimientosEnCurso();
                 MessageBox.Show(ex.Message);
             }
         }

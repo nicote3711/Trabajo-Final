@@ -191,7 +191,8 @@ namespace UI
             }
             catch (Exception ex)
             {
-
+                CargarDgvFacturasImp();
+                CargarDgvPagos();
                 MessageBox.Show(ex.Message);
             }
         }
@@ -214,7 +215,8 @@ namespace UI
             }
             catch (Exception ex)
             {
-
+                CargarDgvFacturasImp();
+                CargarDgvPagos();
                 MessageBox.Show(ex.Message);
             }
         }

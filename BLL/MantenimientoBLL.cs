@@ -54,8 +54,10 @@ namespace BLL
             }
         }
 		public void AltaMantenimiento(Mantenimiento mantenimiento)
-		{
-			try
+        {
+            HelperTransaccion helperTransaccion = new HelperTransaccion();
+            DataSet ds = helperTransaccion.DfParaTransaccion();
+            try
 			{
 				ValidarCondicionesAlta(mantenimiento);
 
@@ -72,8 +74,8 @@ namespace BLL
 			}
 			catch (Exception ex)
 			{
-
-				throw new Exception("BLL Mantenimiento error al dar alta mantenimiento:" +ex.Message,ex);
+                helperTransaccion.RollbackDfParaTransaccion(ds);
+                throw new Exception("BLL Mantenimiento error al dar alta mantenimiento:" +ex.Message,ex);
 			}
 		}
 

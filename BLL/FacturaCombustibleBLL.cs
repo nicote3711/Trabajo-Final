@@ -26,7 +26,7 @@ namespace BLL
                 if (facturaCombustible.Transaccion != null) throw new Exception("No se puede eliminar una factura ya pagada");
 
 				FacturaCombustibleDAO.EliminarFacturaPorId(facturaCombustible.IdFactura);
-				Resultado result = HelperFacturas.EliminarFacturaPDF((int)EnumTiposFactura.FacturaRecargaCombustible, facturaCombustible.NroFactura);
+				Resultado result = HelperFacturas.EliminarFacturaPDF((int)EnumTiposFactura.FacturaRecargaCombustible, facturaCombustible.NroFactura); // no lanzo la exception aca porque no es necesario para el esquema como esta ahora.
                 RecargaCombustibleBLL RecargaCombustibleBLO = new RecargaCombustibleBLL();
 				RecargaCombustibleBLO.EliminarRecargaPorIdFactura(facturaCombustible.IdFactura); // aca podria eliminar por Id Recarga simplemente ya que tengo el Id al mappear todo el objeto.
 

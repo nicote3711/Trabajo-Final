@@ -201,7 +201,8 @@ namespace UI
             }
             catch (Exception ex)
             {
-
+                CargarDgvSolicitud();
+                CargarDgvFacturaSolicitud();
                 MessageBox.Show(ex.Message);
             }
         }
@@ -219,10 +220,12 @@ namespace UI
                 CargarDgvSolicitud();
                 CargarDgvFacturaSolicitud();
                 LimpiarCampos();
+                MessageBox.Show("la solicitud  fue eliminada correctamente");
             }
             catch (Exception ex)
             {
-
+                CargarDgvSolicitud();
+                CargarDgvFacturaSolicitud();
                 MessageBox.Show(ex.Message);
             }
         }

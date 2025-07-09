@@ -164,7 +164,8 @@ namespace UI
             }
             catch (Exception ex)
             {
-
+                CargarDgvSolicitud();
+                CargarDgvFacturaSolicitud();
                 MessageBox.Show(ex.Message);
             }
         }
@@ -186,7 +187,8 @@ namespace UI
             }
             catch (Exception ex)
             {
-
+                CargarDgvSolicitud();
+                CargarDgvFacturaSolicitud();
                 MessageBox.Show(ex.Message);
             }
         }

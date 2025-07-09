@@ -245,6 +245,8 @@ namespace UI
             }
             catch (Exception ex)
             {
+                CargarComboMecanicos();
+                CargarDgvFacturasImp();
                 MessageBox.Show(ex.Message);
             }
         }
@@ -268,6 +270,8 @@ namespace UI
             }
             catch (Exception ex)
             {
+                CargarComboMecanicos();
+                CargarDgvFacturasImp();
                 MessageBox.Show(ex.Message);
             }
         }

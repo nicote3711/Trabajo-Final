@@ -230,7 +230,8 @@ namespace UI
             }
             catch (Exception ex)
             {
-
+                CargarGrillaLiquidacionesI();
+                CargarGrillaFacturasI();
                 MessageBox.Show(ex.Message);
             }
         }
@@ -253,7 +254,8 @@ namespace UI
             }
             catch (Exception ex)
             {
-
+                CargarGrillaFacturasI();
+                CargarGrillaLiquidacionesI();
                 MessageBox.Show(ex.Message);
             }
         }

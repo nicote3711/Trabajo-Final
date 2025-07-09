@@ -257,7 +257,8 @@ namespace UI
             }
             catch (Exception ex)
             {
-
+                CargarDgvFacturasSolicitud();
+                CargarDgvTransaccionesCobroHoras();
                 MessageBox.Show(ex.Message);
             }
         }
@@ -288,8 +289,9 @@ namespace UI
              }
             catch (Exception ex)
             {
-
-               MessageBox.Show(ex.Message);
+                CargarDgvFacturasSolicitud();
+                CargarDgvTransaccionesCobroHoras();
+                MessageBox.Show(ex.Message);
             }
         }
     }
