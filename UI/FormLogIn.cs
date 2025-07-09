@@ -33,11 +33,11 @@ namespace UI
             try
             {
                 string usuario = txt_Usuario.Text.Trim();
-                string contrasena = txt_Contrasena.Text.Trim(); 
+                string contrasena = txt_Contrasena.Text.Trim();
                 string passEncriptado = Encriptador.Encriptar(contrasena); // Encriptamos la contraseña antes de validar por si el profesor quiere que vaya a la BLL encriptada (no lo uso)
 
                 Usuario usuarioValido = UsuarioBLO.ValidarLogin(usuario, contrasena); // le paso el no encriptado pero puedo hacerlo segun criterio.
-                if(usuarioValido == null) throw new Exception("Usuario o contraseña incorrectos.");
+                if (usuarioValido == null) throw new Exception("Usuario o contraseña incorrectos.");
                 SessionManager.Instancia.IniciarSesion(usuarioValido);
                 this.Hide();
                 FormMenuPrincipal formMenuPrincipal = new FormMenuPrincipal(usuarioValido);
@@ -49,8 +49,36 @@ namespace UI
 
                 MessageBox.Show(ex.Message);
             }
-         
+
         }
 
+        private void checkBox_Usuario_CheckedChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                if (checkBox_Usuario.Checked) { txt_Usuario.UseSystemPasswordChar = false; }
+                else { txt_Usuario.UseSystemPasswordChar = true; }
+
+            }
+            catch (Exception ex)
+            {
+
+                MessageBox.Show(ex.Message);
+            }
+        }
+
+        private void checkBox_Contrasena_CheckedChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                if (checkBox_Contrasena.Checked) { txt_Contrasena.UseSystemPasswordChar = false; }
+                else { txt_Contrasena.UseSystemPasswordChar= true; }
+            }
+            catch (Exception ex)
+            {
+
+                MessageBox.Show(ex.Message);
+            }
+        }
     }
 }

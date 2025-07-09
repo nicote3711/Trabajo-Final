@@ -69,7 +69,7 @@ namespace UI
 
                             if (instructoresActivos.Count > 0 && aeronavesActivas.Count > 0 && clientesHabilitados.Count > 0)
                             {
-                                vuelo.Fecha = new DateTime(anio, random.Next(5, 8), random.Next(1, 29));
+                                vuelo.Fecha = new DateTime(anio, random.Next(4, 6), random.Next(1, 29));
                                 vuelo.Instructor = instructoresActivos[random.Next(0, instructoresActivos.Count())];
                                 vuelo.Aeronave = aeronavesActivas[random.Next(0, aeronavesActivas.Count())];
                                 vuelo.Cliente = clientesHabilitados[random.Next(0, clientesHabilitados.Count())];
@@ -127,121 +127,121 @@ namespace UI
                 ""matricula"": ""LV-ABC"",
                 ""modelo"": ""Cessna 172 Skyhawk"",
                 ""marca"": ""Cessna"",
-                ""anio"": 1998
+                ""año"": 1998
               },
               {
                 ""matricula"": ""LV-DEF"",
                 ""modelo"": ""Piper PA-28 Cherokee"",
                 ""marca"": ""Piper Aircraft"",
-                ""anio"": 2005
+                ""año"": 2005
               },
               {
                 ""matricula"": ""LV-GHI"",
                 ""modelo"": ""Airbus A320"",
                 ""marca"": ""Airbus"",
-                ""anio"": 2012
+                ""año"": 2012
               },
               {
                 ""matricula"": ""LV-JKL"",
                 ""modelo"": ""Boeing 737-800"",
                 ""marca"": ""Boeing"",
-                ""anio"": 2018
+                ""año"": 2018
               },
               {
                 ""matricula"": ""LV-MNO"",
                 ""modelo"": ""Embraer E190"",
                 ""marca"": ""Embraer"",
-                ""anio"": 2009
+                ""año"": 2009
               },
               {
                 ""matricula"": ""LV-PQR"",
                 ""modelo"": ""Learjet 60"",
                 ""marca"": ""Bombardier Aerospace"",
-                ""anio"": 2003
+                ""año"": 2003
               },
               {
                 ""matricula"": ""LV-STU"",
                 ""modelo"": ""Beechcraft Baron 58"",
                 ""marca"": ""Beechcraft"",
-                ""anio"": 2007
+                ""año"": 2007
               },
               {
                 ""matricula"": ""LV-VWX"",
                 ""modelo"": ""Bell 206 JetRanger"",
                 ""marca"": ""Bell Helicopter"",
-                ""anio"": 1995
+                ""año"": 1995
               },
               {
                 ""matricula"": ""LV-YZA"",
                 ""modelo"": ""Robinson R44 Raven II"",
                 ""marca"": ""Robinson Helicopter"",
-                ""anio"": 2015
+                ""año"": 2015
               },
               {
                 ""matricula"": ""LV-BCD"",
                 ""modelo"": ""Cirrus SR22"",
                 ""marca"": ""Cirrus Aircraft"",
-                ""anio"": 2020
+                ""año"": 2020
               },
               {
                 ""matricula"": ""LV-EFG"",
                 ""modelo"": ""De Havilland Canada DHC-6 Twin Otter"",
                 ""marca"": ""De Havilland Canada"",
-                ""anio"": 1980
+                ""año"": 1980
               },
               {
                 ""matricula"": ""LV-HIJ"",
                 ""modelo"": ""Fokker 100"",
                 ""marca"": ""Fokker"",
-                ""anio"": 1993
+                ""año"": 1993
               },
               {
                 ""matricula"": ""LV-KLM"",
                 ""modelo"": ""Saab 340"",
                 ""marca"": ""Saab AB"",
-                ""anio"": 1989
+                ""año"": 1989
               },
               {
                 ""matricula"": ""LV-NOP"",
                 ""modelo"": ""Cessna Citation X"",
                 ""marca"": ""Cessna"",
-                ""anio"": 2001
+                ""año"": 2001
               },
               {
                 ""matricula"": ""LV-QRS"",
                 ""modelo"": ""Gulfstream G650"",
                 ""marca"": ""Gulfstream Aerospace"",
-                ""anio"": 2022
+                ""año"": 2022
               },
               {
                 ""matricula"": ""LV-TUV"",
                 ""modelo"": ""ATR 72-600"",
                 ""marca"": ""ATR"",
-                ""anio"": 2016
+                ""año"": 2016
               },
               {
                 ""matricula"": ""LV-WXY"",
                 ""modelo"": ""Tecnam P2006T"",
                 ""marca"": ""Tecnam"",
-                ""anio"": 2014
+                ""año"": 2014
               },
               {
                 ""matricula"": ""LV-ZAB"",
                 ""modelo"": ""Eurocopter AS350 Écureuil"",
                 ""marca"": ""Airbus Helicopters"",
-                ""anio"": 2010
+                ""año"": 2010
               },
               {
                 ""matricula"": ""LV-CDE"",
                 ""modelo"": ""Diamond DA40 Star"",
                 ""marca"": ""Diamond Aircraft"",
-                ""anio"": 2008
+                ""año"": 2008
               },
               {
                 ""matricula"": ""LV-FGH"",
                 ""modelo"": ""Bombardier CRJ200"",
                 ""marca"": ""Bombardier Aerospace"",
-                ""anio"": 1999
+                ""año"": 1999
               }
             ]";
             List<Aeronave> listaAeronaves = JsonConvert.DeserializeObject<List<Aeronave>>(aeronavesJson);
@@ -265,8 +265,8 @@ namespace UI
                     {
                         Random randomDuenio = new Random();
                         aeronave.Dueno = dueniosActivos[randomDuenio.Next(0, dueniosActivos.Count())];
-                        aeronave.RevisionAnual = DateTime.Now;
-                        aeronave.RevisionAnual.AddYears(1);
+                        aeronave.RevisionAnual = DateTime.Now.Date.AddYears(1);
+                      //  aeronave.RevisionAnual.AddYears(1);
                         aeronaveBLO.AltaAeronave(aeronave);
                     }
                 }
@@ -298,7 +298,7 @@ namespace UI
             ""CuitCuil"": ""27-28123456-9"",
             ""FechaNacimiento"": ""1980-03-15"",
             ""Email"": ""sofia.gomez@example.com"",
-            ""Telefono"": ""+5491155551234""
+            ""Telefono"": ""5491155551234""
             },
             {
             ""Nombre"": ""Juan"",
@@ -307,7 +307,7 @@ namespace UI
             ""CuitCuil"": ""20-30987654-8"",
             ""FechaNacimiento"": ""1975-11-22"",
             ""Email"": ""juan.perez@example.com"",
-            ""Telefono"": ""+5491155555678""
+            ""Telefono"": ""5491155555678""
             },
             {
             ""Nombre"": ""Mariana"",
@@ -316,7 +316,7 @@ namespace UI
             ""CuitCuil"": ""27-35456789-2"",
             ""FechaNacimiento"": ""1992-07-01"",
             ""Email"": ""mariana.rodriguez@example.com"",
-            ""Telefono"": ""+5491155559012""
+            ""Telefono"": ""5491155559012""
             },
             {
             ""Nombre"": ""Lucas"",
@@ -325,7 +325,7 @@ namespace UI
             ""CuitCuil"": ""20-32109876-0"",
             ""FechaNacimiento"": ""1988-01-28"",
             ""Email"": ""lucas.fernandez@example.com"",
-            ""Telefono"": ""+5491155553456""
+            ""Telefono"": ""5491155553456""
             },
             {
             ""Nombre"": ""Valentina"",
@@ -334,7 +334,7 @@ namespace UI
             ""CuitCuil"": ""27-40112233-5"",
             ""FechaNacimiento"": ""1995-09-10"",
             ""Email"": ""valentina.diaz@example.com"",
-            ""Telefono"": ""+5491155557890""
+            ""Telefono"": ""5491155557890""
             },
             {
             ""Nombre"": ""Martín"",
@@ -343,7 +343,7 @@ namespace UI
             ""CuitCuil"": ""20-29876543-7"",
             ""FechaNacimiento"": ""1983-05-03"",
             ""Email"": ""martin.garcia@example.com"",
-            ""Telefono"": ""+5491155552345""
+            ""Telefono"": ""5491155552345""
             },
             {
             ""Nombre"": ""Camila"",
@@ -352,7 +352,7 @@ namespace UI
             ""CuitCuil"": ""27-38765432-1"",
             ""FechaNacimiento"": ""1990-12-19"",
             ""Email"": ""camila.martinez@example.com"",
-            ""Telefono"": ""+5491155556789""
+            ""Telefono"": ""5491155556789""
             },
             {
             ""Nombre"": ""Diego"",
@@ -361,7 +361,7 @@ namespace UI
             ""CuitCuil"": ""20-31234567-6"",
             ""FechaNacimiento"": ""1978-08-07"",
             ""Email"": ""diego.lopez@example.com"",
-            ""Telefono"": ""+5491155550123""
+            ""Telefono"": ""5491155550123""
             },
             {
             ""Nombre"": ""Florencia"",
@@ -370,7 +370,7 @@ namespace UI
             ""CuitCuil"": ""27-36789012-4"",
             ""FechaNacimiento"": ""1985-02-14"",
             ""Email"": ""florencia.gonzalez@example.com"",
-            ""Telefono"": ""+5491155554567""
+            ""Telefono"": ""5491155554567""
             },
             {
             ""Nombre"": ""Agustín"",
@@ -379,7 +379,7 @@ namespace UI
             ""CuitCuil"": ""20-33445566-3"",
             ""FechaNacimiento"": ""1993-04-25"",
             ""Email"": ""agustin.sanchez@example.com"",
-            ""Telefono"": ""+5491155558901""
+            ""Telefono"": ""5491155558901""
             },
             {
             ""Nombre"": ""Emilia"",
@@ -388,7 +388,7 @@ namespace UI
             ""CuitCuil"": ""27-41234567-0"",
             ""FechaNacimiento"": ""1998-06-03"",
             ""Email"": ""emilia.paz@example.com"",
-            ""Telefono"": ""+5491155551122""
+            ""Telefono"": ""5491155551122""
             },
             {
             ""Nombre"": ""Federico"",
@@ -397,7 +397,7 @@ namespace UI
             ""CuitCuil"": ""20-27890123-5"",
             ""FechaNacimiento"": ""1972-10-09"",
             ""Email"": ""federico.ruiz@example.com"",
-            ""Telefono"": ""+5491155553344""
+            ""Telefono"": ""5491155553344""
             },
             {
             ""Nombre"": ""Carolina"",
@@ -406,7 +406,7 @@ namespace UI
             ""CuitCuil"": ""27-34567890-7"",
             ""FechaNacimiento"": ""1987-03-20"",
             ""Email"": ""carolina.torres@example.com"",
-            ""Telefono"": ""+5491155555566""
+            ""Telefono"": ""5491155555566""
             },
             {
             ""Nombre"": ""Nicolás"",
@@ -415,7 +415,7 @@ namespace UI
             ""CuitCuil"": ""20-37890123-2"",
             ""FechaNacimiento"": ""1991-09-05"",
             ""Email"": ""nicolas.ramirez@example.com"",
-            ""Telefono"": ""+5491155557788""
+            ""Telefono"": ""5491155557788""
             },
             {
             ""Nombre"": ""Julieta"",
@@ -424,7 +424,7 @@ namespace UI
             ""CuitCuil"": ""27-39012345-8"",
             ""FechaNacimiento"": ""1994-01-12"",
             ""Email"": ""julieta.benitez@example.com"",
-            ""Telefono"": ""+5491155559900""
+            ""Telefono"": ""5491155559900""
             },
             {
             ""Nombre"": ""Gastón"",
@@ -433,7 +433,7 @@ namespace UI
             ""CuitCuil"": ""20-30123456-1"",
             ""FechaNacimiento"": ""1982-07-30"",
             ""Email"": ""gaston.acosta@example.com"",
-            ""Telefono"": ""+5491155551000""
+            ""Telefono"": ""5491155551000""
             },
             {
             ""Nombre"": ""Daniela"",
@@ -442,7 +442,7 @@ namespace UI
             ""CuitCuil"": ""27-35098765-3"",
             ""FechaNacimiento"": ""1989-11-28"",
             ""Email"": ""daniela.pereyra@example.com"",
-            ""Telefono"": ""+5491155552000""
+            ""Telefono"": ""5491155552000""
             },
             {
             ""Nombre"": ""Esteban"",
@@ -451,7 +451,7 @@ namespace UI
             ""CuitCuil"": ""20-28901234-9"",
             ""FechaNacimiento"": ""1977-04-16"",
             ""Email"": ""esteban.castro@example.com"",
-            ""Telefono"": ""+5491155553000""
+            ""Telefono"": ""5491155553000""
             },
             {
             ""Nombre"": ""Lorena"",
@@ -460,7 +460,7 @@ namespace UI
             ""CuitCuil"": ""27-32012345-6"",
             ""FechaNacimiento"": ""1984-06-08"",
             ""Email"": ""lorena.silva@example.com"",
-            ""Telefono"": ""+5491155554000""
+            ""Telefono"": ""5491155554000""
             },
             {
             ""Nombre"": ""Pablo"",
@@ -469,7 +469,7 @@ namespace UI
             ""CuitCuil"": ""20-36098765-4"",
             ""FechaNacimiento"": ""1996-02-01"",
             ""Email"": ""pablo.ortiz@example.com"",
-            ""Telefono"": ""+5491155555000""
+            ""Telefono"": ""5491155555000""
             },
             {
             ""Nombre"": ""Romina"",
@@ -478,7 +478,7 @@ namespace UI
             ""CuitCuil"": ""27-40011223-9"",
             ""FechaNacimiento"": ""1997-08-14"",
             ""Email"": ""romina.nunez@example.com"",
-            ""Telefono"": ""+5491155556000""
+            ""Telefono"": ""5491155556000""
             },
             {
             ""Nombre"": ""Facundo"",
@@ -487,7 +487,7 @@ namespace UI
             ""CuitCuil"": ""20-29123456-8"",
             ""FechaNacimiento"": ""1981-03-22"",
             ""Email"": ""facundo.blanco@example.com"",
-            ""Telefono"": ""+5491155557000""
+            ""Telefono"": ""5491155557000""
             },
             {
             ""Nombre"": ""Andrea"",
@@ -496,7 +496,7 @@ namespace UI
             ""CuitCuil"": ""27-33012345-1"",
             ""FechaNacimiento"": ""1986-09-17"",
             ""Email"": ""andrea.rivas@example.com"",
-            ""Telefono"": ""+5491155558000""
+            ""Telefono"": ""5491155558000""
             },
             {
             ""Nombre"": ""Sergio"",
@@ -505,7 +505,7 @@ namespace UI
             ""CuitCuil"": ""20-37012345-5"",
             ""FechaNacimiento"": ""1990-05-06"",
             ""Email"": ""sergio.herrera@example.com"",
-            ""Telefono"": ""+5491155559000""
+            ""Telefono"": ""5491155559000""
             },
             {
             ""Nombre"": ""Laura"",
@@ -514,7 +514,7 @@ namespace UI
             ""CuitCuil"": ""27-38123456-4"",
             ""FechaNacimiento"": ""1992-10-29"",
             ""Email"": ""laura.morales@example.com"",
-            ""Telefono"": ""+5491155551111""
+            ""Telefono"": ""5491155551111""
             },
             {
             ""Nombre"": ""Gabriel"",
@@ -523,7 +523,7 @@ namespace UI
             ""CuitCuil"": ""20-31012345-0"",
             ""FechaNacimiento"": ""1979-12-04"",
             ""Email"": ""gabriel.gil@example.com"",
-            ""Telefono"": ""+5491155552222""
+            ""Telefono"": ""5491155552222""
             },
             {
             ""Nombre"": ""Natalia"",
@@ -532,7 +532,7 @@ namespace UI
             ""CuitCuil"": ""27-36123456-7"",
             ""FechaNacimiento"": ""1983-01-09"",
             ""Email"": ""natalia.vargas@example.com"",
-            ""Telefono"": ""+5491155553333""
+            ""Telefono"": ""5491155553333""
             },
             {
             ""Nombre"": ""Ricardo"",
@@ -541,7 +541,7 @@ namespace UI
             ""CuitCuil"": ""20-34012345-3"",
             ""FechaNacimiento"": ""1988-07-21"",
             ""Email"": ""ricardo.mendez@example.com"",
-            ""Telefono"": ""+5491155554444""
+            ""Telefono"": ""5491155554444""
             },
             {
             ""Nombre"": ""Marina"",
@@ -550,7 +550,7 @@ namespace UI
             ""CuitCuil"": ""27-39123456-0"",
             ""FechaNacimiento"": ""1995-04-02"",
             ""Email"": ""marina.sosa@example.com"",
-            ""Telefono"": ""+5491155555555""
+            ""Telefono"": ""5491155555555""
             },
             {
             ""Nombre"": ""Hernán"",
@@ -559,7 +559,7 @@ namespace UI
             ""CuitCuil"": ""20-32012345-2"",
             ""FechaNacimiento"": ""1980-09-11"",
             ""Email"": ""hernan.luna@example.com"",
-            ""Telefono"": ""+5491155556666""
+            ""Telefono"": ""5491155556666""
             }]";
             ClienteBLL clienteBLO = new ClienteBLL();
             DuenoBLL duenoBLO = new DuenoBLL();
@@ -626,7 +626,7 @@ namespace UI
                 ""CuitCuil"": ""27-42112233-1"",
                 ""FechaNacimiento"": ""1999-02-18"",
                 ""Email"": ""renata.gonzalez@example.com"",
-                ""Telefono"": ""+5491155557777""
+                ""Telefono"": ""5491155557777""
               },
               {
                 ""Nombre"": ""Mateo"",
@@ -635,7 +635,7 @@ namespace UI
                 ""CuitCuil"": ""20-43012345-9"",
                 ""FechaNacimiento"": ""2001-07-05"",
                 ""Email"": ""mateo.lopez@example.com"",
-                ""Telefono"": ""+5491155558888""
+                ""Telefono"": ""5491155558888""
               },
               {
                 ""Nombre"": ""Victoria"",
@@ -644,7 +644,7 @@ namespace UI
                 ""CuitCuil"": ""27-44123456-4"",
                 ""FechaNacimiento"": ""2000-11-30"",
                 ""Email"": ""victoria.sanchez@example.com"",
-                ""Telefono"": ""+5491155559999""
+                ""Telefono"": ""5491155559999""
               },
               {
                 ""Nombre"": ""Benjamín"",
@@ -653,7 +653,7 @@ namespace UI
                 ""CuitCuil"": ""20-45098765-2"",
                 ""FechaNacimiento"": ""2003-04-12"",
                 ""Email"": ""benjamin.rodriguez@example.com"",
-                ""Telefono"": ""+5491155551010""
+                ""Telefono"": ""5491155551010""
               },
               {
                 ""Nombre"": ""Olivia"",
@@ -662,7 +662,7 @@ namespace UI
                 ""CuitCuil"": ""27-46123456-7"",
                 ""FechaNacimiento"": ""2002-08-25"",
                 ""Email"": ""olivia.fernandez@example.com"",
-                ""Telefono"": ""+5491155552020""
+                ""Telefono"": ""5491155552020""
               },
               {
                 ""Nombre"": ""Joaquín"",
@@ -671,7 +671,7 @@ namespace UI
                 ""CuitCuil"": ""20-47012345-5"",
                 ""FechaNacimiento"": ""1999-01-01"",
                 ""Email"": ""joaquin.diaz@example.com"",
-                ""Telefono"": ""+5491155553030""
+                ""Telefono"": ""5491155553030""
               },
               {
                 ""Nombre"": ""Isabella"",
@@ -680,7 +680,7 @@ namespace UI
                 ""CuitCuil"": ""27-48123456-0"",
                 ""FechaNacimiento"": ""2004-05-19"",
                 ""Email"": ""isabella.garcia@example.com"",
-                ""Telefono"": ""+5491155554040""
+                ""Telefono"": ""5491155554040""
               },
               {
                 ""Nombre"": ""Thiago"",
@@ -689,7 +689,7 @@ namespace UI
                 ""CuitCuil"": ""20-49098765-8"",
                 ""FechaNacimiento"": ""2005-10-08"",
                 ""Email"": ""thiago.martinez@example.com"",
-                ""Telefono"": ""+5491155555050""
+                ""Telefono"": ""5491155555050""
               },
               {
                 ""Nombre"": ""Emma"",
@@ -698,7 +698,7 @@ namespace UI
                 ""CuitCuil"": ""27-50123456-3"",
                 ""FechaNacimiento"": ""2001-03-03"",
                 ""Email"": ""emma.perez@example.com"",
-                ""Telefono"": ""+5491155556060""
+                ""Telefono"": ""5491155556060""
               },
               {
                 ""Nombre"": ""Santino"",
@@ -707,7 +707,7 @@ namespace UI
                 ""CuitCuil"": ""20-51012345-1"",
                 ""FechaNacimiento"": ""2002-11-15"",
                 ""Email"": ""santino.gomez@example.com"",
-                ""Telefono"": ""+5491155557070""
+                ""Telefono"": ""5491155557070""
               },
               {
                 ""Nombre"": ""Catalina"",
@@ -716,7 +716,7 @@ namespace UI
                 ""CuitCuil"": ""27-52123456-6"",
                 ""FechaNacimiento"": ""2000-06-20"",
                 ""Email"": ""catalina.acosta@example.com"",
-                ""Telefono"": ""+5491155558080""
+                ""Telefono"": ""5491155558080""
               },
               {
                 ""Nombre"": ""Felipe"",
@@ -725,7 +725,7 @@ namespace UI
                 ""CuitCuil"": ""20-53098765-4"",
                 ""FechaNacimiento"": ""2003-09-07"",
                 ""Email"": ""felipe.benitez@example.com"",
-                ""Telefono"": ""+5491155559090""
+                ""Telefono"": ""5491155559090""
               },
               {
                 ""Nombre"": ""Sofía"",
@@ -734,16 +734,16 @@ namespace UI
                 ""CuitCuil"": ""27-54123456-9"",
                 ""FechaNacimiento"": ""2004-12-01"",
                 ""Email"": ""sofia.castro@example.com"",
-                ""Telefono"": ""+5491155551313""
+                ""Telefono"": ""5491155551313""
               },
               {
-                ""Nombre"": ""Juan Cruz"",
+                ""Nombre"": ""Juan"",
                 ""Apellido"": ""Herrera"",
                 ""DNI"": ""55012345"",
                 ""CuitCuil"": ""20-55012345-7"",
                 ""FechaNacimiento"": ""2000-07-28"",
-                ""Email"": ""juancruz.herrera@example.com"",
-                ""Telefono"": ""+5491155552424""
+                ""Email"": ""juan.herrera@example.com"",
+                ""Telefono"": ""5491155552424""
               },
               {
                 ""Nombre"": ""Pilar"",
@@ -752,7 +752,7 @@ namespace UI
                 ""CuitCuil"": ""27-56123456-2"",
                 ""FechaNacimiento"": ""1998-03-09"",
                 ""Email"": ""pilar.ruiz@example.com"",
-                ""Telefono"": ""+5491155553535""
+                ""Telefono"": ""5491155553535""
               },
               {
                 ""Nombre"": ""Tomás"",
@@ -761,7 +761,7 @@ namespace UI
                 ""CuitCuil"": ""20-57098765-0"",
                 ""FechaNacimiento"": ""2001-01-22"",
                 ""Email"": ""tomas.silva@example.com"",
-                ""Telefono"": ""+5491155554646""
+                ""Telefono"": ""5491155554646""
               },
               {
                 ""Nombre"": ""Lola"",
@@ -770,7 +770,7 @@ namespace UI
                 ""CuitCuil"": ""27-58123456-5"",
                 ""FechaNacimiento"": ""2002-06-14"",
                 ""Email"": ""lola.torres@example.com"",
-                ""Telefono"": ""+5491155555757""
+                ""Telefono"": ""5491155555757""
               },
               {
                 ""Nombre"": ""Francisco"",
@@ -779,7 +779,7 @@ namespace UI
                 ""CuitCuil"": ""20-59012345-3"",
                 ""FechaNacimiento"": ""2003-11-05"",
                 ""Email"": ""francisco.vargas@example.com"",
-                ""Telefono"": ""+5491155556868""
+                ""Telefono"": ""5491155556868""
               },
               {
                 ""Nombre"": ""Martina"",
@@ -788,7 +788,7 @@ namespace UI
                 ""CuitCuil"": ""27-60123456-8"",
                 ""FechaNacimiento"": ""2000-09-29"",
                 ""Email"": ""martina.gomez@example.com"",
-                ""Telefono"": ""+5491155557979""
+                ""Telefono"": ""5491155557979""
               },
               {
                 ""Nombre"": ""Manuel"",
@@ -797,7 +797,7 @@ namespace UI
                 ""CuitCuil"": ""20-61098765-1"",
                 ""FechaNacimiento"": ""1999-04-17"",
                 ""Email"": ""manuel.pereyra@example.com"",
-                ""Telefono"": ""+5491155558080""
+                ""Telefono"": ""5491155558080""
               }
             ]";
 
@@ -840,7 +840,7 @@ namespace UI
                 ""CuitCuil"": ""27-62112233-5"",
                 ""FechaNacimiento"": ""1997-08-01"",
                 ""Email"": ""elena.blanco@example.com"",
-                ""Telefono"": ""+5491155559191""
+                ""Telefono"": ""5491155559191""
               },
               {
                 ""Nombre"": ""Simón"",
@@ -849,7 +849,7 @@ namespace UI
                 ""CuitCuil"": ""20-63012345-3"",
                 ""FechaNacimiento"": ""1996-03-20"",
                 ""Email"": ""simon.ramirez@example.com"",
-                ""Telefono"": ""+5491155550202""
+                ""Telefono"": ""5491155550202""
               },
               {
                 ""Nombre"": ""Clara"",
@@ -858,7 +858,7 @@ namespace UI
                 ""CuitCuil"": ""27-64123456-8"",
                 ""FechaNacimiento"": ""1998-12-11"",
                 ""Email"": ""clara.nunez@example.com"",
-                ""Telefono"": ""+5491155551313""
+                ""Telefono"": ""5491155551313""
               },
 /*
               {
@@ -963,7 +963,7 @@ namespace UI
                 ""CuitCuil"": ""27-72112233-0"",
                 ""FechaNacimiento"": ""2000-04-10"",
                 ""Email"": ""bianca.flores@example.com"",
-                ""Telefono"": ""+5491155559191"",
+                ""Telefono"": ""5491155559191"",
                 ""DireccionTaller"": ""Av. Corrientes 1543, Balvanera, Ciudad Autónoma de Buenos Aires""
               },
               {
@@ -973,7 +973,7 @@ namespace UI
                 ""CuitCuil"": ""20-73012345-8"",
                 ""FechaNacimiento"": ""1999-09-22"",
                 ""Email"": ""lorenzo.moreno@example.com"",
-                ""Telefono"": ""+5491155550202"",
+                ""Telefono"": ""5491155550202"",
                 ""DireccionTaller"": ""Defensa 880, San Telmo, Ciudad Autónoma de Buenos Aires""
               },
               {
@@ -983,7 +983,7 @@ namespace UI
                 ""CuitCuil"": ""27-74123456-3"",
                 ""FechaNacimiento"": ""2001-01-05"",
                 ""Email"": ""abril.salas@example.com"",
-                ""Telefono"": ""+5491155551313"",
+                ""Telefono"": ""5491155551313"",
                 ""DireccionTaller"": ""Libertador 5050, Palermo, Ciudad Autónoma de Buenos Aires""
               },
               {
@@ -993,7 +993,7 @@ namespace UI
                 ""CuitCuil"": ""20-75098765-1"",
                 ""FechaNacimiento"": ""2002-06-30"",
                 ""Email"": ""genaro.vega@example.com"",
-                ""Telefono"": ""+5491155552424"",
+                ""Telefono"": ""5491155552424"",
                 ""DireccionTaller"": ""Cabildo 2005, Belgrano, Ciudad Autónoma de Buenos Aires""
               },
               {
@@ -1003,7 +1003,7 @@ namespace UI
                 ""CuitCuil"": ""27-76123456-6"",
                 ""FechaNacimiento"": ""2000-11-19"",
                 ""Email"": ""indiana.cruz@example.com"",
-                ""Telefono"": ""+5491155553535"",
+                ""Telefono"": ""5491155553535"",
                 ""DireccionTaller"": ""Rivadavia 7890, Flores, Ciudad Autónoma de Buenos Aires""
               },
               {
@@ -1013,7 +1013,7 @@ namespace UI
                 ""CuitCuil"": ""20-77012345-4"",
                 ""FechaNacimiento"": ""1997-03-08"",
                 ""Email"": ""gaston.ferreyra@example.com"",
-                ""Telefono"": ""+5491155554646"",
+                ""Telefono"": ""5491155554646"",
                 ""DireccionTaller"": ""Florida 123, San Nicolás, Ciudad Autónoma de Buenos Aires""
               },
               {
@@ -1023,7 +1023,7 @@ namespace UI
                 ""CuitCuil"": ""27-78123456-9"",
                 ""FechaNacimiento"": ""1998-07-27"",
                 ""Email"": ""maia.romero@example.com"",
-                ""Telefono"": ""+5491155555757"",
+                ""Telefono"": ""5491155555757"",
                  ""DireccionTaller"": ""Uriarte 2450, Palermo, Ciudad Autónoma de Buenos Aires""
               },
               {
@@ -1033,7 +1033,7 @@ namespace UI
                 ""CuitCuil"": ""20-79098765-7"",
                 ""FechaNacimiento"": ""1996-12-04"",
                 ""Email"": ""bautista.miranda@example.com"",
-                ""Telefono"": ""+5491155556868"",
+                ""Telefono"": ""5491155556868"",
                 ""DireccionTaller"": ""Piedras 50, Monserrat, Ciudad Autónoma de Buenos Aires""
               },
               {
@@ -1043,7 +1043,7 @@ namespace UI
                 ""CuitCuil"": ""27-80123456-2"",
                 ""FechaNacimiento"": ""2003-05-15"",
                 ""Email"": ""mia.rojas@example.com"",
-                ""Telefono"": ""+5491155557979"",
+                ""Telefono"": ""5491155557979"",
                 ""DireccionTaller"": ""Av. La Plata 1003, Caballito, Ciudad Autónoma de Buenos Aires""
               },
               {
@@ -1053,7 +1053,7 @@ namespace UI
                 ""CuitCuil"": ""20-81012345-0"",
                 ""FechaNacimiento"": ""2004-02-28"",
                 ""Email"": ""valentin.gonzalez@example.com"",
-                ""Telefono"": ""+5491155558080"",
+                ""Telefono"": ""5491155558080"",
                 ""DireccionTaller"": ""Vuelta de Obligado 3500, Núñez, Ciudad Autónoma de Buenos Aires""
               }
             ]

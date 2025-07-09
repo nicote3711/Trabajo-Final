@@ -210,7 +210,7 @@ namespace UI
                 TransaccionFinancieraBLO.EliminarPagoCombustible(transaccionFinanciera);
                 CargarDgvPagos();
                 CargarDgvFacturasImp();
-                MessageBox.Show("pago dueño eliminado exitosamente");
+                MessageBox.Show("pago combustible eliminado exitosamente");
             }
             catch (Exception ex)
             {

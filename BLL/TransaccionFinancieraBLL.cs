@@ -33,7 +33,7 @@ namespace BLL
 
 
                 TipoTransaccionBLL TipoTransaccionBLO = new TipoTransaccionBLL();
-				TipoTransaccion tipoTransaccion = TipoTransaccionBLO.BuscarPorId((int)EnumTipoTransaccion.CobroSolictudHoras);
+				TipoTransaccion tipoTransaccion = TipoTransaccionBLO.BuscarPorId((int)EnumTipoTransaccion.CobroSolicitudHoras);
 				if (tipoTransaccion == null) throw new Exception("no se encontro el tipo de transaccion para cobro de horas");
 
 				transaccionFinanciera.TipoTransaccion = tipoTransaccion;
@@ -52,11 +52,14 @@ namespace BLL
 					ClienteBLO.AcreditarSaldoSimulador(facturaSolicitud.Solicitud.Cliente.IDCliente,facturaSolicitud.Solicitud.CantidadHorasSimulador);
 				}
 
-				
+               
 
                 TransaccionFinancieraDAO.RegistrarTransaccion(transaccionFinanciera);
 
-			}
+                Resultado result = HelperTransacciones.GenerarTransaccionPDF(transaccionFinanciera);
+                if(!result.Success) throw new Exception(result.Message);
+
+            }
 			catch (Exception ex)
 			{
 				helperTransaccion.RollbackDfParaTransaccion(ds);
@@ -89,7 +92,7 @@ namespace BLL
 				throw new Exception("BLL TransaccionFinanciera error al buscar transaccion por id factura: "+ex.Message,ex);
 			}
 	
-		}
+		}  //para las facturas
 
         public List<TransaccionFinanciera> ObtenerTodas()
         {
@@ -147,7 +150,7 @@ namespace BLL
                         FacturaDuenoBLL FacturaDuenoBLO = new FacturaDuenoBLL();
                         return FacturaDuenoBLO.BuscarFacturaDuenoPorIdParaTransaccion(idFactura);
 
-                    case (int)EnumTipoTransaccion.CobroSolictudHoras:
+                    case (int)EnumTipoTransaccion.CobroSolicitudHoras:
                         FacturaSolicitudHorasBLL FacturaSolicitudHorasBLO = new FacturaSolicitudHorasBLL();
                         return FacturaSolicitudHorasBLO.BuscarFacturaSolicitudPorIdParaTransaccion(idFactura);
 
@@ -185,6 +188,8 @@ namespace BLL
 				if (fsh.Solicitud.Cliente == null || fsh.Solicitud.Cliente.IDCliente <= 0) throw new Exception("erro en solicitud, su cliente es nulo o su id es invalido");
 
 				TransaccionFinancieraDAO.EliminarTransaccionPorId(transaccionFinanciera.IdTransaccionFinanciera);
+                Resultado result = HelperTransacciones.EliminarTransaccionPDF(transaccionFinanciera.TipoTransaccion.IdTipoTransaccion, transaccionFinanciera.IdTransaccionFinanciera);
+
 				ClienteBLL ClienteBLO = new ClienteBLL();
 				if(fsh.Solicitud.CantidadHorasVuelo>0)
 				{
@@ -194,6 +199,7 @@ namespace BLL
 				{
 					ClienteBLO.DescontarHorasSimulador( fsh.Solicitud.Cliente.IDCliente, fsh.Solicitud.CantidadHorasSimulador);
 				}
+
 			}
 			catch (Exception ex)
 			{
@@ -216,7 +222,8 @@ namespace BLL
                 transaccionFinanciera.IdFactura = transaccionFinanciera.Factura.IdFactura;
 
                 TransaccionFinancieraDAO.RegistrarTransaccion(transaccionFinanciera);
-
+                Resultado result = HelperTransacciones.GenerarTransaccionPDF(transaccionFinanciera);
+                if (!result.Success) throw new Exception(result.Message);
             }
             catch (Exception ex)
 			{
@@ -230,13 +237,13 @@ namespace BLL
 			try
 			{
                 if (transaccionFinanciera.Factura == null || transaccionFinanciera.Factura.IdFactura <= 0) throw new Exception("la factura de la transaccion es nula o su id es invalido");
-                if (transaccionFinanciera.FechaTransaccion.Date < transaccionFinanciera.Factura.FechaFactura.Date) throw new Exception("la fecha de la transaccion no puede ser anterior a la factura");
+                if (transaccionFinanciera.FechaTransaccion.Date> DateTime.Now.Date||transaccionFinanciera.FechaTransaccion.Date < transaccionFinanciera.Factura.FechaFactura.Date) throw new Exception("la fecha de la transaccion no puede ser anterior a la factura ni posterior a la fecha de hoy");
                 if (transaccionFinanciera.MontoTransaccion <= 0) throw new Exception("el monto de la transaccion debe ser un monto valido");
                 if (transaccionFinanciera.ReferenciaExterna == null && transaccionFinanciera.FormaPago.IdFormaPago.Equals((int)EnumFormaPago.Transferencia)) throw new Exception("las transacciones por transferencia refquieren el numero de referencia externa");
                 if (transaccionFinanciera.ReferenciaExterna != null && transaccionFinanciera.FormaPago.IdFormaPago.Equals((int)EnumFormaPago.Efectivo)) throw new Exception("las opereciones en efectivo no poseen referencia externa");
 
 				TransaccionFinanciera trf = TransaccionFinancieraDAO.BuscarTransaccionPorIdFactura(transaccionFinanciera.Factura.IdFactura);
-				if (trf != null) throw new Exception($"ya existe una transaccion para el id de factura {transaccionFinanciera.Factura.IdFactura}");
+				if (trf != null) throw new Exception($"ya existe una transaccion para el id de factura {transaccionFinanciera.Factura.IdFactura} con id transaccion {trf.IdTransaccionFinanciera}");
             }
 			catch (Exception ex)
 			{
@@ -253,11 +260,13 @@ namespace BLL
                 if (transaccionFinanciera == null || transaccionFinanciera.IdTransaccionFinanciera <= 0) throw new Exception("la transaccion que desea eliminar es nula o su id es invalido");
                 if (transaccionFinanciera.Factura == null || transaccionFinanciera.Factura.IdFactura != transaccionFinanciera.IdFactura || transaccionFinanciera.IdFactura <= 0) throw new Exception("error factura nula , o incongruencia de id factura con objeto id factura o id factura invalido");
                 if (!(transaccionFinanciera.Factura is FacturaDueno fd)) throw new Exception("la factura asociada a la transaccion no es del tipo correcto");
+                Resultado result = HelperTransacciones.EliminarTransaccionPDF(transaccionFinanciera.TipoTransaccion.IdTipoTransaccion, transaccionFinanciera.IdTransaccionFinanciera);
 
                 TransaccionFinancieraDAO.EliminarTransaccionPorId(transaccionFinanciera.IdTransaccionFinanciera);
             }
 			catch (Exception ex)
 			{
+
 
 				throw new Exception("BLL TransaccionFinanciera error al eliminar pago dueño: "+ex.Message,ex);
 			}
@@ -277,6 +286,8 @@ namespace BLL
                 transaccionFinanciera.IdFactura = transaccionFinanciera.Factura.IdFactura;
 
                 TransaccionFinancieraDAO.RegistrarTransaccion(transaccionFinanciera);
+                Resultado result = HelperTransacciones.GenerarTransaccionPDF(transaccionFinanciera);
+                if (!result.Success) throw new Exception(result.Message);
             }
 			catch (Exception ex)
 			{
@@ -292,6 +303,7 @@ namespace BLL
                 if (transaccionFinanciera == null || transaccionFinanciera.IdTransaccionFinanciera <= 0) throw new Exception("la transaccion que desea eliminar es nula o su id es invalido");
                 if (transaccionFinanciera.Factura == null || transaccionFinanciera.Factura.IdFactura != transaccionFinanciera.IdFactura || transaccionFinanciera.IdFactura <= 0) throw new Exception("error factura nula , o incongruencia de id factura con objeto id factura o id factura invalido");
                 if (!(transaccionFinanciera.Factura is FacturaInstructor fi)) throw new Exception("la factura asociada a la transaccion no es del tipo correcto");
+                Resultado result = HelperTransacciones.EliminarTransaccionPDF(transaccionFinanciera.TipoTransaccion.IdTipoTransaccion, transaccionFinanciera.IdTransaccionFinanciera);
 
                 TransaccionFinancieraDAO.EliminarTransaccionPorId(transaccionFinanciera.IdTransaccionFinanciera);
             }
@@ -316,6 +328,8 @@ namespace BLL
                 transaccionFinanciera.IdFactura = transaccionFinanciera.Factura.IdFactura;
 			
                 TransaccionFinancieraDAO.RegistrarTransaccion(transaccionFinanciera);
+                Resultado result = HelperTransacciones.GenerarTransaccionPDF(transaccionFinanciera);
+                if (!result.Success) throw new Exception(result.Message);
             }
 			catch (Exception ex)
 			{
@@ -331,6 +345,7 @@ namespace BLL
                 if (transaccionFinanciera == null || transaccionFinanciera.IdTransaccionFinanciera <= 0) throw new Exception("la transaccion que desea eliminar es nula o su id es invalido");
                 if (transaccionFinanciera.Factura == null || transaccionFinanciera.Factura.IdFactura != transaccionFinanciera.IdFactura || transaccionFinanciera.IdFactura <= 0) throw new Exception("error factura nula , o incongruencia de id factura con objeto id factura o id factura invalido");
                 if (!(transaccionFinanciera.Factura is FacturaMantenimiento fi)) throw new Exception("la factura asociada a la transaccion no es del tipo correcto");
+                Resultado result = HelperTransacciones.EliminarTransaccionPDF(transaccionFinanciera.TipoTransaccion.IdTipoTransaccion, transaccionFinanciera.IdTransaccionFinanciera);
 
                 TransaccionFinancieraDAO.EliminarTransaccionPorId(transaccionFinanciera.IdTransaccionFinanciera);
             }
@@ -355,6 +370,8 @@ namespace BLL
                 transaccionFinanciera.IdFactura = transaccionFinanciera.Factura.IdFactura;
 
                 TransaccionFinancieraDAO.RegistrarTransaccion(transaccionFinanciera);
+                Resultado result = HelperTransacciones.GenerarTransaccionPDF(transaccionFinanciera);
+                if (!result.Success) throw new Exception(result.Message);
             }
 			catch (Exception ex)
 			{
@@ -370,6 +387,7 @@ namespace BLL
                 if (transaccionFinanciera == null || transaccionFinanciera.IdTransaccionFinanciera <= 0) throw new Exception("la transaccion que desea eliminar es nula o su id es invalido");
                 if (transaccionFinanciera.Factura == null || transaccionFinanciera.Factura.IdFactura != transaccionFinanciera.IdFactura || transaccionFinanciera.IdFactura <= 0) throw new Exception("error factura nula , o incongruencia de id factura con objeto id factura o id factura invalido");
                 if (!(transaccionFinanciera.Factura is FacturaCombustible fi)) throw new Exception("la factura asociada a la transaccion no es del tipo correcto");
+                Resultado result = HelperTransacciones.EliminarTransaccionPDF(transaccionFinanciera.TipoTransaccion.IdTipoTransaccion, transaccionFinanciera.IdTransaccionFinanciera);
 
                 TransaccionFinancieraDAO.EliminarTransaccionPorId(transaccionFinanciera.IdTransaccionFinanciera);
             }
