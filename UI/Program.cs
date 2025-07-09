@@ -1,3 +1,5 @@
+using Microsoft.VisualBasic.Logging;
+
 namespace UI
 {
     internal static class Program

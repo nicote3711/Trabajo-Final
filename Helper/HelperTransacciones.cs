@@ -94,7 +94,7 @@ namespace Helper
                     string formaPagoDesc = transaccion.FormaPago?.Descripcion ?? "N/A";
 
                     Table tabla = new Table(UnitValue.CreatePercentArray(new float[] { 0.3f, 0.7f }))
-                        .SetWidth(UnitValue.CreatePercentValue(100));
+                        .SetWidth(UnitValue.CreatePercentValue(100)).SetBorder(new SolidBorder(DeviceRgb.BLACK, 0.5f));
 
                     tabla.AddCell(CreateLabelCell("Emisor del Pago:"));
                     tabla.AddCell(CreateDataCell($"{cliente.Nombre} {cliente.Apellido}"));
@@ -110,6 +110,9 @@ namespace Helper
 
                     tabla.AddCell(CreateLabelCell("Monto Total:"));
                     tabla.AddCell(CreateDataCell($"$ {transaccion.MontoTransaccion.ToString("N2")}"));
+
+                    tabla.AddCell(CreateLabelCell("Nro de Factura Abonada:"));
+                    tabla.AddCell(CreateDataCell(transaccion.Factura.NroFactura.ToString()));
 
                     document.Add(tabla);
 

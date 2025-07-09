@@ -33,6 +33,8 @@
             txt_Usuario = new TextBox();
             txt_Contrasena = new TextBox();
             btn_LogIn = new Button();
+            checkBox_Usuario = new CheckBox();
+            checkBox_Contrasena = new CheckBox();
             SuspendLayout();
             // 
             // label1
@@ -78,11 +80,35 @@
             btn_LogIn.UseVisualStyleBackColor = true;
             btn_LogIn.Click += btn_LogIn_Click;
             // 
+            // checkBox_Usuario
+            // 
+            checkBox_Usuario.AutoSize = true;
+            checkBox_Usuario.Location = new Point(249, 53);
+            checkBox_Usuario.Name = "checkBox_Usuario";
+            checkBox_Usuario.Size = new Size(84, 19);
+            checkBox_Usuario.TabIndex = 5;
+            checkBox_Usuario.Text = "ver usuario";
+            checkBox_Usuario.UseVisualStyleBackColor = true;
+            checkBox_Usuario.CheckedChanged += checkBox_Usuario_CheckedChanged;
+            // 
+            // checkBox_Contrasena
+            // 
+            checkBox_Contrasena.AutoSize = true;
+            checkBox_Contrasena.Location = new Point(249, 88);
+            checkBox_Contrasena.Name = "checkBox_Contrasena";
+            checkBox_Contrasena.Size = new Size(68, 19);
+            checkBox_Contrasena.TabIndex = 6;
+            checkBox_Contrasena.Text = "ver pass";
+            checkBox_Contrasena.UseVisualStyleBackColor = true;
+            checkBox_Contrasena.CheckedChanged += checkBox_Contrasena_CheckedChanged;
+            // 
             // FormLogIn
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(295, 201);
+            ClientSize = new Size(344, 201);
+            Controls.Add(checkBox_Contrasena);
+            Controls.Add(checkBox_Usuario);
             Controls.Add(btn_LogIn);
             Controls.Add(txt_Contrasena);
             Controls.Add(txt_Usuario);
@@ -102,5 +128,7 @@
         private TextBox txt_Usuario;
         private TextBox txt_Contrasena;
         private Button btn_LogIn;
+        private CheckBox checkBox_Usuario;
+        private CheckBox checkBox_Contrasena;
     }
 }
