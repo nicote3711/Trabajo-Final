@@ -18,7 +18,7 @@ namespace BLL
 
         public List<TransaccionFinanciera> ObtenerCobrosPorTipoTransaccion(EnumTipoTransaccion tipoTransaccion)
         {
-            List<TransaccionFinanciera> facturasCobradas = TransaccionFinancieraDAO.BuscarTransaccionesPorTipo((int)EnumTipoTransaccion.CobroSolictudHoras);
+            List<TransaccionFinanciera> facturasCobradas = TransaccionFinancieraDAO.BuscarTransaccionesPorTipo((int)EnumTipoTransaccion.CobroSolicitudHoras);
 
             return facturasCobradas;
         }

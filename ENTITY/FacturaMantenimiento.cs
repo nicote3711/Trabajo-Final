@@ -15,17 +15,31 @@ namespace ENTITY
 
         public override Persona DatosCliente()
         {
-            throw new NotImplementedException();
+            Cliente cliente = new Cliente();
+
+            cliente.Nombre = "Flight MRB";
+            cliente.Apellido = string.Empty;
+            cliente.CuitCuil = "3013549875";
+            return cliente;
         }
 
         public override Persona DatosEmisor()
         {
-            throw new NotImplementedException();
+            Empresa emisor = new Empresa();
+            emisor.Nombre = Mantenimiento.Mecanico.Nombre;
+            emisor.Apellido = Mantenimiento.Mecanico.Apellido;
+            emisor.CuitCuil = Mantenimiento.Mecanico.CuitCuil;
+            return emisor;
         }
 
         public override List<LiquidacionDetalle> FacturaDetalles()
         {
-            throw new NotImplementedException();
+            List<LiquidacionDetalle> liquidacionMantenimiento = new List<LiquidacionDetalle>();
+
+            liquidacionMantenimiento.Add(new LiquidacionDetalle(Mantenimiento.Fecha,Mantenimiento.Detalle,1,MontoTotal));
+
+            return liquidacionMantenimiento;
         }
+
     }
 }

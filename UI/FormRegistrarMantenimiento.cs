@@ -170,6 +170,7 @@ namespace UI
                 {
 
                     FacturaMantenimientoBLO.EliminarFacturaMantenimiento(factura);
+                    
                     CargarComboAeronaves();
                     CargarDgvFacturaMantenimientso();
                     CargarDgvMantenimientos();

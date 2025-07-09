@@ -298,8 +298,8 @@ namespace UI
             var datosFacturas = new Dictionary<string, Dictionary<string, decimal>>();
 
             listaTransacciones = new TransaccionFinancieraBLL().ObtenerTodas();
-            listaCobros = listaTransacciones.Where(t => t.TipoTransaccion.IdTipoTransaccion.Equals((int)EnumTipoTransaccion.CobroSolictudHoras)).ToList();
-            listaPagos = listaTransacciones.Where(t => !t.TipoTransaccion.IdTipoTransaccion.Equals((int)EnumTipoTransaccion.CobroSolictudHoras)).ToList();
+            listaCobros = listaTransacciones.Where(t => t.TipoTransaccion.IdTipoTransaccion.Equals((int)EnumTipoTransaccion.CobroSolicitudHoras)).ToList();
+            listaPagos = listaTransacciones.Where(t => !t.TipoTransaccion.IdTipoTransaccion.Equals((int)EnumTipoTransaccion.CobroSolicitudHoras)).ToList();
 
             if (itemSeleccionado != null)
             {

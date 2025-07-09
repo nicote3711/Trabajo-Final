@@ -217,8 +217,6 @@ namespace BLL
                 if (mantenimiento == null || mantenimiento.IdMantenimiento <= 0) throw new Exception(" Mantenimiento nulo o con id invalido");
                 if (mantenimiento.FacturaMantenimiento == null || mantenimiento.FacturaMantenimiento.IdFactura <= 0) throw new Exception("factura nula o id invalido");
                 if (mantenimiento.Aeronave == null || mantenimiento.Aeronave.IdAeronave <= 0) throw new Exception("aeronave nula o id invalido");
-                
-
 
                 EstadoMantenimientoBLL EstadoMantenimientoBLO =new EstadoMantenimientoBLL();
                 EstadoMantenimiento estadoMant = EstadoMantenimientoBLO.BuscarEstadoMantenimientoPorId((int)EnumEstadoMantenimiento.Finalizado);
@@ -241,9 +239,6 @@ namespace BLL
                 {
                     mantenimiento.Aeronave.Revision100Hs = 0;
                 }
-
-                //GenerarPDFFactura();
-                HelperFacturas.GenerarFacturaPDF(mantenimiento.FacturaMantenimiento);
 
                 AeronaveBLO.ModificarAeronave(mantenimiento.Aeronave);
                 AeronaveBLO.ActualizarEstadoAeronave(mantenimiento.Aeronave.IdAeronave, estadoAeronave);

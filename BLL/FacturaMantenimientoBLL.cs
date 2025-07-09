@@ -1,5 +1,6 @@
 ﻿using DAL;
 using ENTITY;
+using ENTITY.Enum;
 using Helper;
 using System;
 using System.Collections.Generic;
@@ -31,6 +32,8 @@ namespace BLL
                 MantenimientoBLL MantenimientoBLO = new MantenimientoBLL();
                 
                 MantenimientoBLO.EliminarFacturaDeMantenimiento(facturaMantenimiento.Mantenimiento);
+
+                HelperFacturas.EliminarFacturaPDF((int)EnumTiposFactura.FacturaMantenimiento, facturaMantenimiento.NroFactura);
 
             }
             catch (Exception ex)
@@ -105,9 +108,6 @@ namespace BLL
                 if (facturaMantenimiento.Mantenimiento.Aeronave == null || facturaMantenimiento.Mantenimiento.Aeronave.IdAeronave <= 0) throw new Exception("El mantenimiento a registrar la factura no tiene aeronave asociada o el id de esta es invalido");
                 if (facturaMantenimiento.FechaFactura.Date > DateTime.Now.Date || facturaMantenimiento.FechaFactura.Date < facturaMantenimiento.Mantenimiento.Fecha.Date) throw new Exception("La fecha de la factura no puede ser mayor a dia de hoy ni inferior a la fecha en la que se contrato el mantenimiento");
 
-
-
-
                 if (facturaMantenimiento.Mantenimiento.Mecanico == null || string.IsNullOrEmpty(facturaMantenimiento.Mantenimiento.Mecanico.CuitCuil)) throw new Exception("El mecanico del mantenimiento es nulo o no tiene Cuit");
                 facturaMantenimiento.CuilEmisor = facturaMantenimiento.Mantenimiento.Mecanico.CuitCuil;
 
@@ -116,11 +116,11 @@ namespace BLL
 
                 if (facturaMantenimiento.IdFactura <= 0) throw new Exception("error al obtener el id de la factura");
                 facturaMantenimiento.Mantenimiento.FacturaMantenimiento = new FacturaMantenimiento(){IdFactura = facturaMantenimiento.IdFactura, FechaFactura=facturaMantenimiento.FechaFactura};
-
-            
                 
                 MantenimientoBLL MantenimientoBLO = new MantenimientoBLL();
                 MantenimientoBLO.RegistrarFacturaMant(facturaMantenimiento.Mantenimiento);
+
+                HelperFacturas.GenerarFacturaPDF(facturaMantenimiento);
 
             }
             catch (Exception ex)
