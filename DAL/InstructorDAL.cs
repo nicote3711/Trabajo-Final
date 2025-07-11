@@ -18,10 +18,10 @@ namespace DAL
         {
             try
             {
-                if (!File.Exists(rutaXml)) throw new FileNotFoundException("No se encontró el archivo XML de datos.");
+                //if (!File.Exists(rutaXml)) throw new FileNotFoundException("No se encontró el archivo XML de datos.");
 
-                DataSet ds = new DataSet();
-                ds.ReadXml(rutaXml, XmlReadMode.ReadSchema);
+                DataSet ds = XmlDataSetHelper.DataSetEnMemoria;
+                //ds.ReadXml(rutaXml, XmlReadMode.ReadSchema);
 
                 var tablaInstructores = ds.Tables["Instructor"];
                 var tablaPersonas = ds.Tables["Persona"];
@@ -56,10 +56,10 @@ namespace DAL
             try
             {
                 if (instructor == null) throw new ArgumentNullException(nameof(instructor));
-                if (!File.Exists(rutaXml)) throw new FileNotFoundException("El archivo XML no fue encontrado.");
 
-                DataSet ds = new DataSet();
-                ds.ReadXml(rutaXml, XmlReadMode.ReadSchema);
+                //if (!File.Exists(rutaXml)) throw new FileNotFoundException("El archivo XML no fue encontrado.");
+                DataSet ds =XmlDataSetHelper.DataSetEnMemoria;
+                //ds.ReadXml(rutaXml, XmlReadMode.ReadSchema);
 
                 var tablaPersonas = ds.Tables["Persona"];
                 var tablaInstructores = ds.Tables["Instructor"];
@@ -92,7 +92,8 @@ namespace DAL
                 InstructorMAP.MapearInstructorHaciaDB(instructor, rowInstructor);
                 tablaInstructores.Rows.Add(rowInstructor);
 
-                ds.WriteXml(rutaXml, XmlWriteMode.WriteSchema);
+                XmlDataSetHelper.GuardarCambios();
+                //ds.WriteXml(rutaXml, XmlWriteMode.WriteSchema);
             }
             catch (Exception ex)
             {
@@ -106,10 +107,10 @@ namespace DAL
         {
             try
             {
-                if (!File.Exists(rutaXml)) throw new Exception("No se encuentra el archivo de datos");
+                //if (!File.Exists(rutaXml)) throw new Exception("No se encuentra el archivo de datos");
 
-                DataSet ds = new DataSet();
-                ds.ReadXml(rutaXml, XmlReadMode.ReadSchema);
+                DataSet ds = XmlDataSetHelper.DataSetEnMemoria;
+                //ds.ReadXml(rutaXml, XmlReadMode.ReadSchema);
 
                 var tablaInstructores = ds.Tables["Instructor"];
                 var tablaPersonas = ds.Tables["Persona"];
@@ -137,10 +138,10 @@ namespace DAL
         {
             try
             {
-                if (!File.Exists(rutaXml)) throw new FileNotFoundException("Archivo XML no encontrado");
+                //if (!File.Exists(rutaXml)) throw new FileNotFoundException("Archivo XML no encontrado");
 
-                DataSet ds = new DataSet();
-                ds.ReadXml(rutaXml, XmlReadMode.ReadSchema);
+                DataSet ds = XmlDataSetHelper.DataSetEnMemoria;
+                //ds.ReadXml(rutaXml, XmlReadMode.ReadSchema);
 
                 var tablaPersonas = ds.Tables["Persona"];
                 var row = tablaPersonas?.AsEnumerable().FirstOrDefault(p => Convert.ToInt64(p["Dni"]) == dni);
@@ -162,13 +163,16 @@ namespace DAL
         {
             try
             {
-                DataSet ds = new DataSet();
-                ds.ReadXml(rutaXml, XmlReadMode.ReadSchema);
+                DataSet ds = XmlDataSetHelper.DataSetEnMemoria;
+                //ds.ReadXml(rutaXml, XmlReadMode.ReadSchema);
+
                 var tabla = ds.Tables["Persona"];
                 var row = tabla.Select($"Id_Persona = {persona.IDPersona}").FirstOrDefault();
                 if (row == null) throw new Exception("No se encontró la persona a modificar.");
                 PersonaMap.MapearPersonaHaciaDB(persona, row);
-                ds.WriteXml(rutaXml, XmlWriteMode.WriteSchema);
+
+                XmlDataSetHelper.GuardarCambios();
+                //ds.WriteXml(rutaXml, XmlWriteMode.WriteSchema);
             }
             catch (Exception ex)
             {
@@ -183,10 +187,10 @@ namespace DAL
             try
             {
                 if (instructorAlta == null) throw new ArgumentNullException(nameof(instructorAlta));
-                if (!File.Exists(rutaXml)) throw new FileNotFoundException("El archivo XML no fue encontrado.");
 
-                DataSet ds = new DataSet();
-                ds.ReadXml(rutaXml, XmlReadMode.ReadSchema);
+                //if (!File.Exists(rutaXml)) throw new FileNotFoundException("El archivo XML no fue encontrado.");
+                DataSet ds = XmlDataSetHelper.DataSetEnMemoria;
+                //ds.ReadXml(rutaXml, XmlReadMode.ReadSchema);
 
                 var tablaInstructores = ds.Tables["Instructor"];
                 var tablaPersonas = ds.Tables["Persona"];
@@ -199,8 +203,9 @@ namespace DAL
 
                 PersonaMap.MapearPersonaHaciaDB(instructorAlta, rowPersona);
                 InstructorMAP.MapearInstructorHaciaDB(instructorAlta, rowInstructor);
-                
-                ds.WriteXml(rutaXml, XmlWriteMode.WriteSchema);
+
+                XmlDataSetHelper.GuardarCambios();
+                //ds.WriteXml(rutaXml, XmlWriteMode.WriteSchema);
 
             }
             catch (Exception ex)
@@ -216,9 +221,9 @@ namespace DAL
         {
             try
             {
-                if (!File.Exists(rutaXml)) throw new FileNotFoundException("No se encuentra el archivo de datos");
-                DataSet ds = new DataSet(); 
-                ds.ReadXml(rutaXml, XmlReadMode.ReadSchema);
+                //if (!File.Exists(rutaXml)) throw new FileNotFoundException("No se encuentra el archivo de datos");
+                DataSet ds = XmlDataSetHelper.DataSetEnMemoria; 
+                //ds.ReadXml(rutaXml, XmlReadMode.ReadSchema);
 
                 var tablaInstructores = ds.Tables["Instructor"];
                 var tablaPersonas = ds.Tables["Persona"];
@@ -229,7 +234,7 @@ namespace DAL
                 var personaRow = tablaPersonas.AsEnumerable().FirstOrDefault(row => row.Field<int>("Id_Persona") == instructorRow.Field<int>("Id_Persona"));
                 if (personaRow == null) return null; // No se encontró la persona asociada al instructor
 
-               Instructor instructor = new Instructor();
+                Instructor instructor = new Instructor();
                 InstructorMAP.MapearInstructorDesdeDB(instructor, instructorRow);
                 PersonaMap.MapearPesonaDesdeDB(instructor, personaRow);
                 return instructor;
@@ -245,16 +250,18 @@ namespace DAL
         {
             try
             {
-                if (!File.Exists(rutaXml)) throw new FileNotFoundException("No se encuentra el archivo de datos");
-                DataSet ds = new DataSet();
-                ds.ReadXml(rutaXml, XmlReadMode.ReadSchema);
+                //if (!File.Exists(rutaXml)) throw new FileNotFoundException("No se encuentra el archivo de datos");
+                DataSet ds = XmlDataSetHelper.DataSetEnMemoria;
+                //ds.ReadXml(rutaXml, XmlReadMode.ReadSchema);
 
                 var tablaInstructores = ds.Tables["Instructor"];
                 var instructorRow = tablaInstructores.AsEnumerable().FirstOrDefault(row => row.Field<int>("Id_Instructor") == idInstructorBaja);
                 if (instructorRow == null) throw new Exception("No se encontró el instructor a dar de baja.");
 
                 instructorRow["Activo"] = false; // Marcamos el instructor como inactivo    
-                ds.WriteXml(rutaXml, XmlWriteMode.WriteSchema); // Guardamos los cambios en el XML
+
+                XmlDataSetHelper.GuardarCambios();
+                //ds.WriteXml(rutaXml, XmlWriteMode.WriteSchema); // Guardamos los cambios en el XML
             }
             catch (Exception ex)
             {
@@ -267,9 +274,9 @@ namespace DAL
         {
             try
             {
-                if (!File.Exists(rutaXml)) throw new FileNotFoundException("No se encuentra el archivo de datos");
-                DataSet ds = new DataSet();
-                ds.ReadXml(rutaXml, XmlReadMode.ReadSchema);
+                //if (!File.Exists(rutaXml)) throw new FileNotFoundException("No se encuentra el archivo de datos");
+                DataSet ds = XmlDataSetHelper.DataSetEnMemoria;
+                //ds.ReadXml(rutaXml, XmlReadMode.ReadSchema);
 
                 DataTable tablaInstructores = ds.Tables["Instructor"];
                 DataTable tablaPersonas = ds.Tables["Persona"];

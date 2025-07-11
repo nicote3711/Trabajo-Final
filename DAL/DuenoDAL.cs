@@ -18,10 +18,10 @@ namespace DAL
         {
             try
             {
-                if (!File.Exists(rutaXml)) throw new FileNotFoundException("No se encontró el archivo XML de datos.");
+                // if (!File.Exists(rutaXml)) throw new FileNotFoundException("No se encontró el archivo XML de datos.");
 
-                DataSet ds = new DataSet();
-                ds.ReadXml(rutaXml, XmlReadMode.ReadSchema);
+                DataSet ds = XmlDataSetHelper.DataSetEnMemoria;
+               // ds.ReadXml(rutaXml, XmlReadMode.ReadSchema);
 
                 var tablaDuenos = ds.Tables["Dueno"];
                 var tablaPersonas = ds.Tables["Persona"];
@@ -56,10 +56,10 @@ namespace DAL
             try
             {
                 if (dueno == null) throw new ArgumentNullException(nameof(dueno));
-                if (!File.Exists(rutaXml)) throw new FileNotFoundException("El archivo XML no fue encontrado.");
+                //if (!File.Exists(rutaXml)) throw new FileNotFoundException("El archivo XML no fue encontrado.");
 
-                DataSet ds = new DataSet();
-                ds.ReadXml(rutaXml, XmlReadMode.ReadSchema);
+                DataSet ds = XmlDataSetHelper.DataSetEnMemoria;
+               // ds.ReadXml(rutaXml, XmlReadMode.ReadSchema);
 
                 var tablaPersonas = ds.Tables["Persona"];
                 var tablaDuenos = ds.Tables["Dueno"];
@@ -89,7 +89,8 @@ namespace DAL
                 DuenoMAP.MapearDuenoHaciaDB(dueno, rowDueno);
                 tablaDuenos.Rows.Add(rowDueno);
 
-                ds.WriteXml(rutaXml, XmlWriteMode.WriteSchema);
+                XmlDataSetHelper.GuardarCambios();
+                //ds.WriteXml(rutaXml, XmlWriteMode.WriteSchema);
             }
             catch (Exception ex)
             {
@@ -101,10 +102,10 @@ namespace DAL
         {
             try
             {
-                if (!File.Exists(rutaXml)) throw new Exception("No se encuentra el archivo de datos");
+                //if (!File.Exists(rutaXml)) throw new Exception("No se encuentra el archivo de datos");
 
-                DataSet ds = new DataSet();
-                ds.ReadXml(rutaXml, XmlReadMode.ReadSchema);
+                DataSet ds = XmlDataSetHelper.DataSetEnMemoria;
+                //ds.ReadXml(rutaXml, XmlReadMode.ReadSchema);
 
                 var tablaPersonas = ds.Tables["Persona"];
                 var tablaDuenos = ds.Tables["Dueno"];
@@ -131,8 +132,8 @@ namespace DAL
         {
             try
             {
-                DataSet ds = new DataSet();
-                ds.ReadXml(rutaXml, XmlReadMode.ReadSchema);
+                DataSet ds = XmlDataSetHelper.DataSetEnMemoria;
+               // ds.ReadXml(rutaXml, XmlReadMode.ReadSchema);
 
                 var tablaDuenos = ds.Tables["Dueno"];
                 var tablaPersonas = ds.Tables["Persona"];
@@ -159,8 +160,8 @@ namespace DAL
         {
             try
             {
-                DataSet ds = new DataSet();
-                ds.ReadXml(rutaXml, XmlReadMode.ReadSchema);
+                DataSet ds = XmlDataSetHelper.DataSetEnMemoria;
+                // ds.ReadXml(rutaXml, XmlReadMode.ReadSchema);
 
                 var tablaDuenos = ds.Tables["Dueno"];
                 var tablaPersonas = ds.Tables["Persona"];
@@ -173,7 +174,8 @@ namespace DAL
                 PersonaMap.MapearPersonaHaciaDB(dueno, rowPersona);
                 DuenoMAP.MapearDuenoHaciaDB(dueno, rowDueno);
 
-                ds.WriteXml(rutaXml, XmlWriteMode.WriteSchema);
+                XmlDataSetHelper.GuardarCambios();
+                //ds.WriteXml(rutaXml, XmlWriteMode.WriteSchema);
             }
             catch (Exception ex)
             {
@@ -185,8 +187,8 @@ namespace DAL
         {
             try
             {
-                DataSet ds = new DataSet();
-                ds.ReadXml(rutaXml, XmlReadMode.ReadSchema);
+                DataSet ds = XmlDataSetHelper.DataSetEnMemoria;
+                // ds.ReadXml(rutaXml, XmlReadMode.ReadSchema);
 
                 var tablaDuenos = ds.Tables["Dueno"];
                 var rowDueno = tablaDuenos.AsEnumerable().FirstOrDefault(d => d.Field<int>("Id_Dueno") == idDueno);
@@ -196,7 +198,8 @@ namespace DAL
 
                 rowDueno["Activo"] = false;
 
-                ds.WriteXml(rutaXml, XmlWriteMode.WriteSchema);
+                XmlDataSetHelper.GuardarCambios();
+                // ds.WriteXml(rutaXml, XmlWriteMode.WriteSchema);
             }
             catch (Exception ex)
             {
@@ -208,13 +211,16 @@ namespace DAL
         {
             try
             {
-                DataSet ds = new DataSet();
-                ds.ReadXml(rutaXml, XmlReadMode.ReadSchema);
+                DataSet ds = XmlDataSetHelper.DataSetEnMemoria;
+                //ds.ReadXml(rutaXml, XmlReadMode.ReadSchema);
+
                 var tabla = ds.Tables["Persona"];
                 var row = tabla.Select($"Id_Persona = {persona.IDPersona}").FirstOrDefault();
                 if (row == null) throw new Exception("No se encontró la persona a modificar.");
                 PersonaMap.MapearPersonaHaciaDB(persona, row);
-                ds.WriteXml(rutaXml, XmlWriteMode.WriteSchema);
+
+                XmlDataSetHelper.GuardarCambios();
+                //ds.WriteXml(rutaXml, XmlWriteMode.WriteSchema);
             }
             catch (Exception ex)
             {
@@ -228,10 +234,10 @@ namespace DAL
         {
             try
             {
-                if (!File.Exists(rutaXml)) throw new FileNotFoundException("Archivo XML no encontrado");
+                //if (!File.Exists(rutaXml)) throw new FileNotFoundException("Archivo XML no encontrado");
 
-                DataSet ds = new DataSet();
-                ds.ReadXml(rutaXml, XmlReadMode.ReadSchema);
+                DataSet ds = XmlDataSetHelper.DataSetEnMemoria;
+                //ds.ReadXml(rutaXml, XmlReadMode.ReadSchema);
 
                 var tablaPersonas = ds.Tables["Persona"];
                 var row = tablaPersonas?.AsEnumerable().FirstOrDefault(p => Convert.ToInt64(p["Dni"]) == dni);
@@ -253,8 +259,8 @@ namespace DAL
         {
             try
             {
-                DataSet ds = new DataSet();
-                ds.ReadXml(rutaXml, XmlReadMode.ReadSchema);
+                DataSet ds = XmlDataSetHelper.DataSetEnMemoria;
+                //ds.ReadXml(rutaXml, XmlReadMode.ReadSchema);
 
                 var tablaDuenos = ds.Tables["Dueno"];
                 var tablaPersonas = ds.Tables["Persona"];
@@ -282,8 +288,8 @@ namespace DAL
         {
             try
             {
-                DataSet ds = new DataSet();
-                ds.ReadXml(rutaXml, XmlReadMode.ReadSchema);
+                DataSet ds = XmlDataSetHelper.DataSetEnMemoria;
+                //ds.ReadXml(rutaXml, XmlReadMode.ReadSchema);
 
                 var tablaDuenos = ds.Tables["Dueno"];
                 var tablaPersonas = ds.Tables["Persona"];

@@ -20,10 +20,10 @@ namespace DAL
         {
             try
             {
-                if (!File.Exists(rutaXml)) throw new FileNotFoundException("No se encontró el archivo XML.");
+                //if (!File.Exists(rutaXml)) throw new FileNotFoundException("No se encontró el archivo XML.");
 
-                DataSet ds = new DataSet();
-                ds.ReadXml(rutaXml, XmlReadMode.ReadSchema);
+                DataSet ds = XmlDataSetHelper.DataSetEnMemoria;
+                //ds.ReadXml(rutaXml, XmlReadMode.ReadSchema);
 
                 var tablaMecanicos = ds.Tables["Mecanico"];
                 var tablaPersonas = ds.Tables["Persona"];
@@ -71,10 +71,10 @@ namespace DAL
             try
             {
                 if (mecanico == null) throw new ArgumentNullException(nameof(mecanico));
-                if (!File.Exists(rutaXml)) throw new FileNotFoundException("El archivo XML no fue encontrado.");
 
-                DataSet ds = new DataSet();
-                ds.ReadXml(rutaXml, XmlReadMode.ReadSchema);
+                //if (!File.Exists(rutaXml)) throw new FileNotFoundException("El archivo XML no fue encontrado.");
+                DataSet ds =XmlDataSetHelper.DataSetEnMemoria;
+                //ds.ReadXml(rutaXml, XmlReadMode.ReadSchema);
 
                 DataTable tablaPersonas = ds.Tables["Persona"];
                 DataTable tablaMecanicos = ds.Tables["Mecanico"];
@@ -123,7 +123,8 @@ namespace DAL
                     tablaRelaciones.Rows.Add(rowRelacion);
                 }
 
-                ds.WriteXml(rutaXml, XmlWriteMode.WriteSchema);
+                XmlDataSetHelper.GuardarCambios();
+                //ds.WriteXml(rutaXml, XmlWriteMode.WriteSchema);
             }
             catch (Exception ex)
             {
@@ -137,10 +138,10 @@ namespace DAL
         {
             try
             {
-                if (!File.Exists(rutaXml)) throw new FileNotFoundException("Archivo XML no encontrado.");
+                //if (!File.Exists(rutaXml)) throw new FileNotFoundException("Archivo XML no encontrado.");
 
-                DataSet ds = new DataSet();
-                ds.ReadXml(rutaXml, XmlReadMode.ReadSchema);
+                DataSet ds = XmlDataSetHelper.DataSetEnMemoria;
+                //ds.ReadXml(rutaXml, XmlReadMode.ReadSchema);
 
                 var tablaPersonas = ds.Tables["Persona"];
                 if (tablaPersonas == null) throw new Exception("No se encontró la tabla Persona.");
@@ -163,15 +164,17 @@ namespace DAL
         {
             try
             {
-                DataSet ds = new DataSet();
-                ds.ReadXml(rutaXml, XmlReadMode.ReadSchema);
+                DataSet ds = XmlDataSetHelper.DataSetEnMemoria;
+                //ds.ReadXml(rutaXml, XmlReadMode.ReadSchema);
 
                 var tabla = ds.Tables["Persona"];
                 var row = tabla.Select($"Id_Persona = {mecanico.IDPersona}").FirstOrDefault();
                 if (row == null) throw new Exception("No se encontró la persona a modificar.");
 
                 PersonaMap.MapearPersonaHaciaDB(mecanico, row);
-                ds.WriteXml(rutaXml, XmlWriteMode.WriteSchema);
+
+                XmlDataSetHelper.GuardarCambios();
+                //ds.WriteXml(rutaXml, XmlWriteMode.WriteSchema);
             }
             catch (Exception ex)
             {
@@ -185,8 +188,8 @@ namespace DAL
         {
             try
             {
-                DataSet ds = new DataSet();
-                ds.ReadXml(rutaXml, XmlReadMode.ReadSchema);
+                DataSet ds = XmlDataSetHelper.DataSetEnMemoria;
+                //ds.ReadXml(rutaXml, XmlReadMode.ReadSchema);
 
                 var tablaPersonas = ds.Tables["Persona"];
                 var tablaMecanicos = ds.Tables["Mecanico"];
@@ -216,8 +219,8 @@ namespace DAL
         {
             try
             {
-                DataSet ds = new DataSet();
-                ds.ReadXml(rutaXml, XmlReadMode.ReadSchema);
+                DataSet ds = XmlDataSetHelper.DataSetEnMemoria;
+                //ds.ReadXml(rutaXml, XmlReadMode.ReadSchema);
 
                 var tablaPersonas = ds.Tables["Persona"];
                 var tablaMecanicos = ds.Tables["Mecanico"];
@@ -247,7 +250,8 @@ namespace DAL
                     tablaMantenimientoMecanico.Rows.Add(nuevaRelacion);
                 }
 
-                ds.WriteXml(rutaXml, XmlWriteMode.WriteSchema);
+                XmlDataSetHelper.GuardarCambios();
+                //ds.WriteXml(rutaXml, XmlWriteMode.WriteSchema);
             }
             catch (Exception ex)
             {
@@ -261,8 +265,8 @@ namespace DAL
         {
             try
             {
-                DataSet ds = new DataSet();
-                ds.ReadXml(rutaXml, XmlReadMode.ReadSchema);
+                DataSet ds = XmlDataSetHelper.DataSetEnMemoria;
+                //ds.ReadXml(rutaXml, XmlReadMode.ReadSchema);
 
                 var tablaMecanicos = ds.Tables["Mecanico"];
                 var tablaPersonas = ds.Tables["Persona"];
@@ -303,8 +307,8 @@ namespace DAL
 
             try
             {
-                DataSet ds = new DataSet();
-                ds.ReadXml(rutaXml, XmlReadMode.ReadSchema);
+                DataSet ds = XmlDataSetHelper.DataSetEnMemoria;
+                //ds.ReadXml(rutaXml, XmlReadMode.ReadSchema);
 
                 var tablaMecanicos = ds.Tables["Mecanico"];
                 var row = tablaMecanicos.AsEnumerable().FirstOrDefault(m => m.Field<int>("Id_Mecanico") == idMecanico);
@@ -312,7 +316,8 @@ namespace DAL
 
                 row["Activo"] = false;
 
-                ds.WriteXml(rutaXml, XmlWriteMode.WriteSchema);
+                XmlDataSetHelper.GuardarCambios();
+                //ds.WriteXml(rutaXml, XmlWriteMode.WriteSchema);
             }
             catch (Exception ex)
             {

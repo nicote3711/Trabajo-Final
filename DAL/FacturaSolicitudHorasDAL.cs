@@ -20,9 +20,10 @@ namespace DAL
         {
             try
             {
-                if (!File.Exists(rutaXml)) throw new FileNotFoundException("No se encontró el archivo XML.");
-                DataSet ds = new DataSet();
-                ds.ReadXml(rutaXml, XmlReadMode.ReadSchema);
+                //if (!File.Exists(rutaXml)) throw new FileNotFoundException("No se encontró el archivo XML.");
+                DataSet ds = XmlDataSetHelper.DataSetEnMemoria;
+                //ds.ReadXml(rutaXml, XmlReadMode.ReadSchema);
+
                 DataTable tablaFacturas = ds.Tables["Factura"];
                 if (tablaFacturas == null) throw new Exception("No se encontró la tabla Factura.");
                 List<DataRow> rowFacturas = tablaFacturas.AsEnumerable().Where(f => f.Field<int>("Id_Tipo_Factura").Equals((int)EnumTiposFactura.FacturaSolicitudHoras)).ToList();
@@ -46,9 +47,9 @@ namespace DAL
         {
             try
             {
-                if (!File.Exists(rutaXml)) throw new FileNotFoundException("No se encontró el archivo XML.");
-                DataSet ds = new DataSet();
-                ds.ReadXml(rutaXml, XmlReadMode.ReadSchema);
+                //if (!File.Exists(rutaXml)) throw new FileNotFoundException("No se encontró el archivo XML.");
+                DataSet ds =XmlDataSetHelper.DataSetEnMemoria;
+                //ds.ReadXml(rutaXml, XmlReadMode.ReadSchema);
 
                 DataTable tablaFacturas = ds.Tables["Factura"];
                 if (tablaFacturas == null) throw new Exception("No se encontró la tabla Factura.");
@@ -70,9 +71,9 @@ namespace DAL
         {
             try
             {
-                if (!File.Exists(rutaXml)) throw new FileNotFoundException("No se encontró el archivo XML.");
-                DataSet ds = new DataSet();
-                ds.ReadXml(rutaXml, XmlReadMode.ReadSchema);
+                //if (!File.Exists(rutaXml)) throw new FileNotFoundException("No se encontró el archivo XML.");
+                DataSet ds = XmlDataSetHelper.DataSetEnMemoria;
+                //ds.ReadXml(rutaXml, XmlReadMode.ReadSchema);
 
                 DataTable tablaFacturas = ds.Tables["Factura"];
                 if (tablaFacturas == null) throw new Exception("No se encontró la tabla Factura.");
@@ -89,9 +90,9 @@ namespace DAL
         {
             try
             {
-                if (!File.Exists(rutaXml)) throw new FileNotFoundException("No se encontró el archivo XML.");
-                DataSet ds = new DataSet();
-                ds.ReadXml(rutaXml, XmlReadMode.ReadSchema);
+                //if (!File.Exists(rutaXml)) throw new FileNotFoundException("No se encontró el archivo XML.");
+                DataSet ds = XmlDataSetHelper.DataSetEnMemoria;
+                //ds.ReadXml(rutaXml, XmlReadMode.ReadSchema);
 
                 DataTable tablaFacturas = ds.Tables["Factura"];
                 if (tablaFacturas == null) throw new Exception("No se encontró la tabla Factura.");
@@ -103,7 +104,8 @@ namespace DAL
                 FacturaMAP.MapearHaciaDB(factura, row);
                 tablaFacturas.Rows.Add(row);
 
-                ds.WriteXml(rutaXml, XmlWriteMode.WriteSchema);
+                XmlDataSetHelper.GuardarCambios();
+                //ds.WriteXml(rutaXml, XmlWriteMode.WriteSchema);
             }
             catch (Exception ex)
             {
@@ -116,9 +118,9 @@ namespace DAL
         {
             try
             {
-                if (!File.Exists(rutaXml)) throw new FileNotFoundException("No se encontró el archivo XML.");
-                DataSet ds = new DataSet();
-                ds.ReadXml(rutaXml, XmlReadMode.ReadSchema);
+                //if (!File.Exists(rutaXml)) throw new FileNotFoundException("No se encontró el archivo XML.");
+                DataSet ds =XmlDataSetHelper.DataSetEnMemoria;
+                //ds.ReadXml(rutaXml, XmlReadMode.ReadSchema);
 
                 DataTable tablaFacturas = ds.Tables["Factura"];
                 if (tablaFacturas == null) throw new Exception("No se encontró la tabla Factura.");
@@ -141,18 +143,20 @@ namespace DAL
         {
             try
             {
-                if (!File.Exists(rutaXml)) throw new FileNotFoundException("No se encontró el archivo XML.");
-                DataSet ds = new DataSet();
-                ds.ReadXml(rutaXml, XmlReadMode.ReadSchema);
+                //if (!File.Exists(rutaXml)) throw new FileNotFoundException("No se encontró el archivo XML.");
+                DataSet ds = XmlDataSetHelper.DataSetEnMemoria;
+                //ds.ReadXml(rutaXml, XmlReadMode.ReadSchema);
 
                 DataTable tablaFacturas = ds.Tables["Factura"];
                 if (tablaFacturas == null) throw new Exception("No se encontró la tabla Factura.");
 
                 DataRow row = tablaFacturas.AsEnumerable().FirstOrDefault(f => f.Field<int>("Id_Factura") == idFactura);
-                if (row == null) throw new Exception($"No se encontró la factura con ID {idFactura}."); 
+                if (row == null) throw new Exception($"No se encontró la factura con ID {idFactura}.");
 
                 row.Delete(); // Marca la fila para eliminación
-                ds.WriteXml(rutaXml, XmlWriteMode.WriteSchema); // Guarda los cambios en el archivo XML
+
+                XmlDataSetHelper.GuardarCambios();
+                //ds.WriteXml(rutaXml, XmlWriteMode.WriteSchema); 
             }
             catch (Exception ex)
             {

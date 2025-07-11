@@ -32,6 +32,7 @@ namespace Helper
             try
             {
                 dsRollBack.WriteXml(HelperD.ObtenerConexionXMl(), XmlWriteMode.WriteSchema);
+                XmlDataSetHelper.ForzarRecarga();
             }
             catch (Exception ex)
             {

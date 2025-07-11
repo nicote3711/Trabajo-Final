@@ -20,10 +20,10 @@ namespace DAL
         {
             try
             {
-                if (!File.Exists(rutaXml)) throw new FileNotFoundException("No se encontró el archivo XML.");
+                //if (!File.Exists(rutaXml)) throw new FileNotFoundException("No se encontró el archivo XML.");
 
-                DataSet ds = new DataSet();
-                ds.ReadXml(rutaXml, XmlReadMode.ReadSchema);
+                DataSet ds = XmlDataSetHelper.DataSetEnMemoria;
+                //ds.ReadXml(rutaXml, XmlReadMode.ReadSchema);
 
                 DataTable tablaAeronaves = ds.Tables["Aeronave"];
                 if (tablaAeronaves == null) throw new Exception("No se encontró la tabla de Aeronave.");
@@ -61,8 +61,8 @@ namespace DAL
         {
             try
             {
-                DataSet ds = new DataSet();
-                ds.ReadXml(rutaXml, XmlReadMode.ReadSchema);
+                DataSet ds = XmlDataSetHelper.DataSetEnMemoria;
+                //ds.ReadXml(rutaXml, XmlReadMode.ReadSchema);
 
                 DataTable tabla = ds.Tables["Aeronave"];
                 if (tabla == null) throw new Exception("No se encontró la tabla Aeronave.");
@@ -74,7 +74,8 @@ namespace DAL
                 AeronaveMAP.MapearHaciaDB(aeronave, row);
                 tabla.Rows.Add(row);
 
-                ds.WriteXml(rutaXml, XmlWriteMode.WriteSchema);
+                XmlDataSetHelper.GuardarCambios();
+                //ds.WriteXml(rutaXml, XmlWriteMode.WriteSchema);
             }
             catch (Exception ex)
             {
@@ -88,8 +89,8 @@ namespace DAL
         {
             try
             {
-                DataSet ds = new DataSet();
-                ds.ReadXml(rutaXml, XmlReadMode.ReadSchema);
+                DataSet ds = XmlDataSetHelper.DataSetEnMemoria;
+                //ds.ReadXml(rutaXml, XmlReadMode.ReadSchema);
 
                 DataTable tabla = ds.Tables["Aeronave"];
                 if (tabla == null) throw new Exception("No se encontró la tabla Aeronave.");
@@ -119,8 +120,8 @@ namespace DAL
         {
             try
             {
-                DataSet ds = new DataSet();
-                ds.ReadXml(rutaXml, XmlReadMode.ReadSchema);
+                DataSet ds = XmlDataSetHelper.DataSetEnMemoria;
+                //ds.ReadXml(rutaXml, XmlReadMode.ReadSchema);
 
                 var tabla = ds.Tables["Aeronave"];
                 if (tabla == null) throw new Exception("No se encontró la tabla Aeronave.");
@@ -130,7 +131,8 @@ namespace DAL
 
                 AeronaveMAP.MapearHaciaDB(aeronave, row);
 
-                ds.WriteXml(rutaXml, XmlWriteMode.WriteSchema);
+                XmlDataSetHelper.GuardarCambios();
+                //ds.WriteXml(rutaXml, XmlWriteMode.WriteSchema);
             }
             catch (Exception ex)
             {
@@ -144,8 +146,8 @@ namespace DAL
         {
             try
             {
-                DataSet ds = new DataSet();
-                ds.ReadXml(rutaXml, XmlReadMode.ReadSchema);
+                DataSet ds = XmlDataSetHelper.DataSetEnMemoria;
+                //ds.ReadXml(rutaXml, XmlReadMode.ReadSchema);
 
                 var tabla = ds.Tables["Aeronave"];
                 if (tabla == null) throw new Exception("No se encontró la tabla Aeronave.");
@@ -155,7 +157,8 @@ namespace DAL
 
                 row["Id_Estado_Aeronave"] = idEstadoInactivo;
 
-                ds.WriteXml(rutaXml, XmlWriteMode.WriteSchema);
+                XmlDataSetHelper.GuardarCambios();
+                //ds.WriteXml(rutaXml, XmlWriteMode.WriteSchema);
             }
             catch (Exception ex)
             {
@@ -169,10 +172,10 @@ namespace DAL
         {
             try
             {
-                if (!File.Exists(rutaXml)) throw new FileNotFoundException("No se encontró el archivo XML.");
-                
-                DataSet ds = new DataSet();
-                ds.ReadXml(rutaXml, XmlReadMode.ReadSchema);
+                //if (!File.Exists(rutaXml)) throw new FileNotFoundException("No se encontró el archivo XML.");
+
+                DataSet ds = XmlDataSetHelper.DataSetEnMemoria;
+                //ds.ReadXml(rutaXml, XmlReadMode.ReadSchema);
 
                 DataTable tablaAeronave = ds.Tables["Aeronave"];
                 DataTable tablaEstados = ds.Tables["Estado_Aeronave"];
@@ -208,8 +211,8 @@ namespace DAL
         {
             try
             {
-                DataSet ds = new DataSet();
-                ds.ReadXml(rutaXml, XmlReadMode.ReadSchema);
+                DataSet ds = XmlDataSetHelper.DataSetEnMemoria;
+                //ds.ReadXml(rutaXml, XmlReadMode.ReadSchema);
 
                 var tabla = ds.Tables["Aeronave"];
                 if (tabla == null) throw new Exception("No se encontró la tabla Aeronave.");
@@ -219,7 +222,8 @@ namespace DAL
 
                 row["Id_Estado_Aeronave"] = estado.IdEstadoAeronave;
 
-                ds.WriteXml(rutaXml, XmlWriteMode.WriteSchema); 
+                XmlDataSetHelper.GuardarCambios();
+                // ds.WriteXml(rutaXml, XmlWriteMode.WriteSchema); 
 
             }
             catch (Exception ex)

@@ -34,9 +34,9 @@ namespace ENTITY
                         idsUnicos.Add(permiso.IdComponente); // Agregar el ID del permiso al conjunto
                     }
                 }
-                permisos.AddRange(rol.Permisos);
+                permisos.AddRange(rol.Permisos);//aca podria poner rol.obtenerpermisos porque el return hace lo mismo.
             }
-            return permisos.ToList(); // Eliminar duplicados
+            return permisos.ToList(); 
         }
     }
 }

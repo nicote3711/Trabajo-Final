@@ -18,10 +18,10 @@ namespace DAL
         {
             try
             {
-                if (!File.Exists(rutaXml)) throw new FileNotFoundException("No se encontró el archivo XML.");
+                //if (!File.Exists(rutaXml)) throw new FileNotFoundException("No se encontró el archivo XML.");
 
-                DataSet ds = new DataSet();
-                ds.ReadXml(rutaXml, XmlReadMode.ReadSchema);
+                DataSet ds = XmlDataSetHelper.DataSetEnMemoria;
+               // ds.ReadXml(rutaXml, XmlReadMode.ReadSchema);
                 DataTable tabla = ds.Tables["Deposito_Combustible"];
                 if (tabla == null) throw new Exception("No se encontro la tabla Deposito Combustible");
 
@@ -50,9 +50,9 @@ namespace DAL
         {
             try
             {
-                if (!File.Exists(rutaXml)) throw new FileNotFoundException("No se encontró el archivo XML.");
-                DataSet ds = new DataSet();
-                ds.ReadXml(rutaXml, XmlReadMode.ReadSchema);
+                //if (!File.Exists(rutaXml)) throw new FileNotFoundException("No se encontró el archivo XML.");
+                DataSet ds = XmlDataSetHelper.DataSetEnMemoria;
+               // ds.ReadXml(rutaXml, XmlReadMode.ReadSchema);
 
                 DataTable tabla = ds.Tables["Deposito_Combustible"];
                 if (tabla == null) throw new Exception("No se encontró la tabla Deposito_Combustible.");
@@ -69,8 +69,5 @@ namespace DAL
                 throw new Exception("DAL DepositoCombustible  error al buscar por Id: " + ex.Message, ex);
             }
         }
-
-
-
     }
 }

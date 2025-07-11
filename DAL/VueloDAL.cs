@@ -22,10 +22,10 @@ namespace DAL
         {
             try
             {
-                if (!File.Exists(archivoXml)) throw new FileNotFoundException("No se encontró el archivo XML.");
-                DataSet ds = new DataSet();
+                //if (!File.Exists(archivoXml)) throw new FileNotFoundException("No se encontró el archivo XML.");
+                DataSet ds = XmlDataSetHelper.DataSetEnMemoria;
 
-                ds.ReadXml(archivoXml, XmlReadMode.ReadSchema);
+                //ds.ReadXml(archivoXml, XmlReadMode.ReadSchema);
                 List<Vuelo> listaVuelos = new List<Vuelo>();
                 DataTable tabla = ds.Tables["Vuelo"];   
                 if (tabla == null) throw new Exception("No se encontró la tabla Vuelo en el archivo XML."); 
@@ -47,10 +47,10 @@ namespace DAL
         {
             try
             {
-                if (vuelo == null) throw new ArgumentNullException(nameof(vuelo));
+                //if (vuelo == null) throw new ArgumentNullException(nameof(vuelo));
 
-                DataSet ds = new DataSet();
-                ds.ReadXml(archivoXml, XmlReadMode.ReadSchema);
+                DataSet ds = XmlDataSetHelper.DataSetEnMemoria;
+                //ds.ReadXml(archivoXml, XmlReadMode.ReadSchema);
 
                 DataTable tabla = ds.Tables["Vuelo"];
                 if (tabla == null) throw new Exception("No se encontró la tabla Vuelo en el archivo XML.");
@@ -62,7 +62,8 @@ namespace DAL
                 VueloMAP.MapearHaciaDB(vuelo, row);
                 tabla.Rows.Add(row);
 
-                ds.WriteXml(archivoXml, XmlWriteMode.WriteSchema);
+                XmlDataSetHelper.GuardarCambios();
+                //ds.WriteXml(archivoXml, XmlWriteMode.WriteSchema);
             }
             catch (Exception ex)
             {
@@ -75,8 +76,9 @@ namespace DAL
             try
             {
                 List<Vuelo> LVuelos = new List<Vuelo>();
-                DataSet ds = new DataSet();
-                ds.ReadXml(archivoXml, XmlReadMode.ReadSchema);
+
+                DataSet ds = XmlDataSetHelper.DataSetEnMemoria;
+                //ds.ReadXml(archivoXml, XmlReadMode.ReadSchema);
 
                 DataTable tabla = ds.Tables["Vuelo"];
                 if (tabla == null) throw new Exception("No se encontró la tabla Vuelo en el XML.");
@@ -101,8 +103,9 @@ namespace DAL
             try
             {
                 List<Vuelo> LVuelos = new List<Vuelo>();
-                DataSet ds = new DataSet();
-                ds.ReadXml(archivoXml, XmlReadMode.ReadSchema);
+
+                DataSet ds = XmlDataSetHelper.DataSetEnMemoria;
+                //ds.ReadXml(archivoXml, XmlReadMode.ReadSchema);
 
                 DataTable tabla = ds.Tables["Vuelo"];
                 if (tabla == null) throw new Exception("No se encontró la tabla Vuelo en el XML.");
@@ -126,10 +129,11 @@ namespace DAL
         {
             try
             {
-                if (!File.Exists(archivoXml)) throw new FileNotFoundException("No se encontró el archivo XML.");
                 List<Vuelo> LAeronave = new List<Vuelo>();
-                DataSet ds = new DataSet();
-                ds.ReadXml(archivoXml, XmlReadMode.ReadSchema);
+
+                //if (!File.Exists(archivoXml)) throw new FileNotFoundException("No se encontró el archivo XML.");
+                DataSet ds = XmlDataSetHelper.DataSetEnMemoria;
+                //ds.ReadXml(archivoXml, XmlReadMode.ReadSchema);
 
                 DataTable tabla = ds.Tables["Vuelo"];
                 if (tabla == null) throw new Exception("No se encontró la tabla Vuelo en el XML.");
@@ -154,9 +158,9 @@ namespace DAL
         {
             try
             {
-                if (!File.Exists(archivoXml)) throw new FileNotFoundException("No se encontró el archivo XML.");
-                DataSet ds = new DataSet();
-                ds.ReadXml(archivoXml, XmlReadMode.ReadSchema);
+                //if (!File.Exists(archivoXml)) throw new FileNotFoundException("No se encontró el archivo XML.");
+                DataSet ds = XmlDataSetHelper.DataSetEnMemoria;
+                //ds.ReadXml(archivoXml, XmlReadMode.ReadSchema);
 
                 DataTable tabla = ds.Tables["Vuelo"];
                 if (tabla == null) throw new Exception("No se encontró la tabla Vuelo en el archivo XML."); 
@@ -165,7 +169,9 @@ namespace DAL
                 if (row == null) throw new Exception("Vuelo no encontrado.");
 
                 tabla.Rows.Remove(row);
-                ds.WriteXml(archivoXml, XmlWriteMode.WriteSchema);
+
+                XmlDataSetHelper.GuardarCambios();
+                //ds.WriteXml(archivoXml, XmlWriteMode.WriteSchema);
             }
             catch (Exception ex)
             {
@@ -178,9 +184,9 @@ namespace DAL
         {
             try
             {
-                if (!File.Exists(archivoXml)) throw new FileNotFoundException("No se encontró el archivo XML.");
-                DataSet ds = new DataSet();
-                ds.ReadXml(archivoXml, XmlReadMode.ReadSchema);
+                //if (!File.Exists(archivoXml)) throw new FileNotFoundException("No se encontró el archivo XML.");
+                DataSet ds = XmlDataSetHelper.DataSetEnMemoria;
+                //ds.ReadXml(archivoXml, XmlReadMode.ReadSchema);
 
                 DataTable tabla = ds.Tables["Vuelo"];
                 if (tabla == null) throw new Exception("No se encontró la tabla Vuelo en el archivo XML.");
@@ -207,9 +213,9 @@ namespace DAL
 
             try
             {
-                if (!File.Exists(archivoXml)) throw new FileNotFoundException("No se encontró el archivo XML.");
-                DataSet ds = new DataSet();
-                ds.ReadXml(archivoXml, XmlReadMode.ReadSchema);
+                //if (!File.Exists(archivoXml)) throw new FileNotFoundException("No se encontró el archivo XML.");
+                DataSet ds = XmlDataSetHelper.DataSetEnMemoria;
+                //ds.ReadXml(archivoXml, XmlReadMode.ReadSchema);
 
                 DataTable tabla = ds.Tables["Vuelo"];
                 if (tabla == null) throw new Exception("No se encontró la tabla Vuelo en el archivo XML.");
@@ -244,9 +250,9 @@ namespace DAL
 
             try
             {
-                if (!File.Exists(archivoXml)) throw new FileNotFoundException("No se encontró el archivo XML.");
-                DataSet ds = new DataSet();
-                ds.ReadXml(archivoXml, XmlReadMode.ReadSchema);
+                //if (!File.Exists(archivoXml)) throw new FileNotFoundException("No se encontró el archivo XML.");
+                DataSet ds = XmlDataSetHelper.DataSetEnMemoria;
+                //ds.ReadXml(archivoXml, XmlReadMode.ReadSchema);
 
                 DataTable tabla = ds.Tables["Vuelo"];
                 if (tabla == null) throw new Exception("No se encontró la tabla Vuelo en el archivo XML.");
@@ -295,9 +301,9 @@ namespace DAL
             List<Vuelo> vuelos = new List<Vuelo>();
             try
             {
-                if (!File.Exists(archivoXml)) throw new FileNotFoundException("No se encontró el archivo XML.");
-                DataSet ds = new DataSet();
-                ds.ReadXml(archivoXml, XmlReadMode.ReadSchema);
+                //if (!File.Exists(archivoXml)) throw new FileNotFoundException("No se encontró el archivo XML.");
+                DataSet ds = XmlDataSetHelper.DataSetEnMemoria;
+                //ds.ReadXml(archivoXml, XmlReadMode.ReadSchema);
 
                 DataTable tabla = ds.Tables["Vuelo"];
                 if (tabla == null) throw new Exception("No se encontró la tabla Vuelo en el archivo XML.");
@@ -350,9 +356,9 @@ namespace DAL
         {
             try
             {
-                if (!File.Exists(archivoXml)) throw new FileNotFoundException("No se encontró el archivo XML.");
-                DataSet ds = new DataSet();
-                ds.ReadXml(archivoXml, XmlReadMode.ReadSchema);
+                //if (!File.Exists(archivoXml)) throw new FileNotFoundException("No se encontró el archivo XML.");
+                DataSet ds = XmlDataSetHelper.DataSetEnMemoria;
+                //ds.ReadXml(archivoXml, XmlReadMode.ReadSchema);
 
                 DataTable tabla = ds.Tables["Vuelo"];
                 if (tabla == null) throw new Exception("No se encontró la tabla Vuelo en el archivo XML.");
@@ -362,7 +368,8 @@ namespace DAL
 
                 row["Liquidado"]= true; // Marcar el vuelo como liquidado
 
-                ds.WriteXml(archivoXml, XmlWriteMode.WriteSchema);
+                XmlDataSetHelper.GuardarCambios();
+                //ds.WriteXml(archivoXml, XmlWriteMode.WriteSchema);
 
             }
             catch (Exception ex)
@@ -376,10 +383,10 @@ namespace DAL
         {
             try
             {
-                if (!File.Exists(archivoXml)) throw new FileNotFoundException("No se encontró el archivo XML.");
+                //if (!File.Exists(archivoXml)) throw new FileNotFoundException("No se encontró el archivo XML.");
 
-                DataSet ds = new DataSet();
-                ds.ReadXml(archivoXml, XmlReadMode.ReadSchema);
+                DataSet ds = XmlDataSetHelper.DataSetEnMemoria;
+                //ds.ReadXml(archivoXml, XmlReadMode.ReadSchema);
 
                 DataTable tabla = ds.Tables["Vuelo"];
                 if (tabla == null) throw new Exception("No se encontró la tabla Vuelo en el archivo XML.");

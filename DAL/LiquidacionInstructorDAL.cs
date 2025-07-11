@@ -19,9 +19,9 @@ namespace DAL
         {
             try
             {
-                if (!File.Exists(rutaXml)) throw new FileNotFoundException("No se encontró el archivo XML.");
-                DataSet ds = new DataSet();
-                ds.ReadXml(rutaXml, XmlReadMode.ReadSchema);
+                //if (!File.Exists(rutaXml)) throw new FileNotFoundException("No se encontró el archivo XML.");
+                DataSet ds = XmlDataSetHelper.DataSetEnMemoria;
+                //ds.ReadXml(rutaXml, XmlReadMode.ReadSchema);
 
                 DataTable tabla = ds.Tables["Liquidacion_Servicio"];
                 if (tabla == null) throw new Exception("No se encontró la tabla Liquidacion Servicio.");
@@ -31,7 +31,8 @@ namespace DAL
                 if (idFactura == null) throw new Exception("El id de factura es null");
                 row["Id_Factura"] = idFactura.ToString();
 
-                ds.WriteXml(rutaXml, XmlWriteMode.WriteSchema);
+                XmlDataSetHelper.GuardarCambios();
+                //ds.WriteXml(rutaXml, XmlWriteMode.WriteSchema);
             }
             catch (Exception ex)
             {
@@ -44,9 +45,9 @@ namespace DAL
         {
             try
             {
-                if (!File.Exists(rutaXml)) throw new FileNotFoundException("No se encontró el archivo XML.");
-                DataSet ds = new DataSet();
-                ds.ReadXml(rutaXml, XmlReadMode.ReadSchema);
+                //if (!File.Exists(rutaXml)) throw new FileNotFoundException("No se encontró el archivo XML.");
+                DataSet ds = XmlDataSetHelper.DataSetEnMemoria;
+                //ds.ReadXml(rutaXml, XmlReadMode.ReadSchema);
 
                 DataTable tabla = ds.Tables["Liquidacion_Servicio"];
                 if (tabla == null) throw new Exception("No se encontró la tabla Liquidacion Servicio.");
@@ -88,9 +89,9 @@ namespace DAL
         {
             try
             {
-                if (!File.Exists(rutaXml)) throw new FileNotFoundException("No se encontró el archivo XML.");
-                DataSet ds = new DataSet();
-                ds.ReadXml(rutaXml, XmlReadMode.ReadSchema);
+                //if (!File.Exists(rutaXml)) throw new FileNotFoundException("No se encontró el archivo XML.");
+                DataSet ds = XmlDataSetHelper.DataSetEnMemoria;
+                //ds.ReadXml(rutaXml, XmlReadMode.ReadSchema);
 
                 DataTable tabla = ds.Tables["Liquidacion_Servicio"];
                 if (tabla == null) throw new Exception("No se encontró la tabla Simulador.");
@@ -117,8 +118,8 @@ namespace DAL
                     }
                 }
 
-
-                ds.WriteXml(rutaXml, XmlWriteMode.WriteSchema);
+                XmlDataSetHelper.GuardarCambios();
+                //ds.WriteXml(rutaXml, XmlWriteMode.WriteSchema);
             }
             catch (Exception ex)
             {
@@ -131,17 +132,21 @@ namespace DAL
         {
             try
             {
-                if (!File.Exists(rutaXml)) throw new FileNotFoundException("No se encontró el archivo XML.");
-                DataSet ds = new DataSet();
-                ds.ReadXml(rutaXml, XmlReadMode.ReadSchema);
+                //if (!File.Exists(rutaXml)) throw new FileNotFoundException("No se encontró el archivo XML.");
+                DataSet ds = XmlDataSetHelper.DataSetEnMemoria;
+                //ds.ReadXml(rutaXml, XmlReadMode.ReadSchema);
 
                 DataTable tabla = ds.Tables["Liquidacion_Servicio"];
-                if (tabla == null) throw new Exception("No se encontró la tabla Simulador.");
+                if (tabla == null) throw new Exception("No se encontró la tabla liquidacion servicio.");
 
                 DataTable tablaRelacion = ds.Tables["Liquidacion_Servicio_Vuelo"];
                 if (tablaRelacion == null) throw new Exception("No se encontro la tabla de vuelos-liquidaciones");
 
+                DataTable tablaSimu = ds.Tables["Simulador"];
+                if (tablaSimu == null) throw new Exception("No se econtro la tabla de simuladores");
 
+                DataTable tablaVuelos = ds.Tables["Vuelo"];
+                if (tablaVuelos == null) throw new Exception("No se encontro la tabla vuelos");
                 List<LiquidacionInstructor> ListaLiquidacionesI = new List<LiquidacionInstructor>();
                 List<DataRow> rows = tabla.AsEnumerable().Where(r => r.Field<int>("Id_Persona").Equals(idPersona) && r.Field<int>("Id_Servicio").Equals((int)EnumServicios.Instructor)).ToList();
 
@@ -151,11 +156,24 @@ namespace DAL
                     LiquidacionInstructor liquidacion = new LiquidacionInstructor();
                     LiquidacionServicioMAP.MapearDesdeDB(liquidacion, row);
 
-                    List<DataRow> rowsVuelos = tablaRelacion.AsEnumerable().Where(r => row["Id_Liquidacion_Servicio"].Equals(liquidacion.IdLiquidacionServicio)).ToList();
+                    
+                    List<DataRow> rowSimus = tablaSimu.AsEnumerable().Where(r => r["Id_Liquidacion"].Equals(liquidacion.IdLiquidacionServicio)).ToList();
+                    liquidacion.Simuladores = new List<Simulador>();
+                    foreach (DataRow rowSimu in rowSimus)
+                    {
+                       Simulador simulador = new Simulador();
+                       SimuladorMAP.MapearDesdeDB(simulador, rowSimu);
+                       liquidacion.Simuladores.Add(simulador);
+                    }
+
+                    List<DataRow> rowsVuelos = tablaRelacion.AsEnumerable().Where(r => r["Id_Liquidacion_Servicio"].Equals(liquidacion.IdLiquidacionServicio)).ToList();
                     liquidacion.Vuelos = new List<Vuelo>();
                     foreach(DataRow rowVuelo in rowsVuelos)
                     {
-                        Vuelo vuelo = new Vuelo() { IdVuelo = Convert.ToInt32(rowVuelo["Id_Vuelo"]) };
+                        DataRow rVuelo = tablaVuelos.AsEnumerable().FirstOrDefault(r => r["Id_Vuelo"].Equals(rowVuelo["Id_Vuelo"]));
+                        if (rVuelo == null) throw new Exception("no se encontro un vuelo de la liquidacion");
+                        Vuelo vuelo = new Vuelo();  
+                        VueloMAP.MapearDesdeDB(vuelo, rVuelo);
                         liquidacion.Vuelos.Add(vuelo);
                     }
 
@@ -175,9 +193,9 @@ namespace DAL
         {
 			try
 			{
-                if (!File.Exists(rutaXml)) throw new FileNotFoundException("No se encontró el archivo XML.");
-                DataSet ds = new DataSet();
-                ds.ReadXml(rutaXml, XmlReadMode.ReadSchema);
+                //if (!File.Exists(rutaXml)) throw new FileNotFoundException("No se encontró el archivo XML.");
+                DataSet ds = XmlDataSetHelper.DataSetEnMemoria;
+                //ds.ReadXml(rutaXml, XmlReadMode.ReadSchema);
 
                 DataTable tabla = ds.Tables["Liquidacion_Servicio"];
                 if (tabla == null) throw new Exception("No se encontró la tabla Simulador.");
@@ -208,9 +226,9 @@ namespace DAL
         {
             try
             {
-                if (!File.Exists(rutaXml)) throw new FileNotFoundException("No se encontró el archivo XML.");
-                DataSet ds = new DataSet();
-                ds.ReadXml(rutaXml, XmlReadMode.ReadSchema);
+                //if (!File.Exists(rutaXml)) throw new FileNotFoundException("No se encontró el archivo XML.");
+                DataSet ds = XmlDataSetHelper.DataSetEnMemoria;
+                //ds.ReadXml(rutaXml, XmlReadMode.ReadSchema);
 
                 DataTable tabla = ds.Tables["Liquidacion_Servicio"];
                 if (tabla == null) throw new Exception("No se encontró la tabla Liquidacion Servicio.");
@@ -220,7 +238,8 @@ namespace DAL
 
                 row["Id_Factura"] = DBNull.Value;
 
-                ds.WriteXml(rutaXml, XmlWriteMode.WriteSchema);
+                XmlDataSetHelper.GuardarCambios();
+                //ds.WriteXml(rutaXml, XmlWriteMode.WriteSchema);
             }
             catch (Exception ex)
             {

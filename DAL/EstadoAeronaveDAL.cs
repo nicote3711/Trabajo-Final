@@ -18,9 +18,10 @@ namespace DAL
         {
             try
             {
-                if (!File.Exists(rutaXml)) throw new FileNotFoundException("No se encontró el archivo XML de datos.");
-                DataSet ds = new DataSet();
-                ds.ReadXml(rutaXml, XmlReadMode.ReadSchema);
+                //if (!File.Exists(rutaXml)) throw new FileNotFoundException("No se encontró el archivo XML de datos.");
+                DataSet ds = XmlDataSetHelper.DataSetEnMemoria;
+                //ds.ReadXml(rutaXml, XmlReadMode.ReadSchema);
+
                 DataTable tablaEstados = ds.Tables["Estado_Aeronave"];
                 if (tablaEstados == null) throw new Exception("No se encontró la tabla de Estados de Aeronave en el XML.");
                 List<EstadoAeronave> listaEstadosAeronave = new List<EstadoAeronave>();
@@ -42,9 +43,10 @@ namespace DAL
         {
             try
             {
-                if (!File.Exists(rutaXml)) throw new FileNotFoundException("No se encontró el archivo XML de datos.");
-                DataSet ds = new DataSet();
-                ds.ReadXml(rutaXml, XmlReadMode.ReadSchema);
+                //if (!File.Exists(rutaXml)) throw new FileNotFoundException("No se encontró el archivo XML de datos.");
+                DataSet ds = XmlDataSetHelper.DataSetEnMemoria;
+                //ds.ReadXml(rutaXml, XmlReadMode.ReadSchema);
+
                 DataTable tablaEstados = ds.Tables["Estado_Aeronave"];
                 if (tablaEstados == null) throw new Exception("No se encontró la tabla de Estados de Aeronave en el XML.");
                 DataRow row = tablaEstados.AsEnumerable().FirstOrDefault(r => r.Field<int>("Id_Estado_Aeronave") == idEstado);
@@ -61,8 +63,8 @@ namespace DAL
 
         public EstadoAeronave BuscarPorDescripcion(string descripcion)
         {
-            DataSet ds = new DataSet();
-            ds.ReadXml(rutaXml, XmlReadMode.ReadSchema);
+            DataSet ds = XmlDataSetHelper.DataSetEnMemoria;
+            //ds.ReadXml(rutaXml, XmlReadMode.ReadSchema);
 
             DataTable tabla = ds.Tables["Estado_Aeronave"];
             if (tabla == null) throw new Exception("No se encontró la tabla Estado_Aeronave.");

@@ -275,7 +275,7 @@ namespace UI
                 chartSimulacionesPorMes.ChartAreas[0].Area3DStyle.Rotation = 0;
 
                 chartSimulacionesPorMes.Titles.Clear();
-                chartSimulacionesPorMes.Titles.Add("Distribución de Simulaciones por Mes");
+                chartSimulacionesPorMes.Titles.Add("Simulaciones por Mes");
                 chartSimulacionesPorMes.Titles[0].Font = new System.Drawing.Font("Arial", 14f, System.Drawing.FontStyle.Bold);
 
                 chartSimulacionesPorMes.Legends[0].Docking = Docking.Bottom;

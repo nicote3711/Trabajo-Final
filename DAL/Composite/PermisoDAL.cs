@@ -18,8 +18,8 @@ namespace DAL.Composite
         {
             try
             {
-                DataSet ds = new DataSet();
-                ds.ReadXml(rutaXML, XmlReadMode.ReadSchema);
+                DataSet ds = XmlDataSetHelper.DataSetEnMemoria;
+               // ds.ReadXml(rutaXML, XmlReadMode.ReadSchema);
 
                 DataTable tablaPermiso = ds.Tables["Permiso"];
                 DataTable tablaComposicion = ds.Tables["Permiso_Composicion"];
@@ -65,8 +65,8 @@ namespace DAL.Composite
         {
             try
             {
-                DataSet ds = new DataSet();
-                ds.ReadXml(rutaXML, XmlReadMode.ReadSchema);
+                DataSet ds = XmlDataSetHelper.DataSetEnMemoria;
+                //ds.ReadXml(rutaXML, XmlReadMode.ReadSchema);
 
                 DataTable tablaPermiso = ds.Tables["Permiso"];
 
@@ -92,8 +92,8 @@ namespace DAL.Composite
         {
             try
             {
-                DataSet ds = new DataSet();
-                ds.ReadXml(rutaXML, XmlReadMode.ReadSchema);
+                DataSet ds = XmlDataSetHelper.DataSetEnMemoria;
+                //ds.ReadXml(rutaXML, XmlReadMode.ReadSchema);
 
                 DataTable tablaPermiso = ds.Tables["Permiso"];
                 List<Componente> lista = new List<Componente>();
@@ -118,8 +118,8 @@ namespace DAL.Composite
         {
             try
             {
-                DataSet ds = new DataSet();
-                ds.ReadXml(rutaXML, XmlReadMode.ReadSchema);
+                DataSet ds = XmlDataSetHelper.DataSetEnMemoria;
+                //ds.ReadXml(rutaXML, XmlReadMode.ReadSchema);
 
                 DataTable tablaPermiso = ds.Tables["Permiso"];
                 Dictionary<int, Componente> diccionario = new Dictionary<int, Componente>();
@@ -144,8 +144,8 @@ namespace DAL.Composite
         {
             try
             {
-                DataSet ds = new DataSet();
-                ds.ReadXml(rutaXML, XmlReadMode.ReadSchema);
+                DataSet ds = XmlDataSetHelper.DataSetEnMemoria;
+                //ds.ReadXml(rutaXML, XmlReadMode.ReadSchema);
 
                 DataTable tablaRelacion = ds.Tables["Permiso_Composicion"];
 
@@ -173,10 +173,11 @@ namespace DAL.Composite
             try
             {
                 List<int> IdAncestros = new List<int>();
-                int idHijo = idPermiso; 
+                int idHijo = idPermiso;
 
-                DataSet ds = new DataSet();
-                ds.ReadXml(rutaXML, XmlReadMode.ReadSchema);
+                DataSet ds = XmlDataSetHelper.DataSetEnMemoria;
+                //ds.ReadXml(rutaXML, XmlReadMode.ReadSchema);
+
                 DataTable tablaComposicion = ds.Tables["Permiso_Composicion"];
                 if (tablaComposicion == null) throw new Exception("No se encontró la tabla Permiso_Composicion.");
             

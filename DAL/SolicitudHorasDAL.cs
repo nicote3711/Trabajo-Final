@@ -19,9 +19,9 @@ namespace DAL
         {
             try
             {
-                if (!File.Exists(rutaXml)) throw new FileNotFoundException("No se encontró el archivo XML.");
-                DataSet ds = new DataSet();
-                ds.ReadXml(rutaXml, XmlReadMode.ReadSchema);
+                //if (!File.Exists(rutaXml)) throw new FileNotFoundException("No se encontró el archivo XML.");
+                DataSet ds = XmlDataSetHelper.DataSetEnMemoria;
+                //ds.ReadXml(rutaXml, XmlReadMode.ReadSchema);
 
                 DataTable tablaSolicitudes = ds.Tables["Solicitud_Horas"];
                 if (tablaSolicitudes == null) throw new Exception("No se encontró la tabla Solicitud_Horas.");
@@ -45,17 +45,20 @@ namespace DAL
         {
             try
             {
-                if (!File.Exists(rutaXml)) throw new FileNotFoundException("No se encontró el archivo XML.");
-                DataSet ds = new DataSet();
-                ds.ReadXml(rutaXml, XmlReadMode.ReadSchema);
+                //if (!File.Exists(rutaXml)) throw new FileNotFoundException("No se encontró el archivo XML.");
+                DataSet ds = XmlDataSetHelper.DataSetEnMemoria;
+                //ds.ReadXml(rutaXml, XmlReadMode.ReadSchema);
+
                 DataTable tablaSolicitudes = ds.Tables["Solicitud_Horas"];
                 if (tablaSolicitudes == null) throw new Exception("No se encontró la tabla Solicitud_Horas.");
                 
                 DataRow row = tablaSolicitudes.AsEnumerable().FirstOrDefault(s => s.Field<int>("Id_Solicitud_Horas") == idSolicitudHoras);   
-                if(row == null) throw new Exception($"No se encontró la solicitud de horas con ID {idSolicitudHoras}.");    
+                if(row == null) throw new Exception($"No se encontró la solicitud de horas con ID {idSolicitudHoras}.");
 
-                row.Delete(); 
-                ds.WriteXml(rutaXml, XmlWriteMode.WriteSchema); 
+                row.Delete();
+
+                XmlDataSetHelper.GuardarCambios();
+                //ds.WriteXml(rutaXml, XmlWriteMode.WriteSchema); 
 
             }
             catch (Exception ex)
@@ -67,9 +70,9 @@ namespace DAL
         {
             try
             {
-                if (!File.Exists(rutaXml)) throw new FileNotFoundException("No se encontró el archivo XML.");
-                DataSet ds = new DataSet();
-                ds.ReadXml(rutaXml, XmlReadMode.ReadSchema);
+                //if (!File.Exists(rutaXml)) throw new FileNotFoundException("No se encontró el archivo XML.");
+                DataSet ds = XmlDataSetHelper.DataSetEnMemoria;
+                //ds.ReadXml(rutaXml, XmlReadMode.ReadSchema);
 
                 DataTable tablaSolicitudes = ds.Tables["Solicitud_Horas"];
                 if (tablaSolicitudes == null) throw new Exception("No se encontró la tabla Solicitud_Horas.");
@@ -80,7 +83,9 @@ namespace DAL
                 DataRow row = tablaSolicitudes.NewRow();
                 SolicitudHorasMAP.MapearHaciaDB(solicitud, row);
                 tablaSolicitudes.Rows.Add(row);
-                ds.WriteXml(rutaXml, XmlWriteMode.WriteSchema);
+
+                XmlDataSetHelper.GuardarCambios();
+                //ds.WriteXml(rutaXml, XmlWriteMode.WriteSchema);
             }
             catch (Exception ex)
             {
@@ -92,9 +97,9 @@ namespace DAL
         {
             try
             {
-                if (!File.Exists(rutaXml)) throw new FileNotFoundException("No se encontró el archivo XML.");
-                DataSet ds = new DataSet();
-                ds.ReadXml(rutaXml, XmlReadMode.ReadSchema);
+                //if (!File.Exists(rutaXml)) throw new FileNotFoundException("No se encontró el archivo XML.");
+                DataSet ds = XmlDataSetHelper.DataSetEnMemoria;
+                //ds.ReadXml(rutaXml, XmlReadMode.ReadSchema);
 
                 DataTable tablaSolicitudes = ds.Tables["Solicitud_Horas"];
                 if (tablaSolicitudes == null) throw new Exception("No se encontró la tabla Solicitud_Horas.");
@@ -110,7 +115,7 @@ namespace DAL
             catch (Exception ex)
             {
 
-                throw new Exception("DAL SolicitudHoras error al buscar la solicitud por id");
+                throw new Exception("DAL SolicitudHoras error al buscar la solicitud por id: "+ex.Message,ex);
             }
         }
     }

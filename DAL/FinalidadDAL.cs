@@ -18,10 +18,10 @@ namespace DAL
         {
             try
             {
-                if (!File.Exists(archivoXml)) throw new FileNotFoundException("No se encontró el archivo XML.");
+                //if (!File.Exists(archivoXml)) throw new FileNotFoundException("No se encontró el archivo XML.");
 
-                DataSet ds = new DataSet();
-                ds.ReadXml(archivoXml, XmlReadMode.ReadSchema);
+                DataSet ds = XmlDataSetHelper.DataSetEnMemoria;
+                //ds.ReadXml(archivoXml, XmlReadMode.ReadSchema);
 
                 List<Finalidad> LFinalidad = new List<Finalidad>();
                 if (ds.Tables.Contains("Finalidad"))
@@ -47,10 +47,10 @@ namespace DAL
         {
             try
             {
-                if (!File.Exists(archivoXml)) throw new FileNotFoundException("No se encontró el archivo XML.");
+                //if (!File.Exists(archivoXml)) throw new FileNotFoundException("No se encontró el archivo XML.");
 
-                DataSet ds = new DataSet();
-                ds.ReadXml(archivoXml, XmlReadMode.ReadSchema);
+                DataSet ds = XmlDataSetHelper.DataSetEnMemoria;
+                //ds.ReadXml(archivoXml, XmlReadMode.ReadSchema);
 
                 DataTable tabla = ds.Tables["Finalidad"];
                 if (tabla == null)throw new Exception("No se encontró la tabla Finalidad en el XML.");
@@ -73,10 +73,10 @@ namespace DAL
         {
             try
             {
-                if (!File.Exists(archivoXml)) throw new FileNotFoundException("No se encontró el archivo XML.");
+                //if (!File.Exists(archivoXml)) throw new FileNotFoundException("No se encontró el archivo XML.");
 
-                DataSet ds = new DataSet();
-                ds.ReadXml(archivoXml, XmlReadMode.ReadSchema);
+                DataSet ds = XmlDataSetHelper.DataSetEnMemoria;
+                //ds.ReadXml(archivoXml, XmlReadMode.ReadSchema);
 
                 DataTable tabla = ds.Tables["Finalidad"];
                 if (tabla == null) throw new Exception("No se encontró la tabla Finalidad en el XML.");

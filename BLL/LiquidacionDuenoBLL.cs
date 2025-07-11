@@ -36,30 +36,17 @@ namespace BLL
         {
             try
             {
-                if (idPersona == null || idPersona <= 0) throw new Exception("El id de persona del dueño es un id nulo o invalido");
+                if (idPersona <= 0) throw new Exception("El id de persona del dueño es un id nulo o invalido");
                 List<LiquidacionDueno> LLiquidacionesD = LiquidacionDuenoDAO.ObtenerLiquidacionesDPorIdPersonaDueño(idPersona);
                 DuenoBLL DuenoBLO = new DuenoBLL();
-                VueloBLL VueloBLO = new VueloBLL();
                 ServicioBLL servicioBLO = new ServicioBLL();
                 foreach (LiquidacionDueno liquidacion in LLiquidacionesD)
                 {
 
-                    Dueno dueno = DuenoBLO.BuscarDuenoPorIdPersona(liquidacion.Persona.IDPersona); // TODO: Metodo
+                    Dueno dueno = DuenoBLO.BuscarDuenoPorIdPersona(liquidacion.Persona.IDPersona); 
                     if (dueno == null) throw new Exception("Error al obtener el dueño para la liquidacion");
                     liquidacion.Persona = dueno;
                     liquidacion.Servicio = servicioBLO.BuscarServicioPorID(liquidacion.Servicio.IdServicio);
-
-                    List<Vuelo> vuelosCompletos = new List<Vuelo>();
-                    foreach (Vuelo vueloIncompleto in liquidacion.Vuelos)
-                    {
-                        Vuelo vueloCompleto = VueloBLO.BuscarVueloPorId(vueloIncompleto.IdVuelo);
-                        if (vueloCompleto == null) throw new Exception("Vuelo no encontrado");
-
-                        vuelosCompletos.Add(vueloCompleto);
-
-
-                    }
-                    liquidacion.Vuelos = vuelosCompletos;   
                 }
                 return LLiquidacionesD;
             }
@@ -130,7 +117,6 @@ namespace BLL
                 List<LiquidacionDueno> LLiquidaciones = LiquidacionDuenoDAO.BuscarLiquidacionesPorIdFacturacion(idFactura);
 
                 DuenoBLL DuenoBLO = new DuenoBLL();
-                VueloBLL VueloBLO = new VueloBLL();
                 ServicioBLL servicioBLO = new ServicioBLL();
 
                 foreach (LiquidacionDueno liquidacion in LLiquidaciones)
@@ -139,16 +125,6 @@ namespace BLL
                     if (dueno == null) throw new Exception("Error al obtener el dueño para la liquidacion");
                     liquidacion.Persona = dueno;
                     liquidacion.Servicio = servicioBLO.BuscarServicioPorID(liquidacion.Servicio.IdServicio);
-
-                    List<Vuelo> vuelosCompletos = new List<Vuelo>();
-                    foreach (Vuelo vueloIncompleto in liquidacion.Vuelos) // ya lo inicie
-                    {
-                        Vuelo vueloCompleto = VueloBLO.BuscarVueloPorId(vueloIncompleto.IdVuelo);
-                        if (vueloCompleto == null) throw new Exception("Vuelo no encontrado");
-
-                        vuelosCompletos.Add(vueloCompleto);
-                    }
-                    liquidacion.Vuelos = vuelosCompletos;
                 }
 
                 return LLiquidaciones;

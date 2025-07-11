@@ -108,25 +108,13 @@ namespace BLL
                 if (iDPersona == null || iDPersona <= 0) throw new Exception("El id de persona del dueño es un id nulo o invalido");
                 List<LiquidacionInstructor> LLiquidaciones = LiquidacionInstructorDAO.ObtenerLiquidacionesIPorIdPersonaInstructor(iDPersona);
                 InstructorBLL InstructorBLO = new InstructorBLL();
-                VueloBLL VueloBLO = new VueloBLL();
-                SimuladorBLL SimuladorBLO = new SimuladorBLL();
+             
 
                 foreach(LiquidacionInstructor liquidacionInstructor in LLiquidaciones)
                 {
                     Instructor instructor = InstructorBLO.BuscarInstructorPorID(liquidacionInstructor.Persona.IDPersona);
                     if (instructor == null) throw new Exception("Error al obtener el instructor para la liquidacion");
                     liquidacionInstructor.Persona = instructor; 
-                    List<Vuelo> LvuelosCompletos = new List<Vuelo>();
-                    foreach(Vuelo vuelo in liquidacionInstructor.Vuelos)
-                    {
-                        Vuelo vueloCompleto = VueloBLO.BuscarVueloPorId(vuelo.IdVuelo);
-                        LvuelosCompletos.Add(vueloCompleto);
-                    }
-                    
-                    List<Simulador> Lsimuladores = SimuladorBLO.ObtenerSimuladoresPorIdLiquidacion(liquidacionInstructor.IdLiquidacionServicio);
-                    if (Lsimuladores.Count <= 0 && LvuelosCompletos.Count <= 0) throw new Exception("Error al obtener los vuelos y liquidaciones. Ambas no pueden estar vacias");
-                    liquidacionInstructor.Vuelos =LvuelosCompletos;
-                    liquidacionInstructor.Simuladores = Lsimuladores;
                     liquidacionInstructor.Servicio = ServicioBLO.BuscarServicioPorID(liquidacionInstructor.Servicio.IdServicio);
                 }
 
@@ -143,28 +131,15 @@ namespace BLL
         {
             try
             {
+
                 List<LiquidacionInstructor> LLiquidacionesI = LiquidacionInstructorDAO.BuscarLiquidacionesPorIdFactura(idFactura);
 
                 InstructorBLL InstructorBLO = new InstructorBLL();
-                VueloBLL VueloBLO = new VueloBLL();
-                SimuladorBLL SimuladorBLO = new SimuladorBLL();
                 ServicioBLL ServicioBLO = new ServicioBLL();
                 foreach (LiquidacionInstructor liquidacionInstructor in LLiquidacionesI)
                 {
                     Instructor instructor = InstructorBLO.BuscarInstructorPorID(liquidacionInstructor.Persona.IDPersona);
                     if (instructor == null) throw new Exception("Error al obtener el instructor para la liquidacion");
-                    liquidacionInstructor.Persona = instructor;
-                    List<Vuelo> LvuelosCompletos = new List<Vuelo>();
-                    foreach (Vuelo vuelo in liquidacionInstructor.Vuelos)
-                    {
-                        Vuelo vueloCompleto = VueloBLO.BuscarVueloPorId(vuelo.IdVuelo);
-                        LvuelosCompletos.Add(vueloCompleto);
-                    }
-
-                    List<Simulador> Lsimuladores = SimuladorBLO.ObtenerSimuladoresPorIdLiquidacion(liquidacionInstructor.IdLiquidacionServicio);
-                    if (Lsimuladores.Count <= 0 && LvuelosCompletos.Count <= 0) throw new Exception($"Error al obtener los vuelos y liquidaciones. Ambas no pueden estar vacias. Liquidacion id {liquidacionInstructor.IdLiquidacionServicio}");
-                    liquidacionInstructor.Vuelos = LvuelosCompletos;
-                    liquidacionInstructor.Simuladores = Lsimuladores;
                     liquidacionInstructor.Servicio = ServicioBLO.BuscarServicioPorID(liquidacionInstructor.Servicio.IdServicio);
                 }
                 return LLiquidacionesI;

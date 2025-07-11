@@ -18,10 +18,10 @@ namespace DAL.Composite
         {
             try
             {
-                if (!File.Exists(rutaXml)) throw new FileNotFoundException("No se encontró el archivo XML.");
+                //if (!File.Exists(rutaXml)) throw new FileNotFoundException("No se encontró el archivo XML.");
 
-                DataSet ds = new DataSet();
-                ds.ReadXml(rutaXml, XmlReadMode.ReadSchema);
+                DataSet ds = XmlDataSetHelper.DataSetEnMemoria;
+                //ds.ReadXml(rutaXml, XmlReadMode.ReadSchema);
 
                 DataTable tablaPermisos = ds.Tables["Permiso"];
                 if (tablaPermisos == null) throw new Exception("No se encontró la tabla Permiso.");
@@ -51,8 +51,8 @@ namespace DAL.Composite
         {
             try
             {
-                DataSet ds = new DataSet();
-                ds.ReadXml(rutaXml, XmlReadMode.ReadSchema);
+                DataSet ds = XmlDataSetHelper.DataSetEnMemoria;
+                //ds.ReadXml(rutaXml, XmlReadMode.ReadSchema);
 
                 DataTable tablaPermiso = ds.Tables["Permiso"];
                 if (tablaPermiso == null) throw new Exception("No se encontró la tabla Permiso.");
@@ -63,7 +63,9 @@ namespace DAL.Composite
                 DataRow row = tablaPermiso.NewRow();
                 PermisoItemMAP.MapearHaciaDB(item, row);
                 tablaPermiso.Rows.Add(row);
-                ds.WriteXml(rutaXml, XmlWriteMode.WriteSchema);
+
+                XmlDataSetHelper.GuardarCambios();
+                //ds.WriteXml(rutaXml, XmlWriteMode.WriteSchema);
             }
             catch (Exception ex)
             {
@@ -78,8 +80,8 @@ namespace DAL.Composite
         {
             try
             {
-                DataSet ds = new DataSet();
-                ds.ReadXml(rutaXml, XmlReadMode.ReadSchema);
+                DataSet ds = XmlDataSetHelper.DataSetEnMemoria;
+                //ds.ReadXml(rutaXml, XmlReadMode.ReadSchema);
 
                 DataTable tablaPermiso = ds.Tables["Permiso"];
                 if (tablaPermiso == null) throw new Exception("No se encontró la tabla Permiso.");
@@ -104,8 +106,8 @@ namespace DAL.Composite
         {
             try
             {
-                DataSet ds = new DataSet();
-                ds.ReadXml(rutaXml, XmlReadMode.ReadSchema);
+                DataSet ds = XmlDataSetHelper.DataSetEnMemoria;
+                //ds.ReadXml(rutaXml, XmlReadMode.ReadSchema);
 
                 var tablaPermiso = ds.Tables["Permiso"];
                 var tablaComposicion = ds.Tables["Permiso_Composicion"];
@@ -129,7 +131,8 @@ namespace DAL.Composite
                     rowRolPer.Delete();
                 }
 
-                ds.WriteXml(rutaXml, XmlWriteMode.WriteSchema);
+                XmlDataSetHelper.GuardarCambios();
+                //ds.WriteXml(rutaXml, XmlWriteMode.WriteSchema);
             }
             catch (Exception ex)
             {
@@ -142,8 +145,8 @@ namespace DAL.Composite
         {
             try
             {
-                DataSet ds = new DataSet();
-                ds.ReadXml(rutaXml, XmlReadMode.ReadSchema);
+                DataSet ds = XmlDataSetHelper.DataSetEnMemoria;
+                //ds.ReadXml(rutaXml, XmlReadMode.ReadSchema);
 
                 DataTable tablaPermiso = ds.Tables["Permiso"];
                 if (tablaPermiso == null) throw new Exception("No se encontró la tabla Permiso.");

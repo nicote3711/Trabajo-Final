@@ -21,10 +21,10 @@ namespace DAL
         {
             try
             {
-                if (!File.Exists(rutaXml)) throw new FileNotFoundException("No se encontró el archivo XML.");
+                //if (!File.Exists(rutaXml)) throw new FileNotFoundException("No se encontró el archivo XML.");
 
-                DataSet ds = new DataSet();
-                ds.ReadXml(rutaXml, XmlReadMode.ReadSchema);
+                DataSet ds = XmlDataSetHelper.DataSetEnMemoria;
+                //ds.ReadXml(rutaXml, XmlReadMode.ReadSchema);
 
                 DataTable tabla = ds.Tables["Mantenimiento"];
                 if (tabla == null) throw new Exception("No se encontró la tabla Mantenimiento.");
@@ -49,10 +49,10 @@ namespace DAL
         {
             try
             {
-                if (!File.Exists(rutaXml)) throw new FileNotFoundException("No se encontró el archivo XML.");
+                //if (!File.Exists(rutaXml)) throw new FileNotFoundException("No se encontró el archivo XML.");
 
-                DataSet ds = new DataSet();
-                ds.ReadXml(rutaXml, XmlReadMode.ReadSchema);
+                DataSet ds = XmlDataSetHelper.DataSetEnMemoria;
+                //ds.ReadXml(rutaXml, XmlReadMode.ReadSchema);
 
                 DataTable tabla = ds.Tables["Mantenimiento"];
                 if (tabla == null) throw new Exception("No se encontró la tabla Mantenimiento.");
@@ -63,7 +63,8 @@ namespace DAL
                 MantenimientoMAP.MapearHaciaDB(mantenimiento, row);
                 tabla.Rows.Add(row);
 
-                ds.WriteXml(rutaXml, XmlWriteMode.WriteSchema);
+                XmlDataSetHelper.GuardarCambios();
+                //ds.WriteXml(rutaXml, XmlWriteMode.WriteSchema);
             }
             catch (Exception ex)
             {
@@ -75,10 +76,10 @@ namespace DAL
         {
             try
             {
-                if (!File.Exists(rutaXml)) throw new FileNotFoundException("Archivo XML no encontrado.");
+                //if (!File.Exists(rutaXml)) throw new FileNotFoundException("Archivo XML no encontrado.");
 
-                DataSet ds = new DataSet();
-                ds.ReadXml(rutaXml, XmlReadMode.ReadSchema);
+                DataSet ds = XmlDataSetHelper.DataSetEnMemoria;
+                //ds.ReadXml(rutaXml, XmlReadMode.ReadSchema);
 
                 DataTable tabla = ds.Tables["Mantenimiento"];
                 if (tabla == null) throw new Exception("No se encontró la tabla Mantenimiento.");
@@ -90,7 +91,8 @@ namespace DAL
                 row["Id_Mecanico"] = mantenimiento.Mecanico.IdMecanico;
                 row["Id_Estado_Mantenimiento"] = mantenimiento.EstadoMantenimiento.IdEstadoMantenimiento; //deberia validarlo antes
 
-                ds.WriteXml(rutaXml, XmlWriteMode.WriteSchema);
+                XmlDataSetHelper.GuardarCambios();
+                //ds.WriteXml(rutaXml, XmlWriteMode.WriteSchema);
             }
             catch (Exception ex)
             {
@@ -101,10 +103,10 @@ namespace DAL
         {
             try
             {
-                if (!File.Exists(rutaXml)) throw new FileNotFoundException("Archivo XML no encontrado.");
+                //if (!File.Exists(rutaXml)) throw new FileNotFoundException("Archivo XML no encontrado.");
 
-                DataSet ds = new DataSet();
-                ds.ReadXml(rutaXml, XmlReadMode.ReadSchema);
+                DataSet ds = XmlDataSetHelper.DataSetEnMemoria;
+                //ds.ReadXml(rutaXml, XmlReadMode.ReadSchema);
 
                 DataTable tabla = ds.Tables["Mantenimiento"];
                 if (tabla == null) throw new Exception("No se encontró la tabla Mantenimiento.");
@@ -116,7 +118,8 @@ namespace DAL
                 row["Id_Factura"] = idFactura;
                 row["Id_Estado_Mantenimiento"] = (int)EnumEstadoMantenimiento.Finalizado; // deberia validarlo antes
 
-                ds.WriteXml(rutaXml, XmlWriteMode.WriteSchema);
+                XmlDataSetHelper.GuardarCambios();
+                //ds.WriteXml(rutaXml, XmlWriteMode.WriteSchema);
             }
             catch (Exception ex)
             {
@@ -128,10 +131,10 @@ namespace DAL
         {
             try
             {
-                if (!File.Exists(rutaXml)) throw new FileNotFoundException("No se encontró el archivo XML.");
+                //if (!File.Exists(rutaXml)) throw new FileNotFoundException("No se encontró el archivo XML.");
 
-                DataSet ds = new DataSet();
-                ds.ReadXml(rutaXml, XmlReadMode.ReadSchema);
+                DataSet ds = XmlDataSetHelper.DataSetEnMemoria;
+                //ds.ReadXml(rutaXml, XmlReadMode.ReadSchema);
 
                 DataTable tabla = ds.Tables["Mantenimiento"];
                 if (tabla == null) throw new Exception("No se encontró la tabla Mantenimiento.");
@@ -153,10 +156,10 @@ namespace DAL
         {
             try
             {
-                if (!File.Exists(rutaXml)) throw new FileNotFoundException("No se encontró el archivo XML.");
+                //if (!File.Exists(rutaXml)) throw new FileNotFoundException("No se encontró el archivo XML.");
 
-                DataSet ds = new DataSet();
-                ds.ReadXml(rutaXml, XmlReadMode.ReadSchema);
+                DataSet ds = XmlDataSetHelper.DataSetEnMemoria;
+                //ds.ReadXml(rutaXml, XmlReadMode.ReadSchema);
 
                 DataTable tabla = ds.Tables["Mantenimiento"];
                 if (tabla == null) throw new Exception("No se encontró la tabla Mantenimiento.");
@@ -183,10 +186,10 @@ namespace DAL
         {
             try
             {
-                if (!File.Exists(rutaXml)) throw new FileNotFoundException("Archivo XML no encontrado.");
+                //if (!File.Exists(rutaXml)) throw new FileNotFoundException("Archivo XML no encontrado.");
 
-                DataSet ds = new DataSet();
-                ds.ReadXml(rutaXml, XmlReadMode.ReadSchema);
+                DataSet ds = XmlDataSetHelper.DataSetEnMemoria;
+                //ds.ReadXml(rutaXml, XmlReadMode.ReadSchema);
 
                 DataTable tabla = ds.Tables["Mantenimiento"];
                 if (tabla == null) throw new Exception("No se encontró la tabla Mantenimiento.");
@@ -206,7 +209,8 @@ namespace DAL
 
                 row["Id_Estado_Mantenimiento"] = mantenimiento.EstadoMantenimiento.IdEstadoMantenimiento; //deberia validarlo antes
 
-                ds.WriteXml(rutaXml, XmlWriteMode.WriteSchema);
+                XmlDataSetHelper.GuardarCambios();
+                //ds.WriteXml(rutaXml, XmlWriteMode.WriteSchema);
 
 
             }
@@ -221,10 +225,10 @@ namespace DAL
         {
             try
             {
-                if (!File.Exists(rutaXml)) throw new FileNotFoundException("Archivo XML no encontrado.");
+                //if (!File.Exists(rutaXml)) throw new FileNotFoundException("Archivo XML no encontrado.");
 
-                DataSet ds = new DataSet();
-                ds.ReadXml(rutaXml, XmlReadMode.ReadSchema);
+                DataSet ds = XmlDataSetHelper.DataSetEnMemoria;
+                //ds.ReadXml(rutaXml, XmlReadMode.ReadSchema);
 
                 DataTable tabla = ds.Tables["Mantenimiento"];
                 if (tabla == null) throw new Exception("No se encontró la tabla Mantenimiento.");
@@ -234,7 +238,8 @@ namespace DAL
 
                 tabla.Rows.Remove(row);
 
-                ds.WriteXml(rutaXml,XmlWriteMode.WriteSchema);  
+                XmlDataSetHelper.GuardarCambios();
+                //ds.WriteXml(rutaXml,XmlWriteMode.WriteSchema);  
 
             }
             catch (Exception ex)
@@ -248,10 +253,10 @@ namespace DAL
         {
             try
             {
-                if (!File.Exists(rutaXml)) throw new FileNotFoundException("Archivo XML no encontrado.");
+                //if (!File.Exists(rutaXml)) throw new FileNotFoundException("Archivo XML no encontrado.");
 
-                DataSet ds = new DataSet();
-                ds.ReadXml(rutaXml, XmlReadMode.ReadSchema);
+                DataSet ds = XmlDataSetHelper.DataSetEnMemoria;
+                //ds.ReadXml(rutaXml, XmlReadMode.ReadSchema);
 
                 DataTable tabla = ds.Tables["Mantenimiento"];
                 if (tabla == null) throw new Exception("No se encontró la tabla Mantenimiento.");
@@ -263,7 +268,8 @@ namespace DAL
                 row["Id_Estado_Mantenimiento"]= mantenimiento.EstadoMantenimiento.IdEstadoMantenimiento;
                 row["Id_Factura"] = mantenimiento.FacturaMantenimiento.IdFactura;
 
-                ds.WriteXml(rutaXml, XmlWriteMode.WriteSchema);
+                XmlDataSetHelper.GuardarCambios();
+                //ds.WriteXml(rutaXml, XmlWriteMode.WriteSchema);
 
             }
             catch (Exception ex)
@@ -277,10 +283,10 @@ namespace DAL
         {
             try
             {
-                if (!File.Exists(rutaXml)) throw new FileNotFoundException("No se encontró el archivo XML.");
+                //if (!File.Exists(rutaXml)) throw new FileNotFoundException("No se encontró el archivo XML.");
 
-                DataSet ds = new DataSet();
-                ds.ReadXml(rutaXml, XmlReadMode.ReadSchema);
+                DataSet ds = XmlDataSetHelper.DataSetEnMemoria;
+                //ds.ReadXml(rutaXml, XmlReadMode.ReadSchema);
 
                 DataTable tabla = ds.Tables["Mantenimiento"];
                 if (tabla == null) throw new Exception("No se encontró la tabla Mantenimiento.");
@@ -306,10 +312,10 @@ namespace DAL
         {
             try
             {
-                if (!File.Exists(rutaXml)) throw new FileNotFoundException("Archivo XML no encontrado.");
+                //if (!File.Exists(rutaXml)) throw new FileNotFoundException("Archivo XML no encontrado.");
 
-                DataSet ds = new DataSet();
-                ds.ReadXml(rutaXml, XmlReadMode.ReadSchema);
+                DataSet ds = XmlDataSetHelper.DataSetEnMemoria;
+                //ds.ReadXml(rutaXml, XmlReadMode.ReadSchema);
 
                 DataTable tabla = ds.Tables["Mantenimiento"];
                 if (tabla == null) throw new Exception("No se encontró la tabla Mantenimiento.");
@@ -321,7 +327,8 @@ namespace DAL
                 row["Id_Estado_Mantenimiento"] = mantenimiento.EstadoMantenimiento.IdEstadoMantenimiento;
                 row["Id_Factura"] = DBNull.Value;
 
-                ds.WriteXml(rutaXml, XmlWriteMode.WriteSchema);
+                XmlDataSetHelper.GuardarCambios();
+                //ds.WriteXml(rutaXml, XmlWriteMode.WriteSchema);
 
             }
             catch (Exception ex)
@@ -335,10 +342,10 @@ namespace DAL
         {
             try
             {
-                if (!File.Exists(rutaXml)) throw new FileNotFoundException("No se encontró el archivo XML.");
+                //if (!File.Exists(rutaXml)) throw new FileNotFoundException("No se encontró el archivo XML.");
 
-                DataSet ds = new DataSet();
-                ds.ReadXml(rutaXml, XmlReadMode.ReadSchema);
+                DataSet ds = XmlDataSetHelper.DataSetEnMemoria;
+                //ds.ReadXml(rutaXml, XmlReadMode.ReadSchema);
 
                 DataTable tabla = ds.Tables["Mantenimiento"];
                 if (tabla == null) throw new Exception("No se encontró la tabla Mantenimiento.");

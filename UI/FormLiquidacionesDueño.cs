@@ -156,6 +156,9 @@ namespace UI
                 try
                 {
                     LiquidacionServicioBLO.GenerarLiquidaciones();
+                    CargarGrillaLiquidacionesDueno();
+                    CargarGrillaFacturasDueno();
+                    MessageBox.Show($"Liquidacion generadas correctamente para el periodo{DateTime.Now.Month}/{DateTime.Now.Year}");
                 }
                 catch (Exception ex)
                 {

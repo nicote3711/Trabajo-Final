@@ -18,10 +18,10 @@ namespace DAL
         {
             try
             {
-                if (!File.Exists(rutaXml)) throw new FileNotFoundException("Archivo XML no encontrado.");
+                //if (!File.Exists(rutaXml)) throw new FileNotFoundException("Archivo XML no encontrado.");
 
-                DataSet ds = new DataSet();
-                ds.ReadXml(rutaXml, XmlReadMode.ReadSchema);
+                DataSet ds = XmlDataSetHelper.DataSetEnMemoria;
+                //ds.ReadXml(rutaXml, XmlReadMode.ReadSchema);
 
                 DataTable tabla = ds.Tables["Tipo_Mantenimiento"];
                 if (tabla == null) throw new Exception("No se encontró la tabla Tipo_Mantenimiento.");
@@ -47,10 +47,10 @@ namespace DAL
         {
             try
             {
-                if (!File.Exists(rutaXml)) throw new FileNotFoundException("Archivo XML no encontrado.");
+                //if (!File.Exists(rutaXml)) throw new FileNotFoundException("Archivo XML no encontrado.");
 
-                DataSet ds = new DataSet();
-                ds.ReadXml(rutaXml, XmlReadMode.ReadSchema);
+                DataSet ds = XmlDataSetHelper.DataSetEnMemoria;
+                //ds.ReadXml(rutaXml, XmlReadMode.ReadSchema);
 
                 DataTable tabla = ds.Tables["Tipo_Mantenimiento"];
                 DataRow row = tabla.AsEnumerable().FirstOrDefault(r => r.Field<int>("Id_Tipo_Mantenimiento").Equals(id));

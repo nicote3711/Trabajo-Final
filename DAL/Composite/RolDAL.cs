@@ -18,8 +18,8 @@ namespace DAL.Composite
         {
             try
             {
-                DataSet ds = new DataSet();
-                ds.ReadXml(rutaXML, XmlReadMode.ReadSchema);
+                DataSet ds = XmlDataSetHelper.DataSetEnMemoria;
+               // ds.ReadXml(rutaXML, XmlReadMode.ReadSchema);
 
                 DataTable tablaRol = ds.Tables["Rol"];
                 List<Rol> LRoles = new List<Rol>();
@@ -79,8 +79,8 @@ namespace DAL.Composite
         {
             try
             {
-                DataSet ds = new DataSet();
-                ds.ReadXml(rutaXML, XmlReadMode.ReadSchema);
+                DataSet ds = XmlDataSetHelper.DataSetEnMemoria;
+                //ds.ReadXml(rutaXML, XmlReadMode.ReadSchema);
 
                 DataRow row = ds.Tables["Rol"].AsEnumerable().FirstOrDefault(r => Convert.ToInt32(r["Id_Rol"]) == idRol);
 
@@ -116,8 +116,8 @@ namespace DAL.Composite
         {
             try
             {
-                DataSet ds = new DataSet();
-                ds.ReadXml(rutaXML, XmlReadMode.ReadSchema);
+                DataSet ds = XmlDataSetHelper.DataSetEnMemoria;
+                //ds.ReadXml(rutaXML, XmlReadMode.ReadSchema);
 
                 DataTable tablaRol = ds.Tables["Rol"];
                 DataTable tablaRP = ds.Tables["Rol_Permiso"];
@@ -138,7 +138,8 @@ namespace DAL.Composite
                     tablaRP.Rows.Add(rel);
                 }
 
-                ds.WriteXml(rutaXML, XmlWriteMode.WriteSchema);
+                XmlDataSetHelper.GuardarCambios();
+               // ds.WriteXml(rutaXML, XmlWriteMode.WriteSchema);
             }
             catch (Exception ex)
             {
@@ -150,8 +151,8 @@ namespace DAL.Composite
         {
             try
             {
-                DataSet ds = new DataSet();
-                ds.ReadXml(rutaXML, XmlReadMode.ReadSchema);
+                DataSet ds = XmlDataSetHelper.DataSetEnMemoria;
+                //ds.ReadXml(rutaXML, XmlReadMode.ReadSchema);
 
                 var tablaRol = ds.Tables["Rol"];
                 var tablaRP = ds.Tables["Rol_Permiso"];
@@ -174,7 +175,9 @@ namespace DAL.Composite
                 {
                     fila.Delete();
                 }
-                ds.WriteXml(rutaXML, XmlWriteMode.WriteSchema);
+
+                XmlDataSetHelper.GuardarCambios();
+                //ds.WriteXml(rutaXML, XmlWriteMode.WriteSchema);
             }
             catch (Exception ex)
             {
@@ -186,8 +189,8 @@ namespace DAL.Composite
         {
             try
             {
-                DataSet ds = new DataSet();
-                ds.ReadXml(rutaXML, XmlReadMode.ReadSchema);
+                DataSet ds = XmlDataSetHelper.DataSetEnMemoria;
+                //ds.ReadXml(rutaXML, XmlReadMode.ReadSchema);
 
                 DataTable tablaRP = ds.Tables["Rol_Permiso"];
 
@@ -201,7 +204,8 @@ namespace DAL.Composite
                     nueva["Id_Permiso"] = idPermiso;
                     tablaRP.Rows.Add(nueva);
 
-                    ds.WriteXml(rutaXML, XmlWriteMode.WriteSchema);
+                    XmlDataSetHelper.GuardarCambios();
+                    // ds.WriteXml(rutaXML, XmlWriteMode.WriteSchema);
                 }
             }
             catch (Exception ex)
@@ -214,8 +218,8 @@ namespace DAL.Composite
         {
             try
             {
-                DataSet ds = new DataSet();
-                ds.ReadXml(rutaXML, XmlReadMode.ReadSchema);
+                DataSet ds = XmlDataSetHelper.DataSetEnMemoria;
+                //ds.ReadXml(rutaXML, XmlReadMode.ReadSchema);
 
                 DataTable tablaRP = ds.Tables["Rol_Permiso"];
 
@@ -223,7 +227,9 @@ namespace DAL.Composite
                 if (row != null)
                 {
                     row.Delete();
-                    ds.WriteXml(rutaXML, XmlWriteMode.WriteSchema);
+
+                    XmlDataSetHelper.GuardarCambios();
+                    //ds.WriteXml(rutaXML, XmlWriteMode.WriteSchema);
                 }
             }
             catch (Exception ex)
@@ -236,8 +242,8 @@ namespace DAL.Composite
         {
             try
             {
-                DataSet ds = new DataSet();
-                ds.ReadXml(rutaXML, XmlReadMode.ReadSchema);
+                DataSet ds = XmlDataSetHelper.DataSetEnMemoria;
+                //ds.ReadXml(rutaXML, XmlReadMode.ReadSchema);
 
                 DataTable tablaRP = ds.Tables["Rol_Permiso"];
 

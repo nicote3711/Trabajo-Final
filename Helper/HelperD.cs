@@ -31,7 +31,7 @@ namespace Helper
 
         }
 
-        public static int ObtenerProximoNumeroFactura(DataTable tabla, int tipoFactura)
+        public static int ObtenerProximoNumeroFactura(DataTable tabla, int tipoFactura) // no lo use al final
         {
             try
             {
@@ -106,10 +106,11 @@ namespace Helper
                 {
                     // Verificar que el archivo de respaldo existe
                     if (!File.Exists(origen))throw new FileNotFoundException($"No se encontró el archivo de backup: {nombreArchivo}");
-                    
+
 
                     // Restaurar: reemplazar el archivo actual por el backup
                     File.Copy(origen, destino, true);
+                    XmlDataSetHelper.ForzarRecarga();
                 }
                 catch (Exception ex)
                 {
@@ -120,15 +121,21 @@ namespace Helper
 
         public static bool ExisteBackUp(DateTime fechaRegistro)
         {
+            try
+            {
+                string backupDir = @"BackUp";
+                string nombreArchivo = fechaRegistro.ToString("dd-MM-yyyy HH.mm") + "_BackUp.xml";
+                string rutaCompleta = Path.Combine(backupDir, nombreArchivo);
 
-            string backupDir = @"BackUp";
-            string nombreArchivo = fechaRegistro.ToString("dd-MM-yyyy HH.mm") + "_BackUp.xml";
-            string rutaCompleta = Path.Combine(backupDir, nombreArchivo);
+                return File.Exists(rutaCompleta);
+            }
+            catch (Exception ex)
+            {
 
-            return File.Exists(rutaCompleta);
+                throw;
+            }
+         
         }
-
-
     }
 
 }
