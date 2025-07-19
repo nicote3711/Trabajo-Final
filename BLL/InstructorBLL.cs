@@ -149,7 +149,7 @@ namespace BLL
             }
         }
 
-        internal Instructor BuscarInstructorPorCuit(string cuilEmisor)
+        public Instructor BuscarInstructorPorCuit(string cuilEmisor)
         {
             try
             {

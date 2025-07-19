@@ -95,7 +95,7 @@ namespace BLL
             liquidacionD.MontoTotal = liquidacionD.CantHoras * liquidacionD.Servicio.Precio;
         }
 
-        internal void AsignarIdFacturaALiquidacion(LiquidacionDueno liquidacion)
+        public void AsignarIdFacturaALiquidacion(LiquidacionDueno liquidacion)
         {
             try
             {
@@ -153,7 +153,7 @@ namespace BLL
             }
         }
 
-        internal void QuitarIdFacturaALiquidacion(LiquidacionDueno liquidacion)
+        public void QuitarIdFacturaALiquidacion(LiquidacionDueno liquidacion)
         {
             try
             {

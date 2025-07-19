@@ -46,7 +46,7 @@ namespace BLL
 			}
 		}
 
-        internal void AltaSolicitudHoras(SolicitudHoras solicitud)
+        public void AltaSolicitudHoras(SolicitudHoras solicitud)
         {
 			try
 			{

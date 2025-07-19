@@ -80,7 +80,7 @@ namespace UI
                 dgv_FacturaSolicitudHoras.DataSource = null;
                 if (cmBox_Cliente.SelectedIndex >= 0 && cmBox_Cliente.SelectedItem is Cliente clienteSeleccionado)
                 {
-                    Lfacturas = Lfacturas.Where(f => f.CuilEmisor.Equals(clienteSeleccionado.CuitCuil)).ToList();
+                    Lfacturas = Lfacturas.Where(f =>  f.Solicitud.Cliente.CuitCuil.Equals(clienteSeleccionado.CuitCuil)).ToList();
                 }
                 if (Lfacturas.Count > 0) { dgv_FacturaSolicitudHoras.DataSource = Lfacturas; }
             }

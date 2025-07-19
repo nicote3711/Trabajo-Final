@@ -18,7 +18,7 @@ namespace UI
     public partial class FormRecargaCombustible : Form
     {
         ProveedorCombustibleBLL ProveedorCombustibleBLO = new ProveedorCombustibleBLL();
-        DepositoCombustibleDAL DepositoCombustibleDAO = new DepositoCombustibleDAL();
+        DepositoCombustibleBLL DepositoCombustibleBLO = new DepositoCombustibleBLL();
         FacturaCombustibleBLL FacturaCombustibleBLO = new FacturaCombustibleBLL();
         RecargaCombustibleBLL RecargaCombustibleBLO = new RecargaCombustibleBLL();
 
@@ -52,7 +52,7 @@ namespace UI
         {
             try
             {
-                List<DepositoCombustible> LDepositosCombu = DepositoCombustibleDAO.ObtenerTodos();
+                List<DepositoCombustible> LDepositosCombu = DepositoCombustibleBLO.ObtenerDepositosCombu();
                 cmBox_DepositoCombu.DataSource = null;
                 if (LDepositosCombu.Count >= 0)
                 {

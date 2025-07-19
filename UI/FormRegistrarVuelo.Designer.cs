@@ -70,7 +70,7 @@
             // 
             dgv_Vuelos.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
             dgv_Vuelos.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dgv_Vuelos.Location = new Point(376, 63);
+            dgv_Vuelos.Location = new Point(385, 90);
             dgv_Vuelos.MultiSelect = false;
             dgv_Vuelos.Name = "dgv_Vuelos";
             dgv_Vuelos.ReadOnly = true;

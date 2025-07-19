@@ -170,7 +170,7 @@ namespace BLL
             }
         }
 
-        public List<Vuelo> BuscarVuelosPorCliente(int idCliente)
+        public List<Vuelo> BuscarVuelosPorCliente(int idCliente)  // no se usa de momento
         {
             try
             {
@@ -190,7 +190,7 @@ namespace BLL
             {
                 throw new Exception("BLL Error al buscar vuelos por cliente: " + ex.Message, ex);
             }
-        } //No lo uso de momento
+        } 
 
         public void EliminarVuelo(Vuelo vuelo)
         {
@@ -234,7 +234,7 @@ namespace BLL
             }
         }
 
-        public Vuelo BuscarVueloPorId(int idVuelo)
+        public Vuelo BuscarVueloPorId(int idVuelo) // no lo uso de momento
         {
             try
             {

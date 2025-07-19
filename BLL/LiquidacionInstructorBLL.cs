@@ -33,7 +33,7 @@ namespace BLL
             {
                 throw new Exception("BLL LiquidacionInstructor error al obtener liquidaciones: " + ex.Message, ex);
             }
-        }
+        }//no se usa, uso el de la linea 103
         public List<LiquidacionInstructor> ObtenerLiquidacionesIPorPeriodo(DateTime periodo)
         {
 			try
@@ -123,7 +123,7 @@ namespace BLL
             catch (Exception ex)
             {
 
-                throw new Exception("BLL LiquidacionInstructor error al generar liquidacion");
+                throw new Exception("BLL LiquidacionInstructor error al obtener liquidaciones por id Persona: "+ex.Message,ex);
             }
         }
 

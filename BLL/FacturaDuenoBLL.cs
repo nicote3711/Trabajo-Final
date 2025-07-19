@@ -25,7 +25,7 @@ namespace BLL
 				if (facturaDueno.MontoTotal <= 0) throw new Exception("El monto total no puede ser 0 o menor a 0");
 				if (string.IsNullOrEmpty(facturaDueno.CuilEmisor)) throw new Exception("El cuit no puede ser nulo o vacio");
 
-				FacturaDuenoDAO.ExisteFacturaConCuilYNro(facturaDueno.CuilEmisor, facturaDueno.NroFactura);
+				if(FacturaDuenoDAO.ExisteFacturaConCuilYNro(facturaDueno.CuilEmisor, facturaDueno.NroFactura)) throw new Exception("Ya existe una factura con ese numero para el cuil");
 				FacturaDuenoDAO.RegistrarFactura(facturaDueno);
 				if (facturaDueno.IdFactura == null || facturaDueno.IdFactura <= 0) throw new Exception("el id de la factura es nulo o invalido");
 

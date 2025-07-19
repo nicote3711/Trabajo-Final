@@ -133,7 +133,7 @@ namespace BLL
 			}
         }
 
-        private Factura BuscarFacturaParaTransaccionPorId(int idFactura, TipoTransaccion tipoTransaccion)
+        public Factura BuscarFacturaParaTransaccionPorId(int idFactura, TipoTransaccion tipoTransaccion)
         {
 			try
 			{

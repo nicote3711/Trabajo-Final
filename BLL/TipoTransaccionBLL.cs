@@ -12,7 +12,7 @@ namespace BLL
     {
         TipoTransaccionDAL TipoTransaccionDAO = new TipoTransaccionDAL();
 
-        public List<TipoTransaccion> ObtenerTodos()
+        public List<TipoTransaccion> ObtenerTodos() // no se usa de momento
         {
             try
             {

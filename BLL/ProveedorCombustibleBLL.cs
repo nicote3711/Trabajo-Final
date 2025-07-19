@@ -28,7 +28,7 @@ namespace BLL
             }
         }
 
-        internal ProveedorCombustible BuscarProveedorPorId(int idProveedorCombustible)
+        public ProveedorCombustible BuscarProveedorPorId(int idProveedorCombustible)
         {
             try
             {

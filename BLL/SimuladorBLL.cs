@@ -31,7 +31,7 @@ namespace BLL
 					simulador.Finalidad = FinalidadBLO.ObtenerPorId(simulador.Finalidad.IdFinalidad);
 					if(simulador.Liquidacion != null && simulador.Liquidacion.IdLiquidacionServicio!=null)
 					{
-                        //TODO: Asignar la liquidación al simulador Consultar a Pablo
+                        //TODO: Asignar la liquidación al simulador 
                     }
                 }
                     return LSimuladores;
@@ -189,6 +189,6 @@ namespace BLL
 
 				throw new Exception("BLL Simulador error al obtener simuladores por Id Liquidacion: "+ex.Message,ex);
 			}
-        }
+        } //no se usa de momento
     }
 }

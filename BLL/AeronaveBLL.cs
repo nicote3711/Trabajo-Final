@@ -147,7 +147,7 @@ namespace BLL
             }
         }
 
-        internal Aeronave ObtenerAeronavePorId(int idAeronave)
+        public Aeronave ObtenerAeronavePorId(int idAeronave)
         {
             try
             {
