@@ -69,7 +69,7 @@ namespace UI
                 if (cmBox_Cliente.SelectedIndex >= 0 && cmBox_Cliente.SelectedItem is Cliente cli)
                 {
                     if (cli == null || cli.CuitCuil == string.Empty) throw new Exception("error al obtener cliente del combo box");
-                    List<FacturaSolicitudHoras> LFacturasSolicitudes = FacturaSolicitudHorasBLO.ObtenerFacturas().Where(f => f.Transaccion == null && f.CuilEmisor.Equals(cli.CuitCuil)).ToList();
+                    List<FacturaSolicitudHoras> LFacturasSolicitudes = FacturaSolicitudHorasBLO.ObtenerFacturas().Where(f => f.Transaccion == null && f.Solicitud.Cliente.CuitCuil.Equals(cli.CuitCuil)).ToList();
 
                     if (LFacturasSolicitudes.Count > 0) { dgv_FacturaSolicitudHoras.DataSource = LFacturasSolicitudes; }
 

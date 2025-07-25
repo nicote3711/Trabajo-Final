@@ -364,7 +364,7 @@ namespace BLL
 
                 TipoTransaccionBLL TipoTransaccionBLO = new TipoTransaccionBLL();
                 TipoTransaccion tipoTransaccion = TipoTransaccionBLO.BuscarPorId((int)EnumTipoTransaccion.PagoCombustible);
-                if (tipoTransaccion == null) throw new Exception("no se encontro el tipo de transaccion para pago dueño");
+                if (tipoTransaccion == null) throw new Exception("no se encontro el tipo de transaccion para pago combustile");
 
                 transaccionFinanciera.TipoTransaccion = tipoTransaccion;
                 transaccionFinanciera.IdFactura = transaccionFinanciera.Factura.IdFactura;

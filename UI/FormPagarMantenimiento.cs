@@ -256,7 +256,7 @@ namespace UI
         {
             try
             {
-                if (dgv_Pagos.Rows.Count <= 0) throw new Exception("no hay pagos de dueño para eliminar");
+                if (dgv_Pagos.Rows.Count <= 0) throw new Exception("no hay pagos de mantenimientos para eliminar");
                 if (dgv_Pagos.SelectedRows.Count <= 0) throw new Exception("debe seleccionar un pago a eliminar");
                 if (!(dgv_Pagos.SelectedRows[0].DataBoundItem is TransaccionFinanciera)) throw new Exception("error al obtener la transaccion de la grilla");
 
@@ -266,7 +266,7 @@ namespace UI
                 TransaccionFinancieraBLO.EliminarPagoMecanico(transaccionFinanciera);
                 CargarDgvPagos();
                 CargarDgvFacturasImp();
-                MessageBox.Show("pago dueño eliminado exitosamente");
+                MessageBox.Show("pago mantenimiento eliminado exitosamente");
             }
             catch (Exception ex)
             {

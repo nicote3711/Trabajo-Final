@@ -559,8 +559,8 @@ namespace UI
 
             int semana = (diaDelMes - 1) / 7 + 1;
 
-            // Limitar a las 4 primeras semanas, como solicitaste.
-            // Las fechas en la 5ta semana (días 29-31) no cumplirán el filtro si weekOfMonth es 1-4.
+            // Limitar a las 4 primeras semanas.
+            // Las fechas en la 5ta semana (días 29-31) no cumplirán el filtro si weekOfMonth es 1-4. por tanto resuelvo asi
             return semana <= 4 ? semana : 0; // Devolvemos 0 para indicar que está fuera de las 4 primeras semanas.
         }
 

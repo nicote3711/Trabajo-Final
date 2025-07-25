@@ -176,9 +176,9 @@
             label1.AutoSize = true;
             label1.Location = new Point(43, 42);
             label1.Name = "label1";
-            label1.Size = new Size(214, 15);
+            label1.Size = new Size(210, 15);
             label1.TabIndex = 27;
-            label1.Text = "Factura Recargar Combustible Impagas";
+            label1.Text = "Factura Recarga Combustible Impagas";
             // 
             // dgv_FacturasImpagas
             // 

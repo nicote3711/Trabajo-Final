@@ -23,7 +23,7 @@ namespace BLL
             {
                 if (facturaInstructor.IdFactura == null || facturaInstructor.IdFactura <= 0) throw new Exception("Id de factura nulo o invalido.");
                 if (facturaInstructor.ListaLiquidaciones == null || facturaInstructor.ListaLiquidaciones.Count <= 0) throw new Exception("Lista de liquidaciones de la factura nula o vacia");
-        
+                if (facturaInstructor.Transaccion != null && facturaInstructor.Transaccion.IdTransaccionFinanciera >= 0) throw new Exception("No se puede eliminar una factura ya pagada");
 
 
                 FacturaInstructorDAO.EliminarFactura(facturaInstructor.IdFactura);

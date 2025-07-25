@@ -90,8 +90,9 @@ namespace BLL
 			{
 				if (factura.IdFactura == null || factura.IdFactura <= 0) throw new Exception("Id de factura nulo o invalido.");
 				if (factura.ListaLiquidaciones == null || factura.ListaLiquidaciones.Count <= 0) throw new Exception("Lista de liquidaciones de la factura nula o vacia");
+                if (factura.Transaccion != null && factura.Transaccion.IdTransaccionFinanciera >= 0) throw new Exception("No se puede eliminar una factura que ya fue pagada");
 
-				FacturaDuenoDAO.EliminarFactura(factura.IdFactura);
+                FacturaDuenoDAO.EliminarFactura(factura.IdFactura);
                 Resultado result = HelperFacturas.EliminarFacturaPDF((int)EnumTiposFactura.FacturaDueño, factura.NroFactura);
 
                 LiquidacionDuenoBLL LiquidacionDuenoBLO = new LiquidacionDuenoBLL();

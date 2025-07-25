@@ -109,7 +109,7 @@ namespace UI
                     cmBox_Instructor.DisplayMember = "Identificar";
                     cmBox_Instructor.ValueMember = "IdInstructor";
                     cmBox_Instructor.SelectedIndex = -1;
-                    cmBox_Instructor.Text = "Seleccione un dueño";
+                    cmBox_Instructor.Text = "Seleccione un Instructor";
                 }
             }
             catch (Exception ex)
@@ -269,7 +269,7 @@ namespace UI
                 TransaccionFinancieraBLO.EliminarPagoInstructor(transaccionFinanciera);
                 CargarDgvPagos();
                 CargarDgvFacturasImp();
-                MessageBox.Show("pago dueño eliminado exitosamente");
+                MessageBox.Show("pago instructor eliminado exitosamente");
             }
             catch (Exception ex)
             {

@@ -107,7 +107,7 @@ namespace UI
                     cmBox_Instructores.DisplayMember = "Identificar";
                     cmBox_Instructores.ValueMember = "IdInstructor";
                     cmBox_Instructores.SelectedIndex = -1;
-                    cmBox_Instructores.Text = "Seleccione un dueño";
+                    cmBox_Instructores.Text = "Seleccione un instructor";
                 }
             }
             catch (Exception ex)

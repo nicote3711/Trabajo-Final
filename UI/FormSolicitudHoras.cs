@@ -184,6 +184,7 @@ namespace UI
                 CargarDgvSolicitud();
                 CargarDgvFacturaSolicitud();
                 LimpiarCampos();
+                MessageBox.Show("Solicitud de horas eliminada correctamente."); 
             }
             catch (Exception ex)
             {
