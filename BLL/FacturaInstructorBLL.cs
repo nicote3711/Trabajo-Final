@@ -27,7 +27,7 @@ namespace BLL
 
 
                 FacturaInstructorDAO.EliminarFactura(facturaInstructor.IdFactura);
-                Resultado result = HelperFacturas.EliminarFacturaPDF((int)EnumTiposFactura.FacturaInstructor, facturaInstructor.NroFactura);
+                Resultado result = HelperFacturas.EliminarFacturaPDF((int)EnumTiposFactura.FacturaInstructor, facturaInstructor.NroFactura, facturaInstructor.CuilEmisor);
                 LiquidacionInstructorBLL LiquidacionInstructorBLO = new LiquidacionInstructorBLL();
                 foreach(LiquidacionInstructor liquidacion in facturaInstructor.ListaLiquidaciones)
                 {

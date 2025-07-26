@@ -93,7 +93,7 @@ namespace BLL
                 if (factura.Transaccion != null && factura.Transaccion.IdTransaccionFinanciera >= 0) throw new Exception("No se puede eliminar una factura que ya fue pagada");
 
                 FacturaDuenoDAO.EliminarFactura(factura.IdFactura);
-                Resultado result = HelperFacturas.EliminarFacturaPDF((int)EnumTiposFactura.FacturaDueño, factura.NroFactura);
+                Resultado result = HelperFacturas.EliminarFacturaPDF((int)EnumTiposFactura.FacturaDueño, factura.NroFactura, factura.CuilEmisor);
 
                 LiquidacionDuenoBLL LiquidacionDuenoBLO = new LiquidacionDuenoBLL();
 				foreach(LiquidacionDueno liquidacion in factura.ListaLiquidaciones)

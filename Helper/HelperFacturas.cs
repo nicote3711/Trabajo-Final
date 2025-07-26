@@ -28,18 +28,18 @@ namespace Helper
     public static class HelperFacturas
     {
         #region GENERACION PDF
-        const string fileName = "F_{NumeroFactura}.pdf";
+        const string fileName = "F_{NumeroFactura}_{cuitEmisor}.pdf";
         const string filePath = "\\Facturas\\{TipoFactura}\\";
 
-        public static Resultado EliminarFacturaPDF(int tipoFactura,int nroFactura) 
+        public static Resultado EliminarFacturaPDF(int tipoFactura,int nroFactura,string cuitEmisor) 
         {
             Resultado result = new Resultado();
             try
             {
                 string directorio = AppDomain.CurrentDomain.BaseDirectory; // Starting Dir
-                FileInfo fileInfo = new FileInfo(directorio.Substring(0, (directorio.Split("UI\\")[0] + "UI\\").Length));
-                string baseDirNombre = fileInfo.Directory.FullName;
-                string pathDocumento = baseDirNombre + filePath.Replace("{TipoFactura}", EnumTiposFactura.GetName((EnumTiposFactura)tipoFactura)) + fileName.Replace("{NumeroFactura}", nroFactura.ToString());
+                //FileInfo fileInfo = new FileInfo(directorio.Substring(0, (directorio.Split("UI\\")[0] + "UI\\").Length));
+                //string baseDirNombre = fileInfo.Directory.FullName;
+                string pathDocumento = directorio + filePath.Replace("{TipoFactura}", EnumTiposFactura.GetName((EnumTiposFactura)tipoFactura)) + fileName.Replace("{NumeroFactura}", nroFactura.ToString());
 
                 File.Delete(pathDocumento);
                 result.Success = true;
@@ -58,9 +58,9 @@ namespace Helper
             try
             {
                 string directorio = AppDomain.CurrentDomain.BaseDirectory; // Starting Dir
-                FileInfo fileInfo = new FileInfo(directorio.Substring(0, (directorio.Split("UI\\")[0] + "UI\\").Length));
-                string baseDirNombre = fileInfo.Directory.FullName;
-                string pathDocumento = baseDirNombre + filePath.Replace("{TipoFactura}", EnumTiposFactura.GetName((EnumTiposFactura)factura.TipoFactura.IdTipoFactura)) + fileName.Replace("{NumeroFactura}", factura.NroFactura.ToString());
+              //  FileInfo fileInfo = new FileInfo(directorio.Substring(0, (directorio.Split("UI\\")[0] + "UI\\").Length));
+               // string baseDirNombre = fileInfo.Directory.FullName;
+                string pathDocumento = directorio + filePath.Replace("{TipoFactura}", EnumTiposFactura.GetName((EnumTiposFactura)factura.TipoFactura.IdTipoFactura)) + fileName.Replace("{NumeroFactura}", factura.NroFactura.ToString()).Replace("{cuitEmisor}",factura.CuilEmisor);
 
                 using (var writer = new PdfWriter(pathDocumento))
                 {

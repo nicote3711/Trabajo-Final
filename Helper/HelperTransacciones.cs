@@ -28,13 +28,14 @@ namespace Helper
             try
             {
                 string directorio = AppDomain.CurrentDomain.BaseDirectory;
-                FileInfo fileInfo = new FileInfo(directorio.Substring(0, (directorio.Split("UI\\")[0] + "UI\\").Length));
-                string baseDirNombre = fileInfo.Directory.FullName;
+                //FileInfo fileInfo = new FileInfo(directorio.Substring(0, (directorio.Split("UI\\")[0] + "UI\\").Length));
+                //string baseDirNombre = fileInfo.Directory.FullName;
 
                 string tipoTransaccionStr = Enum.GetName(typeof(EnumTipoTransaccion), tipoTransaccion);
                 if (string.IsNullOrEmpty(tipoTransaccionStr)) throw new Exception("Tipo de transacción inválido.");
 
-                string pathDocumento = baseDirNombre +
+               // string pathDocumento = Path.Combine(directorio,filePath,tipoTransaccionStr,fileName.Replace("{IdTransaccion}", idTransaccion.ToString()));  buena practica
+                string pathDocumento = directorio +
                                        "\\Transacciones\\" +
                                        tipoTransaccionStr +
                                        "\\T_" + idTransaccion + ".pdf";
@@ -66,11 +67,11 @@ namespace Helper
             try
             {
                 string directorio = AppDomain.CurrentDomain.BaseDirectory;
-                FileInfo fileInfo = new FileInfo(directorio.Substring(0, (directorio.Split("UI\\")[0] + "UI\\").Length));
-                string baseDirNombre = fileInfo.Directory.FullName;
+                //FileInfo fileInfo = new FileInfo(directorio.Substring(0, (directorio.Split("UI\\")[0] + "UI\\").Length));
+                //string baseDirNombre = fileInfo.Directory.FullName;
 
                 string tipoTransaccionStr = Enum.GetName(typeof(EnumTipoTransaccion), (int)transaccion.TipoTransaccion.IdTipoTransaccion);
-                string pathDocumento = baseDirNombre + filePath.Replace("{TipoTransaccion}", tipoTransaccionStr) + fileName.Replace("{IdTransaccion}", transaccion.IdTransaccionFinanciera.ToString());
+                string pathDocumento = directorio + filePath.Replace("{TipoTransaccion}", tipoTransaccionStr) + fileName.Replace("{IdTransaccion}", transaccion.IdTransaccionFinanciera.ToString());
 
                 using (var writer = new PdfWriter(pathDocumento))
                 using (var pdf = new PdfDocument(writer))

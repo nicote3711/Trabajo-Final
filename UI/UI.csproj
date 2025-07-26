@@ -60,4 +60,13 @@
     <PackageReference Include="WinForms.DataVisualization" Version="1.10.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Reference Include="WinForms.DataVisualization">
+      <HintPath>..\packages\WinForms.DataVisualization.dll</HintPath>
+    </Reference>
+    <Reference Include="WinForms.DataVisualization.Utilities">
+      <HintPath>..\packages\WinForms.DataVisualization.Utilities.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
 </Project>
